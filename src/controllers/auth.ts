@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
-import { PrismaClient, User } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { PrismaClient, User } from "@prisma/client";
 
 const client = new PrismaClient();
 
@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             emailAddress: user.emailAddress,
-            userName: user.userName
+            userName: user.userName,
         };
 
         //check if password match then return a token and send it to the client as a cookie
@@ -75,6 +75,17 @@ export const login = async (req: Request, res: Response) => {
         res.status(200).cookie("authToken", token).json(payload);
         return;
     } catch (e) {
+
         res.status(500).json({ message: "Something went wrong! Please try again"});
+    }
+};
+
+//export the logout controller function
+export const logout = (req: Request, res: Response ) => {
+    try {
+        res.status(200).clearCookie("authToken").json({ message: "You've logged out successfully" });
+        return;
+    } catch (e) {
+        res.status(500).json({ message: "Something went wrong! Kindly try again."});
     }
 };
