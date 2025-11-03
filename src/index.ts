@@ -1,8 +1,8 @@
 import express, { type Express, type Request, type Response } from "express";
 import dotenv from "dotenv";
 import { checkDetails } from "./middlewares/checkDetails.ts";
+import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { register } from "./controllers/auth.ts";
-
 
 
 const app = express();
@@ -14,7 +14,7 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 //add the user route handlers
-app.post("/auth/register",checkDetails, register)
+app.post("/auth/register",checkDetails, checkUserAndEmail, register)
 
 
 
