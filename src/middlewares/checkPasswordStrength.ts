@@ -9,4 +9,12 @@ export function checkPasswordStrength(req: Request, res: Response, next: NextFun
         return res.status(400).json({ message: "Password is required and must be a string."});
     }
     
+    //check password strength
+    const result = zxcvbn(password);
+
+    if (result.score < 3 ) {
+        res.status(400).json({ message: "Please use a stronger password"});
+        return;
+    }
+    next();
 }
