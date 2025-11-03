@@ -11,6 +11,7 @@ import { login, register } from "./controllers/auth.ts";
 const app = express();
 dotenv.config();
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("Welcome to Express + TS");
