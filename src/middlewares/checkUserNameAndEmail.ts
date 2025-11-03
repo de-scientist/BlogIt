@@ -14,8 +14,15 @@ export async function checkUserAndEmail(req: Request, res: Response, next: NextF
             res.status(400).json({ message: "The email you have provided is already associated with an account."});
             return;
         }
-        
+        const userWithUserName = await client.user.findUnique({
+            where: { userName },
+        });
+        if (userWithUserName) {
+            res.status(400).json({ message: "The username you have provided is already associated with an account."});
+            return;
+        }
     } catch (e) {
-        
+        res.status(500).json({ message: "Something went wrong! Check your details"});
     }
+    next();
 }
