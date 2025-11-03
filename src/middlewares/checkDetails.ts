@@ -15,5 +15,9 @@ export function checkDetails(req: Request, res: Response, next: NextFunction) {
         return;
     }
 
-    
+    //check if email address is provided
+    if (!emailAddress) {
+        res.status(400).json({ message: "Email address is required"});
+        return;
+    }
 }
