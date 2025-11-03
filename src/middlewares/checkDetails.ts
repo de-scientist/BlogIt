@@ -9,5 +9,11 @@ export function checkDetails(req: Request, res: Response, next: NextFunction) {
         return;
     }
 
-    //check 
+    //check if last name is provided
+    if (!lastName) {
+        res.status(400).json({ message: "Last name is required" });
+        return;
+    }
+
+    
 }
