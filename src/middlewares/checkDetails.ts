@@ -20,4 +20,12 @@ export function checkDetails(req: Request, res: Response, next: NextFunction) {
         res.status(400).json({ message: "Email address is required"});
         return;
     }
+
+    //check if user name is provided
+    if (!userName) {
+        res.status(400).json({ message: "User name is required"});
+        return;
+    }
+
+    
 }
