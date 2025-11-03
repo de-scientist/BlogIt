@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { checkDetails } from "./middlewares/checkDetails.ts";
 import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
-import { register } from "./controllers/auth.ts";
+import { login, register } from "./controllers/auth.ts";
 
 
 
@@ -17,6 +17,8 @@ app.get("/", (_req: Request, res: Response) => {
 
 //add the user route handlers
 app.post("/auth/register",checkDetails, checkUserAndEmail, checkPasswordStrength, register)
+//login route handler
+app.post("/auth/login", login)
 
 
 
