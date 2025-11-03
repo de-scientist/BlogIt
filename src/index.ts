@@ -4,9 +4,7 @@ import cookieParser from "cookie-parser";
 import { checkDetails } from "./middlewares/checkDetails.ts";
 import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
-import { login, register } from "./controllers/auth.ts";
-
-
+import { register, login, logout } from "./controllers/auth.ts";
 
 const app = express();
 dotenv.config();
@@ -18,12 +16,17 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 //add the user route handlers
-app.post("/auth/register",checkDetails, checkUserAndEmail, checkPasswordStrength, register);
+app.post(
+  "/auth/register",
+  checkDetails,
+  checkUserAndEmail,
+  checkPasswordStrength,
+  register,
+);
 //login route handler
 app.post("/auth/login", login);
-
-
-
+//logout route handler
+app.post("/auth/logout", logout);
 
 const PORT = 3000;
 app.listen(PORT, () => {
