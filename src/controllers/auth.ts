@@ -40,7 +40,7 @@ export const login = async (req: Request, res: Response) => {
         //get the user whose username or email address match the identifier
         const user = await client.user.findFirst({
             where: {
-                OR: [{ emailAddress: identifier }, { userName: identifier }]
+                OR: [{ emailAddress: identifier }, { userName: identifier }],
             },
         });
 
