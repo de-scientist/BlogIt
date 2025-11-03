@@ -50,6 +50,9 @@ export const login = async (req: Request, res: Response) => {
             return;
         }
 
+        //compare stored user password with the given password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
         
 
     } catch (e) {
