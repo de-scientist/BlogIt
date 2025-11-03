@@ -5,11 +5,24 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlserver"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id   String  @id @default(uuid()) @map("UserId")
+  firstName String @map("First_Name") 
+  lastName String  @map("Last_Name")
+  emailAddress  String @map("Email_Address") @unique
+  userName String @map("User_Name") @unique
+  password String @map("Password") @unique
+  isDeleted Boolean @map("Is_Deleted") @default(false)
+  dateJoined DateTime @map("Date_Joined") @default(now())
+  lastUpdated DateTime @map("Last_Updated") @updatedAt
+
+@@map("Users")
 }
