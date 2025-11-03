@@ -43,6 +43,13 @@ export const login = async (req: Request, res: Response) => {
                 OR: [{ emailAddress: identifier }, { userName: identifier }]
             },
         });
+
+        //check if we find user then if not return message- wrong credentials
+        if (!user) {
+            res.status(400).json({ message: "Wrong Credentials"});
+            return;
+        }
+
         
 
     } catch (e) {
