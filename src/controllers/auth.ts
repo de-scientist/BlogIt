@@ -59,6 +59,14 @@ export const login = async (req: Request, res: Response) => {
             return;
         }
 
+        //check if password match then - login success - prepare payload
+        const payload = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            emailAddress: user.emailAddress,
+            userName: user.userName
+        };
         
 
 
