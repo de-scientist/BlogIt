@@ -1,5 +1,6 @@
 import express, { type Express, type Request, type Response } from "express";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { checkDetails } from "./middlewares/checkDetails.ts";
 import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
