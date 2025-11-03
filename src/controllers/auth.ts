@@ -30,3 +30,15 @@ return res.status(409).json({ message: "Username or email already exists"
         
     }
 };
+
+//export the login controller function
+export const login = async (req: Request, res: Response) => {
+    try {
+        //get the identifier and password
+        const { identifier, password } = req.body;
+
+        
+    } catch (e) {
+        
+    }
+}
