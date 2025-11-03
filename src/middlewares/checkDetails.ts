@@ -27,5 +27,10 @@ export function checkDetails(req: Request, res: Response, next: NextFunction) {
         return;
     }
 
-    
+    //check if password is provided
+    if (!password) {
+        res.status(400).json({ message: "Password is required"});
+        return;
+    }
+    next();
 }
