@@ -1,8 +1,11 @@
 import express, { type Express, type Request, type Response } from "express";
+import dotenv from "dotenv";
 import { register } from "./controllers/auth.ts";
 
 
-const app: Express = express();
+const app = express();
+dotenv.config();
+app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("Welcome to Express + TS");
