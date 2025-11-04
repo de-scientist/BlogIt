@@ -112,6 +112,7 @@ export const deleteBlog = async (req: Request, res: Response) => {
     });
     return res.status(200).json({ message: "Blog deleted successfully."})  
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
@@ -128,6 +129,8 @@ export const trash = async (req: Request, res: Response) => {
         });
         return res.status(200).json({ blogs });
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
@@ -149,6 +152,8 @@ export const recoverDeletedBlog = async (req: Request, res: Response) => {
         });
         return res.status(200).json({ message: "Blog recovered successfully."});
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).json({ message: "Something went wrong! Kindly try again."});
     }
 };

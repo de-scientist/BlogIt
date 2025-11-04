@@ -7,7 +7,7 @@ import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout } from "./controllers/auth.ts";
-import { createBlog, deleteBlog, getBlog, getBlogs, permanentDeleteBlog, recoverDeletedBlog, trash, updateBlog } from "./controllers/blogs.ts";
+import { createBlog, getBlog, getBlogs, updateBlog, deleteBlog, permanentDeleteBlog, trash, recoverDeletedBlog } from "./controllers/blogs.ts";
 
 
 const app = express();
