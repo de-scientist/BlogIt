@@ -44,7 +44,8 @@ app.patch("/blogs/:id/recover", verifyToken, recoverDeletedBlog);
 app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
 
 //user route handlers
-app.get("/users", verifyToken, getUserProfile)
+app.get("/users", verifyToken, getUserProfile);
+
 
 const PORT = 3000;
 app.listen(PORT, () => {

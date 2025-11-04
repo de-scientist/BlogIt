@@ -31,3 +31,26 @@ export const getUserProfile = async (req: Request, res: Response) => {
     }
 };
 
+//update the user's profile
+export const updateProfile = async (req: Request, res: Response) => {
+    try {
+        const { firstName, lastName, userName, emailAddress } = req.body;
+        const userId = req.user.id;
+
+        await client.user.update({
+            where: {
+                id: userId,
+                isDeleted: false,
+            },
+            data: {
+                firstName: firstName && firstName,
+                lastName: lastName && lastName,
+                userName: userName && userName,
+                emailAddress: emailAddress && emailAddress,
+            },
+        });
+        return res.status(200).json({ message: "Profile updated successfully"});
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong! Kindly try again."});
+    }
+};
