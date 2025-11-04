@@ -44,3 +44,27 @@ export const getBlogs = async (req: Request, res: Response) => {
         return;
     }
 };
+
+//get a single blog
+export const getBlog = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const blog = await client.blog.findFirst({
+            where: {
+                id: String(id),
+                userId,
+                isDeleted: false,
+            },
+        });
+
+        //check if there is a blog
+        if (!blog) {
+            res.status(404).json({ message: "Blog not found" });
+            return;
+        }
+    } catch (error) {
+        
+    }
+}
