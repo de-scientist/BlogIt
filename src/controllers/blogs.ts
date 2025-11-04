@@ -101,7 +101,7 @@ export const deleteBlog = async (req: Request, res: Response) => {
       const { id } = req.params;
     const userId = req.user.id;
 
-    await client.blog.updateMany({
+   const result = await client.blog.updateMany({
         where: { 
             id: String(id),
             userId,
@@ -110,9 +110,13 @@ export const deleteBlog = async (req: Request, res: Response) => {
             isDeleted: true,
         },
     });
-    return res.status(200).json({ message: "Blog deleted successfully."})  
+    
+    if (result.count === 0) {
+        return res.status(404).json({ message: "Blog not found or unauthorized"})
+    }
+    return res.status(200).json({ message: "Blog moved to trash successfully."})  
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
