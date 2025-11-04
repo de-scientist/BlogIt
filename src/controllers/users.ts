@@ -3,3 +3,31 @@ import { PrismaClient } from "@prisma/client";
 
 const client = new PrismaClient();
 
+//get user profile
+export const getUserProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user.id;
+        const profile = await client.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                firstName: true,
+                lastName: true,
+                emailAddress: true,
+                userName: true,
+                dateJoined: true,
+                lastUpdated: true,
+            },
+        });
+        //check if the profile is available
+        if (!profile) {
+            return res.status(404).json({ message: "Profile not found"});
+        }
+        res.status(200).json(profile);
+        return;
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong! Kindly try again."});
+    }
+};
+
