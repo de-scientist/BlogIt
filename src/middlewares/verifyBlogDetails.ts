@@ -15,8 +15,9 @@ export const validateBlogDetails = async (req: Request, res: Response, next: Nex
             res.status(400).json({ message: "Description is required"});
             return;
         }
-        
+
     } catch (error) {
-        
+        return res.status(500).json({ message: "Something went wrong! Please try again" });
     }
+    next();
 }
