@@ -5,9 +5,10 @@ import { checkDetails } from "./middlewares/checkDetails.ts";
 import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
+import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout } from "./controllers/auth.ts";
 import { createBlog } from "./controllers/blogs.ts";
-import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
+
 
 const app = express();
 dotenv.config();
@@ -32,7 +33,7 @@ app.post("/auth/login", login);
 app.post("/auth/logout", logout);
 
 //blogs route handler
-app.post("/blogs", verifyToken, validateBlogDetails, createBlog)
+app.post("/blogs", verifyToken, validateBlogDetails, createBlog);
 
 
 const PORT = 3000;
