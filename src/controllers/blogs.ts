@@ -95,7 +95,7 @@ export const updateBlog = async (req: Request, res: Response) => {
     }
 };
 
-//delete a blog
+//soft delete a blog
 export const deleteBlog = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -150,5 +150,21 @@ export const recoverDeletedBlog = async (req: Request, res: Response) => {
         return res.status(200).json({ message: "Blog recovered successfully."});
     } catch (error) {
         return res.status(500).json({ message: "Something went wrong! Kindly try again."});
+    }
+};
+
+//permanently delete a blog
+export const permanentDeleteBlog = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+    await client.blog.delete({
+        where: { 
+            id: String(id),
+        },
+    });
+    return res.status(200).json({ message: "Blog deleted successfully."})  
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
