@@ -131,3 +131,24 @@ export const trash = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
+
+//recover deleted blog
+export const recoverDeletedBlog = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        await client.blog.updateMany({
+            where: {
+                id: String(id),
+                userId,
+            },
+            data: {
+                isDeleted: false,
+            },
+        });
+        return res.status(200).json({ message: "Blog recovered successfully."});
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong! Kindly try again."});
+    }
+};
