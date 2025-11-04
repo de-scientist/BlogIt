@@ -55,7 +55,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
 };
 
-//delete the user profile
+//delete the user profile (soft deletion)
 export const deleteProfile = async (req: Request, res: Response) => {
     try {
         const userId = req.user.id;
@@ -68,8 +68,24 @@ export const deleteProfile = async (req: Request, res: Response) => {
                 isDeleted: true,
             },
         });
-        return res.status(200).json({ message: "Account deleted successfully" });
+        return res.status(200).json({ message: "User profile deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Something went wrong! Kindly, try again."});
+    }
+};
+
+//permanently delete a user
+export const permanentDeleteUser = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+    await client.user.delete({
+        where: { 
+            id: String(id),
+        },
+    });
+    return res.status(200).json({ message: "User profile deleted successfully."})  
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong! Kindly, try again."})
     }
 };
