@@ -8,6 +8,7 @@ import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout } from "./controllers/auth.ts";
 import { createBlog, getBlog, getBlogs, updateBlog, deleteBlog, permanentDeleteBlog, trash, recoverDeletedBlog } from "./controllers/blogs.ts";
+import { getUserProfile } from "./controllers/users.ts";
 
 
 const app = express();
@@ -42,7 +43,8 @@ app.patch("/blogs/:id/trash", verifyToken, deleteBlog);
 app.patch("/blogs/:id/recover", verifyToken, recoverDeletedBlog);
 app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
 
-
+//user route handlers
+app.get("/users", verifyToken, getUserProfile)
 
 const PORT = 3000;
 app.listen(PORT, () => {
