@@ -9,6 +9,12 @@ export const validateBlogDetails = async (req: Request, res: Response, next: Nex
             res.status(400).json({ message: "Title is required" });
             return;
         }
+
+        //check if description is provided
+        if (!description) {
+            res.status(400).json({ message: "Description is required"});
+            return;
+        }
         
     } catch (error) {
         
