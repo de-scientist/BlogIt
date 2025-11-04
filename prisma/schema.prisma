@@ -23,7 +23,22 @@ model User {
   isDeleted    Boolean  @default(false) @map("Is_Deleted")
   dateJoined   DateTime @default(now()) @map("Date_Joined")
   lastUpdated  DateTime @updatedAt @map("Last_Updated")
+  blogs        Blog[]
 
   @@map("Users")
 }
 
+model Blog {
+  id String @id @default(uuid()) @map("BlogId")
+  title String @map("Blog_Title")
+  synopsis String @map("Blog_Synopsis")
+  featuredImageUrl String @map("Featured_Image_Url") @default("null")
+  content String @map("Blog_Content")
+  isDeleted Boolean @default(false) @map("Is_Deleted")
+  createdAt DateTime @default(now()) @map("Created_At")
+  lastUpdated DateTime @updatedAt @map("Last_Updated")
+  userId     String   @map("UserID")
+  user      User  @relation(fields: [userId], references: [id])
+
+  @@map("Blogs")
+}
