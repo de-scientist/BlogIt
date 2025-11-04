@@ -30,9 +30,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
 };
 
 //update the user's profile
-export const updateProfile = async (req: Request, res: Response) => {
-    console.log("I did it");
-    
+export const updateProfile = async (req: Request, res: Response) => {    
     try {
         const { firstName, lastName, userName, emailAddress } = req.body;
         const userId = req.user.id;

@@ -17,7 +17,7 @@ export async function checkUserAndEmail(
     if (userWithEmail) {
       res.status(400).json({
         message:
-          "The email you have provided is already associated with an account.",
+          "The email you have provided is already associated with another account.",
       });
       return;
     }
@@ -27,7 +27,7 @@ export async function checkUserAndEmail(
     if (userWithUserName) {
       res.status(400).json({
         message:
-          "The username you have provided is already associated with an account.",
+          "The username you have provided is already associated with another account.",
       });
       return;
     }
