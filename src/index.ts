@@ -7,7 +7,7 @@ import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout } from "./controllers/auth.ts";
-import { createBlog, getBlogs } from "./controllers/blogs.ts";
+import { createBlog, getBlog, getBlogs } from "./controllers/blogs.ts";
 
 
 const app = express();
@@ -34,7 +34,8 @@ app.post("/auth/logout", logout);
 
 //blogs route handler
 app.post("/blogs", verifyToken, validateBlogDetails, createBlog);
-app.get("/blogs", verifyToken, getBlogs)
+app.get("/blogs", verifyToken, getBlogs);
+app.get("/blogs/:id", verifyToken, getBlog);
 
 
 const PORT = 3000;
