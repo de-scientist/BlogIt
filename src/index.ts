@@ -7,7 +7,7 @@ import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout } from "./controllers/auth.ts";
-import { createBlog, deleteBlog, getBlog, getBlogs, updateBlog } from "./controllers/blogs.ts";
+import { createBlog, deleteBlog, getBlog, getBlogs, trash, updateBlog } from "./controllers/blogs.ts";
 
 
 const app = express();
@@ -36,8 +36,10 @@ app.post("/auth/logout", logout);
 app.post("/blogs", verifyToken, validateBlogDetails, createBlog);
 app.get("/blogs", verifyToken, getBlogs);
 app.get("/blogs/:id", verifyToken, getBlog);
+app.get("/blogs/trash", verifyToken, trash);
 app.patch("/blogs/:id", verifyToken, updateBlog);
-app.patch("/blogs/:id", verifyToken, deleteBlog)
+app.patch("/blogs/:id", verifyToken, deleteBlog);
+
 
 
 const PORT = 3000;
