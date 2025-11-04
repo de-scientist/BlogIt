@@ -38,7 +38,7 @@ app.get("/blogs", verifyToken, getBlogs);
 app.get("/blogs/:id", verifyToken, getBlog);
 app.get("/blogs/trash", verifyToken, trash);
 app.patch("/blogs/:id", verifyToken, updateBlog);
-app.patch("/blogs/:id", verifyToken, deleteBlog);
+app.patch("/blogs/:id/trash", verifyToken, deleteBlog);
 app.patch("/blogs/recover", verifyToken, recoverDeletedBlog);
 app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
 

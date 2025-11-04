@@ -97,7 +97,11 @@ export const updateBlog = async (req: Request, res: Response) => {
 
 //soft delete a blog
 export const deleteBlog = async (req: Request, res: Response) => {
+    console.log("Delete blog route hit!");
+
     try {
+        console.log("User in request:", req.user);
+
       const { id } = req.params;
     const userId = req.user.id;
 
@@ -110,13 +114,13 @@ export const deleteBlog = async (req: Request, res: Response) => {
             isDeleted: true,
         },
     });
-    
+
     if (result.count === 0) {
         return res.status(404).json({ message: "Blog not found or unauthorized"})
     }
     return res.status(200).json({ message: "Blog moved to trash successfully."})  
     } catch (error) {
-        console.error(error);
+        console.error("Delete blog error:", error);
         return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
@@ -130,7 +134,13 @@ export const trash = async (req: Request, res: Response) => {
                 userId,
                 isDeleted: true,
             },
+            orderBy: {
+                lastUpdated: "desc"
+            },
         });
+        if (blogs.length === 0) {
+            return res.status(200).json({ message: "Your trash is empty.", blogs: [] });
+        }
         return res.status(200).json({ blogs });
     } catch (error) {
         console.log(error);
