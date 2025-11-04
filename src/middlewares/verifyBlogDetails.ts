@@ -22,6 +22,12 @@ export const validateBlogDetails = async (req: Request, res: Response, next: Nex
             return;
         }
 
+        //check if content is provided
+        if (!content) {
+            res.status(400).json({ message: "Content is required"});
+            return;
+        }
+
     } catch (error) {
         return res.status(500).json({ message: "Something went wrong! Please try again" });
     }
