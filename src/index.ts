@@ -4,7 +4,9 @@ import cookieParser from "cookie-parser";
 import { checkDetails } from "./middlewares/checkDetails.ts";
 import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
+import { verifyToken } from "./middlewares/verifyToken.ts";
 import { register, login, logout } from "./controllers/auth.ts";
+import { createBlog } from "./controllers/blogs.ts";
 
 const app = express();
 dotenv.config();
@@ -28,6 +30,8 @@ app.post("/auth/login", login);
 //logout route handler
 app.post("/auth/logout", logout);
 
+//blogs route handler
+app.post("/blogs", verifyToken, validateBlogDetails, createBlog)
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}`);
