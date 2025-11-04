@@ -16,8 +16,6 @@ export const getUserProfile = async (req: Request, res: Response) => {
                 lastName: true,
                 emailAddress: true,
                 userName: true,
-                dateJoined: true,
-                lastUpdated: true,
             },
         });
         //check if the profile is available
