@@ -87,3 +87,33 @@ export const permanentDeleteUser = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Something went wrong! Kindly, try again."})
     }
 };
+
+//get blogs by user
+export const getUserBlogs = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user.id;
+
+        const blogs = await client.blog.findMany({
+            where: {
+                userId,
+                isDeleted: false,
+            },
+            select: {
+                title: true,
+                synopsis: true,
+                featuredImageUrl: true,
+                createdAt: true,
+            },
+            orderBy: {
+                createdAt: "desc"
+            },
+        });
+        if (!blogs.length) {
+            return res.status(404).json({ message: "No blogs found for this user."})
+        }
+        return res.status(200).json({ blogs });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Something went wrong. Kindly try again."})
+    }
+}
