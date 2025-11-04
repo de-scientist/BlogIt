@@ -45,7 +45,7 @@ app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
 
 //user route handlers
 app.get("/users", verifyToken, getUserProfile);
-app.patch("/users", verifyToken, updateProfile);
+app.patch("/users/:id", verifyToken, updateProfile);
 
 
 const PORT = 3000;

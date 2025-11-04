@@ -54,3 +54,22 @@ export const updateProfile = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Something went wrong! Kindly try again."});
     }
 };
+
+//delete the user profile
+export const deleteProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user.id;
+
+        await client.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                isDeleted: true,
+            },
+        });
+        return res.status(200).json({ message: "Account deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong! Kindly, try again."});
+    }
+};
