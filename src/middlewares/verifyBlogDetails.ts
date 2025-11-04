@@ -2,7 +2,7 @@ import { type Request, type Response, type NextFunction } from "express";
 
 export const validateBlogDetails = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { title, description } = req.body;
+        const { title, synopsis, featuredImageUrl, content } = req.body;
 
         //check if title is provided
         if (!title) {
@@ -10,9 +10,15 @@ export const validateBlogDetails = async (req: Request, res: Response, next: Nex
             return;
         }
 
-        //check if description is provided
-        if (!description) {
-            res.status(400).json({ message: "Description is required"});
+        //check if synopsis is provided
+        if (!synopsis) {
+            res.status(400).json({ message: "Synopsis is required"});
+            return;
+        }
+
+        //check if featuredImageUrl is provided
+        if (!featuredImageUrl) {
+            res.status(400).json({ message: "Featured Image Url is required"});
             return;
         }
 
