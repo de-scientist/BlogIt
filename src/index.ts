@@ -37,7 +37,7 @@ app.post("/blogs", verifyToken, validateBlogDetails, createBlog);
 app.get("/blogs", verifyToken, getBlogs);
 app.get("/blogs/:id", verifyToken, getBlog);
 app.patch("/blogs/:id", verifyToken, updateBlog);
-app.patch("/blogs/:id", deleteBlog)
+app.patch("/blogs/:id", verifyToken, deleteBlog)
 
 
 const PORT = 3000;

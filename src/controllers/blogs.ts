@@ -115,3 +115,19 @@ export const deleteBlog = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Something went wrong! Kindly try again."})
     }
 };
+
+//fetch deleted blogs
+export const trash = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user.id;
+        const blogs = await client.blog.findMany({
+            where: {
+                userId,
+                isDeleted: true,
+            },
+        });
+        return res.status(200).json({ blogs });
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
+    }
+};
