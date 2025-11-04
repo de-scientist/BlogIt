@@ -25,3 +25,22 @@ export const createBlog = async (req: Request, res: Response) => {
       .json({ message: "Something went wrong! Kindly try again." });
   }
 };
+
+//get all blogs
+export const getBlogs = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user.id;
+
+        const blogs = await client.blog.findMany({
+            where: {
+                userId,
+                isDeleted: false,
+            },
+        });
+        res.status(200).json({ blogs });
+        return;
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong! Kindly try again."});
+        return;
+    }
+};
