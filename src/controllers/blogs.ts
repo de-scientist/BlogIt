@@ -64,7 +64,8 @@ export const getBlog = async (req: Request, res: Response) => {
             res.status(404).json({ message: "Blog not found" });
             return;
         }
+        return res.status(200).json({ blog });
     } catch (error) {
-        
+        res.status(500).json({ message: "Something went wrong! Kindly try again."});
     }
-}
+};
