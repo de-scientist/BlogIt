@@ -69,3 +69,28 @@ export const getBlog = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Something went wrong! Kindly try again."});
     }
 };
+
+//update a blog
+export const updateBlog = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { title, synopsis, featuredImageUrl, content } = req.body;
+        const userId = req.user.id;
+
+        await client.blog.updateMany({
+            where: {
+                id: String(id),
+                userId,
+            },
+            data: {
+                title: title && title,
+                synopsis: synopsis && synopsis,
+                featuredImageUrl: featuredImageUrl && featuredImageUrl,
+                content: content && content,
+            },
+        });
+        return res.status(200).json({ message: "Blog updated successfully"});
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
+    }
+};
