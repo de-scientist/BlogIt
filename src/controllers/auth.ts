@@ -121,6 +121,15 @@ export const updatePassword =async (req: Request, res: Response) => {
     //hash new password
     const hashedNewPassword = await bcrypt.hash(newPassword, 11);
 
+    //update password
+    await client.user.update({
+      where: { 
+        id: userId
+      },
+      data: {
+        password: hashedNewPassword
+      },
+    });
     
 
   } catch (error) {
