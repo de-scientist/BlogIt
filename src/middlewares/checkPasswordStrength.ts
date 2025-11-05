@@ -6,7 +6,9 @@ export function checkPasswordStrength(
   res: Response,
   next: NextFunction,
 ) {
-  const { password } = req.body;
+
+  //use either 'password' (for registration) or 'newPassword' (for updates)
+  const { password } = req.body.newPassword || req.body.password;
 
   //validate presence of a password
   if (!password || typeof password !== "string") {
@@ -18,9 +20,14 @@ export function checkPasswordStrength(
   //check password strength
   const result = zxcvbn(password);
 
+  //zxcvbn score range: 0 (weak) -> 4 (very strong)
   if (result.score < 3) {
-    res.status(400).json({ message: "Please use a stronger password" });
+    res.status(400).json({ message: "Please use a stronger password. Try mixing uppercase, lowercase, numbers, and special characters.", suggestions: result.feedback.suggestions, });
     return;
   }
+
+  //attach strength info to request (mine to test)
+  req.body.passwordStrength = result.score;
+
   next();
 }
