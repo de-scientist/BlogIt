@@ -6,7 +6,7 @@ import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
-import { register, login, logout } from "./controllers/auth.ts";
+import { register, login, logout, updatePassword } from "./controllers/auth.ts";
 import { createBlog, getBlog, getBlogs, updateBlog, deleteBlog, permanentDeleteBlog, trash, recoverDeletedBlog } from "./controllers/blogs.ts";
 import { deleteProfile, getUserBlogs, getUserProfile, getUserTrash, permanentDeleteUser, updateProfile } from "./controllers/users.ts";
 
@@ -32,6 +32,8 @@ app.post(
 app.post("/auth/login", login);
 //logout route handler
 app.post("/auth/logout", logout);
+//update password route handler
+app.patch("/auth/password", verifyToken, checkPasswordStrength, updatePassword);
 
 //blogs route handler
 app.post("/blogs", verifyToken, validateBlogDetails, createBlog);
