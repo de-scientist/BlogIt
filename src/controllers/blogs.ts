@@ -28,162 +28,182 @@ export const createBlog = async (req: Request, res: Response) => {
 
 //get all blogs
 export const getBlogs = async (req: Request, res: Response) => {
-    try {
-        const userId = req.user.id;
+  try {
+    const userId = req.user.id;
 
-        const blogs = await client.blog.findMany({
-            where: {
-                userId,
-                isDeleted: false,
-            },
-        });
-        res.status(200).json({ blogs });
-        return;
-    } catch (error) {
-        res.status(500).json({ message: "Something went wrong! Kindly try again."});
-        return;
-    }
+    const blogs = await client.blog.findMany({
+      where: {
+        userId,
+        isDeleted: false,
+      },
+    });
+    res.status(200).json({ blogs });
+    return;
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+    return;
+  }
 };
 
 //get a single blog
 export const getBlog = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const userId = req.user.id;
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
 
-        const blog = await client.blog.findFirst({
-            where: {
-                id: String(id),
-                userId,
-                isDeleted: false,
-            },
-        });
+    const blog = await client.blog.findFirst({
+      where: {
+        id: String(id),
+        userId,
+        isDeleted: false,
+      },
+    });
 
-        //check if there is a blog
-        if (!blog) {
-            res.status(404).json({ message: "Blog not found" });
-            return;
-        }
-        return res.status(200).json({ blog });
-    } catch (error) {
-        res.status(500).json({ message: "Something went wrong! Kindly try again."});
+    //check if there is a blog
+    if (!blog) {
+      res.status(404).json({ message: "Blog not found" });
+      return;
     }
+    return res.status(200).json({ blog });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+  }
 };
 
 //update a blog
 export const updateBlog = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const { title, synopsis, featuredImageUrl, content } = req.body;
-        const userId = req.user.id;
+  try {
+    const { id } = req.params;
+    const { title, synopsis, featuredImageUrl, content } = req.body;
+    const userId = req.user.id;
 
-        await client.blog.updateMany({
-            where: {
-                id: String(id),
-                userId,
-            },
-            data: {
-                title: title && title,
-                synopsis: synopsis && synopsis,
-                featuredImageUrl: featuredImageUrl && featuredImageUrl,
-                content: content && content,
-            },
-        });
-        return res.status(200).json({ message: "Blog updated successfully"});
-    } catch (error) {
-        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
-    }
+    await client.blog.updateMany({
+      where: {
+        id: String(id),
+        userId,
+      },
+      data: {
+        title: title && title,
+        synopsis: synopsis && synopsis,
+        featuredImageUrl: featuredImageUrl && featuredImageUrl,
+        content: content && content,
+      },
+    });
+    return res.status(200).json({ message: "Blog updated successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+  }
 };
 
 //soft delete a blog
 export const deleteBlog = async (req: Request, res: Response) => {
-    console.log("Delete blog route hit!");
+  console.log("Delete blog route hit!");
 
-    try {
-        console.log("User in request:", req.user);
+  try {
+    console.log("User in request:", req.user);
 
-      const { id } = req.params;
+    const { id } = req.params;
     const userId = req.user.id;
 
-   const result = await client.blog.updateMany({
-        where: { 
-            id: String(id),
-            userId,
-        },
-        data: {
-            isDeleted: true,
-        },
+    const result = await client.blog.updateMany({
+      where: {
+        id: String(id),
+        userId,
+      },
+      data: {
+        isDeleted: true,
+      },
     });
 
     if (result.count === 0) {
-        return res.status(404).json({ message: "Blog not found or unauthorized"})
+      return res
+        .status(404)
+        .json({ message: "Blog not found or unauthorized" });
     }
-    return res.status(200).json({ message: "Blog moved to trash successfully."})  
-    } catch (error) {
-        console.error("Delete blog error:", error);
-        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
-    }
+    return res
+      .status(200)
+      .json({ message: "Blog moved to trash successfully." });
+  } catch (error) {
+    console.error("Delete blog error:", error);
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+  }
 };
 
 //fetch deleted blogs
 export const trash = async (req: Request, res: Response) => {
-    try {
-        const userId = req.user.id;
-        const blogs = await client.blog.findMany({
-            where: {
-                userId,
-                isDeleted: true,
-            },
-            orderBy: {
-                lastUpdated: "desc"
-            },
-        });
-        if (blogs.length === 0) {
-            return res.status(200).json({ message: "Your trash is empty.", blogs: [] });
-        }
-        return res.status(200).json({ blogs });
-    } catch (error) {
-        console.log(error);
-        
-        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
+  try {
+    const userId = req.user.id;
+    const blogs = await client.blog.findMany({
+      where: {
+        userId,
+        isDeleted: true,
+      },
+      orderBy: {
+        lastUpdated: "desc",
+      },
+    });
+    if (blogs.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "Your trash is empty.", blogs: [] });
     }
+    return res.status(200).json({ blogs });
+  } catch (error) {
+    console.log(error);
+
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+  }
 };
 
 //recover deleted blog
 export const recoverDeletedBlog = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const userId = req.user.id;
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
 
-        await client.blog.updateMany({
-            where: {
-                id: String(id),
-                userId,
-            },
-            data: {
-                isDeleted: false,
-            },
-        });
-        return res.status(200).json({ message: "Blog recovered successfully."});
-    } catch (error) {
-        console.log(error);
-        
-        return res.status(500).json({ message: "Something went wrong! Kindly try again."});
-    }
+    await client.blog.updateMany({
+      where: {
+        id: String(id),
+        userId,
+      },
+      data: {
+        isDeleted: false,
+      },
+    });
+    return res.status(200).json({ message: "Blog recovered successfully." });
+  } catch (error) {
+    console.log(error);
+
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+  }
 };
 
 //permanently delete a blog
 export const permanentDeleteBlog = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
+  try {
+    const { id } = req.params;
 
     await client.blog.delete({
-        where: { 
-            id: String(id),
-        },
+      where: {
+        id: String(id),
+      },
     });
-    return res.status(200).json({ message: "Blog deleted successfully."})  
-    } catch (error) {
-        return res.status(500).json({ message: "Something went wrong! Kindly try again."})
-    }
+    return res.status(200).json({ message: "Blog deleted successfully." });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Kindly try again." });
+  }
 };

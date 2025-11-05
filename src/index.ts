@@ -7,9 +7,24 @@ import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout, updatePassword } from "./controllers/auth.ts";
-import { createBlog, getBlog, getBlogs, updateBlog, deleteBlog, permanentDeleteBlog, trash, recoverDeletedBlog } from "./controllers/blogs.ts";
-import { deleteProfile, getUserBlogs, getUserProfile, getUserTrash, permanentDeleteUser, updateProfile } from "./controllers/users.ts";
-
+import {
+  createBlog,
+  getBlog,
+  getBlogs,
+  updateBlog,
+  deleteBlog,
+  permanentDeleteBlog,
+  trash,
+  recoverDeletedBlog,
+} from "./controllers/blogs.ts";
+import {
+  deleteProfile,
+  getUserBlogs,
+  getUserProfile,
+  getUserTrash,
+  permanentDeleteUser,
+  updateProfile,
+} from "./controllers/users.ts";
 
 const app = express();
 dotenv.config();
@@ -48,11 +63,10 @@ app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
 //user route handlers
 app.get("/profile", verifyToken, getUserProfile);
 app.patch("/profile", verifyToken, checkUserAndEmail, updateProfile);
-app.get("/profile/blogs", verifyToken, getUserBlogs )
+app.get("/profile/blogs", verifyToken, getUserBlogs);
 app.patch("/users/delete", verifyToken, deleteProfile);
 app.get("/profile/trash", verifyToken, getUserTrash);
 app.delete("/users/delete/:id", verifyToken, permanentDeleteUser);
-
 
 const PORT = 3000;
 app.listen(PORT, () => {

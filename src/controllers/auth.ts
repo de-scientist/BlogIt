@@ -96,7 +96,7 @@ export const logout = (req: Request, res: Response) => {
 };
 
 //update user's password
-export const updatePassword =async (req: Request, res: Response) => {
+export const updatePassword = async (req: Request, res: Response) => {
   try {
     const userId = req.user.id;
     const { currentPassword, newPassword } = req.body;
@@ -104,8 +104,8 @@ export const updatePassword =async (req: Request, res: Response) => {
     //fetch user
     const user = await client.user.findUnique({
       where: {
-        id: userId
-      }
+        id: userId,
+      },
     });
 
     if (!user) {
@@ -115,7 +115,7 @@ export const updatePassword =async (req: Request, res: Response) => {
     //compare the current password
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Incorrect credentials"});
+      return res.status(400).json({ message: "Incorrect credentials" });
     }
 
     //hash new password
@@ -123,18 +123,19 @@ export const updatePassword =async (req: Request, res: Response) => {
 
     //update password
     await client.user.update({
-      where: { 
-        id: userId
+      where: {
+        id: userId,
       },
       data: {
-        password: hashedNewPassword
+        password: hashedNewPassword,
       },
     });
 
-    return res.status(200).json({ message: "Password updated successfully."});
-
+    return res.status(200).json({ message: "Password updated successfully." });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Something went wrong. Kindly try again."})
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Kindly try again." });
   }
 };

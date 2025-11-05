@@ -22,7 +22,6 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
     const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY!);
     req.user = decoded as User;
   } catch (error) {
-    
     res
       .status(500)
       .json({ message: "Something went wrong! Please try again." });
