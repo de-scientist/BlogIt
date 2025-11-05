@@ -17,6 +17,14 @@ export function checkPasswordStrength(
       .json({ message: "Password is required and must be a string." });
   }
 
+  //validate presence of a password or newPassword
+  if (!req.body.newPassword && !req.body.password) {
+  return res.status(400).json({
+    message: "Please provide a 'newPassword' (for updates) or 'password' (for registration).",
+  });
+}
+
+
   //check password strength
   const result = zxcvbn(password);
 
