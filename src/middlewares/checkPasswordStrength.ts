@@ -7,15 +7,8 @@ export function checkPasswordStrength(
   next: NextFunction,
 ) {
 
-  //use either 'password' (for registration) or 'newPassword' (for updates)
-  const { password } = req.body.newPassword || req.body.password;
-
-  //validate presence of a password
-  if (!password || typeof password !== "string") {
-    return res
-      .status(400)
-      .json({ message: "Password is required and must be a string." });
-  }
+  
+  const password  = req.body.newPassword || req.body.password;
 
   //validate presence of a password or newPassword
   if (!req.body.newPassword && !req.body.password) {
