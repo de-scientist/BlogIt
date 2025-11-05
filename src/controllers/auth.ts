@@ -118,7 +118,11 @@ export const updatePassword =async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Incorrect credentials"});
     }
 
+    //hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 11);
+
     
+
   } catch (error) {
     
   }
