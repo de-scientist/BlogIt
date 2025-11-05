@@ -8,7 +8,7 @@ import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 import { register, login, logout } from "./controllers/auth.ts";
 import { createBlog, getBlog, getBlogs, updateBlog, deleteBlog, permanentDeleteBlog, trash, recoverDeletedBlog } from "./controllers/blogs.ts";
-import { deleteProfile, getUserBlogs, getUserProfile, permanentDeleteUser, updateProfile } from "./controllers/users.ts";
+import { deleteProfile, getUserBlogs, getUserProfile, getUserTrash, permanentDeleteUser, updateProfile } from "./controllers/users.ts";
 
 
 const app = express();
@@ -48,6 +48,7 @@ app.get("/profile", verifyToken, getUserProfile);
 app.patch("/profile", verifyToken, checkUserAndEmail, updateProfile);
 app.get("/profile/blogs", verifyToken, getUserBlogs )
 app.patch("/users/delete", verifyToken, deleteProfile);
+app.get("/profile/trash", verifyToken, getUserTrash);
 app.delete("/users/delete/:id", verifyToken, permanentDeleteUser);
 
 
