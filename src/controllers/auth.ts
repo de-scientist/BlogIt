@@ -111,6 +111,14 @@ export const updatePassword =async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    //compare the current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect credentials"});
+    }
+
+    
   } catch (error) {
     
   }
