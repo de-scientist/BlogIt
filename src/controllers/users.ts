@@ -117,3 +117,34 @@ export const getUserBlogs = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Something went wrong. Kindly try again."})
     }
 }
+
+//get user's trash
+export const getUserTrash = async (req: Request, res: Response) => {
+    try {
+        const userId  = req.user.id;
+
+        const blogs = await client.blog.findMany({
+            where: {
+                userId,
+                isDeleted: true,
+            },
+            select: {
+                title: true,
+                synopsis: true,
+                featuredImageUrl: true,
+                createdAt: true,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+
+        //check if there are blogs in the trash
+        if (!blogs.length) {
+            return res.status(404).json({ message: "Trash is empty."});
+        }
+        return res.status(200).json({ blogs });
+    } catch (error) {
+        
+    }
+}
