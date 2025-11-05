@@ -36,10 +36,24 @@ export const getBlogs = async (req: Request, res: Response) => {
         userId,
         isDeleted: false,
       },
+      select: {
+        id: true,
+        title: true,
+        synopsis: true,
+        featuredImageUrl: true,
+        createdAt: true,
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+      },
     });
     res.status(200).json({ blogs });
     return;
   } catch (error) {
+     console.error("Error fetching blogs:", error);
     res
       .status(500)
       .json({ message: "Something went wrong! Kindly try again." });
