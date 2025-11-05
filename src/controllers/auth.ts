@@ -94,3 +94,24 @@ export const logout = (req: Request, res: Response) => {
       .json({ message: "Something went wrong! Kindly try again." });
   }
 };
+
+//update user's password
+export const updatePassword =async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    //fetch user
+    const user = await client.user.findUnique({
+      where: {
+        id: userId
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    
+  }
+}
