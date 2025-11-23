@@ -73,6 +73,21 @@ export const getBlog = async (req: Request, res: Response) => {
         userId,
         isDeleted: false,
       },
+      select: {
+        id: true,
+        title: true,
+        synopsis: true,
+        featuredImageUrl: true,
+        content: true,
+        createdAt: true,
+        lastUpdated: true,
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+      },
     });
 
     //check if there is a blog

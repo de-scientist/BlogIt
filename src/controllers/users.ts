@@ -155,7 +155,7 @@ export const getUserTrash = async (req: Request, res: Response) => {
 
     //check if there are blogs in the trash
     if (!blogs.length) {
-      return res.status(404).json({ message: "Trash is empty." });
+      return res.status(200).json({ message: "Trash is empty." });
     }
     return res.status(200).json({ blogs });
   } catch (error) {

@@ -56,8 +56,8 @@ app.get("/blogs", verifyToken, getBlogs);
 app.get("/blogs/:id", verifyToken, getBlog);
 app.get("/blogs/trash", verifyToken, trash);
 app.patch("/blogs/:id", verifyToken, updateBlog);
-app.patch("/blogs/:id/trash", verifyToken, deleteBlog);
-app.patch("/blogs/:id/recover", verifyToken, recoverDeletedBlog);
+app.patch("/blogs/trash/:id", verifyToken, deleteBlog);
+app.patch("/blogs/recover/:id", verifyToken, recoverDeletedBlog);
 app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
 
 //user route handlers
