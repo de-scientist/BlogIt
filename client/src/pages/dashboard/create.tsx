@@ -8,17 +8,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import axios from "axios";
 
-// ---------------------
-// Form type
-// ---------------------
+
 type BlogForm = {
   title: string;
   content: string;
 };
 
-// ---------------------
-// Field component
-// ---------------------
+
 type FieldProps = {
   label?: string;
   error?: FieldErrors<BlogForm>[keyof BlogForm];
@@ -35,9 +31,7 @@ function Field({ label, error, children }: FieldProps) {
   );
 }
 
-// ---------------------
-// Component
-// ---------------------
+
 export default function CreateBlogPage() {
   const [loading, setLoading] = useState(false);
 
