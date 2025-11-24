@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
+import { FieldError } from "react-hook-form";
 
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name required"),
