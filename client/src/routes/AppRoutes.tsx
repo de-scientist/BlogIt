@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 // pages
-import HomePage from "../pages/Home";
+import Home from "@/pages";
 import Login from "@/pages/auth/Login";
 import RegisterPage from "@/pages/auth/Register";
 import Dashboard from "@/pages/dashboard";
@@ -12,7 +12,7 @@ import ProfilePage from "@/pages/profile";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<Home/>} />
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<RegisterPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
