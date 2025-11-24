@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "../lib/reactQuery";
-import Layout from "../components/Layout";
+import { queryClient } from "../lib/react-query";
+import Layout from "./components/Layout";
 import { useEffect } from "react";
 import api from "./lib/axios";
 import { useAuthStore } from "./store/useAuthStore";
