@@ -60,7 +60,11 @@ export default function Navbar() {
           className="md:hidden p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-700"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
+          {mobileOpen ? (
+            <HiOutlineXMark size={24} />
+          ) : (
+            <HiOutlineBars3 size={24} />
+          )}
         </button>
       </div>
 

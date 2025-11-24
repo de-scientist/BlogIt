@@ -12,7 +12,7 @@ import ProfilePage from "@/pages/profile";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home/>} />
+      <Route path="/" element={<Home />} />
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<RegisterPage />} />
       <Route path="/dashboard" element={<Dashboard />} />

@@ -33,7 +33,9 @@ export default function LoginPage() {
 
   const handleSubmit = async (data: LoginForm) => {
     try {
-      const res = await api.post("/auth/login", data, { withCredentials: true });
+      const res = await api.post("/auth/login", data, {
+        withCredentials: true,
+      });
 
       toast.success("Logged in successfully");
 
@@ -63,8 +65,14 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <Field label="Username or Email" error={form.formState.errors.identifier}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
+            <Field
+              label="Username or Email"
+              error={form.formState.errors.identifier}
+            >
               <Input
                 placeholder="Enter your username or email"
                 {...form.register("identifier")}
@@ -99,7 +107,9 @@ function Field({ label, error, children }: FieldProps) {
     <div className="space-y-1">
       <Label>{label}</Label>
       {children}
-      {error?.message && <p className="text-red-500 text-sm">{error.message as string}</p>}
+      {error?.message && (
+        <p className="text-red-500 text-sm">{error.message as string}</p>
+      )}
     </div>
   );
 }

@@ -8,12 +8,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import axios from "axios";
 
-
 type BlogForm = {
   title: string;
   content: string;
 };
-
 
 type FieldProps = {
   label?: string;
@@ -26,11 +24,12 @@ function Field({ label, error, children }: FieldProps) {
     <div className="space-y-1">
       {label && <p className="font-medium">{label}</p>}
       {children}
-      {error?.message && <p className="text-red-500 text-sm">{error.message as string}</p>}
+      {error?.message && (
+        <p className="text-red-500 text-sm">{error.message as string}</p>
+      )}
     </div>
   );
 }
-
 
 export default function CreateBlogPage() {
   const [loading, setLoading] = useState(false);
@@ -45,7 +44,9 @@ export default function CreateBlogPage() {
   const handleSubmit = async (data: BlogForm) => {
     setLoading(true);
     try {
-      const response = await axios.post("/api/blogs", data, { withCredentials: true });
+      const response = await axios.post("/api/blogs", data, {
+        withCredentials: true,
+      });
       toast.success("Blog created");
       form.reset();
     } catch (err: any) {
@@ -73,7 +74,10 @@ export default function CreateBlogPage() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             {loading ? (
               <>
                 <Skeleton className="h-10 w-full" />
@@ -86,7 +90,11 @@ export default function CreateBlogPage() {
                 </Field>
 
                 <Field error={form.formState.errors.content}>
-                  <Textarea placeholder="Write something..." className="min-h-[150px]" {...form.register("content")} />
+                  <Textarea
+                    placeholder="Write something..."
+                    className="min-h-[150px]"
+                    {...form.register("content")}
+                  />
                 </Field>
 
                 <Button type="submit" disabled={loading}>

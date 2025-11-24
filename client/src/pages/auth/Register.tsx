@@ -2,18 +2,12 @@ import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { api } from "@/lib/axios"; 
+import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
-
-type FieldProps = {
-  label: string;
-  error?: FieldErrors<RegisterForm>[keyof RegisterForm];
-  children: ReactNode;
-};
 
 type RegisterForm = {
   firstName: string;
@@ -21,6 +15,12 @@ type RegisterForm = {
   userName: string;
   emailAddress: string;
   password: string;
+};
+
+type FieldProps = {
+  label: string;
+  error?: FieldErrors<RegisterForm>[keyof RegisterForm];
+  children: ReactNode;
 };
 
 export default function RegisterPage() {
@@ -40,24 +40,29 @@ export default function RegisterPage() {
 
   const handleSubmit = async (data: RegisterForm) => {
     try {
-      const response = await api.post("/auth/register", data, {
-        withCredentials: true,
-      });
+      await api.post("/auth/register", data, { withCredentials: true });
 
       toast.success("Registration successful");
       form.reset();
-
       setTimeout(() => navigate("/auth/login"), 600);
     } catch (err: any) {
-      if (err.response?.data?.errors) {
-        const errors = err.response.data.errors;
+      const message: string = err.response?.data?.message;
 
-        Object.keys(errors).forEach((key) => {
-          form.setError(key as keyof RegisterForm, {
-            type: "server",
-            message: errors[key],
-          });
-        });
+      if (message) {
+        // Map backend message to correct field
+        if (message.toLowerCase().includes("first name")) {
+          form.setError("firstName", { type: "server", message });
+        } else if (message.toLowerCase().includes("last name")) {
+          form.setError("lastName", { type: "server", message });
+        } else if (message.toLowerCase().includes("username")) {
+          form.setError("userName", { type: "server", message });
+        } else if (message.toLowerCase().includes("email")) {
+          form.setError("emailAddress", { type: "server", message });
+        } else if (message.toLowerCase().includes("password")) {
+          form.setError("password", { type: "server", message });
+        } else {
+          toast.error(message);
+        }
       } else {
         toast.error("Registration failed");
       }
@@ -72,7 +77,10 @@ export default function RegisterPage() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             {loading ? (
               <>
                 <Skeleton className="h-10 w-full" />
@@ -83,7 +91,10 @@ export default function RegisterPage() {
               </>
             ) : (
               <>
-                <Field label="First Name" error={form.formState.errors.firstName}>
+                <Field
+                  label="First Name"
+                  error={form.formState.errors.firstName}
+                >
                   <Input
                     placeholder="Enter first name"
                     {...form.register("firstName")}
@@ -124,12 +135,21 @@ export default function RegisterPage() {
                     type="password"
                     placeholder="Enter password"
                     {...form.register("password")}
-                     autoComplete="current-password"
+                    autoComplete="current-password"
                   />
                 </Field>
 
                 <Button type="submit" className="w-full" disabled={loading}>
                   Create Account
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-2 bg-green-500 text-white hover:bg-green-700"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  Already have an account? Log In
                 </Button>
               </>
             )}
