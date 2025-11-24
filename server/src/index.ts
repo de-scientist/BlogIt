@@ -50,7 +50,7 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 
-const api = "/api";
+const api = "";
 
 app.get("/auth/me", verifyToken, me);
 
