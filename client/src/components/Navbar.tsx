@@ -28,7 +28,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex gap-4 items-center">
-          <Link to="/blogs/list" className="hover:underline">
+          <Link to="/auth/login" className="hover:underline">
             Blogs
           </Link>
           {user ? (
