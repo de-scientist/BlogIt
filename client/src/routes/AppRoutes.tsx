@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // pages
 import HomePage from "../pages/Home";
 import LoginPage from "../auth/LoginPage";
-import RegisterPage from "../auth/RegisterPage";
+import RegisterPage from "@/pages/auth/Register";
 import Dashboard from "@/pages/dashboard";
 import CreateBlogPage from "@/pages/dashboard/create";
 import TrashPage from "@/pages/dashboard/trash";
