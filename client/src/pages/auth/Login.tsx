@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "@/lib/axios";
 import { useRouter } from "next/router";
-import { useAuthStore } from "@/store/useAuthStore";
+import { useAuthStore } from "@/store/useStore";
 
 
 export default function Login() {

@@ -5,7 +5,7 @@ import { queryClient } from "../lib/react-query";
 import Layout from "./components/Layout";
 import { useEffect } from "react";
 import api from "./lib/axios";
-import { useAuthStore } from "./store/useAuthStore";
+import { useAuthStore } from "./store/useStore";
 
 
 export default function App({ Component, pageProps }: AppProps) {
