@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/store/authStore";
 import { api } from "@/lib/axios";
-import { HiMenu, HiX } from "react-icons/hi2";
+import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -60,7 +60,7 @@ export default function Navbar() {
           className="md:hidden p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-700"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+          {mobileOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
         </button>
       </div>
 
