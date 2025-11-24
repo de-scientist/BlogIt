@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (data: RegisterForm) => {
     try {
-      const response = await axios.post("/api/auth/register", data, { withCredentials: true });
+      const response = await axios.post("/auth/register", data, { withCredentials: true });
 
       toast.success("Registration successful");
       form.reset();
@@ -102,7 +102,7 @@ export default function RegisterPage() {
                 </Field>
 
                 <Field label="Password" error={form.formState.errors.password}>
-                  <Input type="password" placeholder="Enter password" {...form.register("password")} />
+                  <Input type="password" placeholder="Enter password" {...form.register("password")} autoComplete="password" />
                 </Field>
 
                 <Button type="submit" className="w-full" disabled={loading}>
