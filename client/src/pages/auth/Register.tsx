@@ -12,6 +12,12 @@ import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
 import { FieldError } from "react-hook-form";
 
+type FieldProps = {
+  label: string;
+  error?: FieldError;
+  children: ReactNode;
+};
+
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name required"),
   lastName: z.string().min(1, "Last name required"),
