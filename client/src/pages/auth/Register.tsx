@@ -86,11 +86,11 @@ export default function RegisterPage() {
             ) : (
               <>
                 <Field label="First Name" error={form.formState.errors.firstName}>
-                  <Input placeholder="Enter first name" {...form.register("firstName")} />
+                  <Input placeholder="Enter first name" {...form.register("firstName")} autoComplete="firstName" />
                 </Field>
 
                 <Field label="Last Name" error={form.formState.errors.lastName}>
-                  <Input placeholder="Enter last name" {...form.register("lastName")} />
+                  <Input placeholder="Enter last name" {...form.register("lastName")} autoComplete="lastName" />
                 </Field>
 
                 <Field label="Username" error={form.formState.errors.userName}>
