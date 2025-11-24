@@ -94,7 +94,7 @@ export default function RegisterPage() {
                 </Field>
 
                 <Field label="Username" error={form.formState.errors.userName}>
-                  <Input placeholder="Choose a username" {...form.register("userName")} />
+                  <Input placeholder="Choose a username" {...form.register("userName")} autoComplete="username" />
                 </Field>
 
                 <Field label="Email Address" error={form.formState.errors.emailAddress}>
