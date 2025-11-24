@@ -1,6 +1,4 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -9,49 +7,62 @@ import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import  {ReactNode } from "react";
-import { FieldError } from "react-hook-form";
+import { ReactNode } from "react";
+
 
 type FieldProps = {
   label: string;
-  error?: FieldError;
+  error?: FieldErrors<RegisterForm>[keyof RegisterForm];
   children: ReactNode;
 };
 
-const registerSchema = z.object({
-  firstName: z.string().min(1, "First name required"),
-  lastName: z.string().min(1, "Last name required"),
-  userName: z.string().min(3, "Username must have at least 3 characters"),
-  emailAddress: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+type RegisterForm = {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  emailAddress: string;
+  password: string;
+};
 
-type RegisterForm = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const navigate = useNavigate();
 
   const form = useForm<RegisterForm>({
-    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      userName: "",
+      emailAddress: "",
+      password: "",
+    },
   });
 
   const loading = form.formState.isSubmitting;
 
   const handleSubmit = async (data: RegisterForm) => {
     try {
-      await axios.post("/api/auth/register", data);
+      const response = await axios.post("/api/auth/register", data, { withCredentials: true });
 
       toast.success("Registration successful");
-
       form.reset();
 
       // Redirect after success
-      setTimeout(() => {
-        navigate("/auth/login");
-      }, 600);
+      setTimeout(() => navigate("/auth/login"), 600);
 
-    } catch (e) {
-      toast.error("Registration failed");
+    } catch (err: any) {
+      // Handle server errors and display on fields
+      if (err.response?.data?.errors) {
+        const errors = err.response.data.errors;
+        Object.keys(errors).forEach((key) => {
+          form.setError(key as keyof RegisterForm, {
+            type: "server",
+            message: errors[key],
+          });
+        });
+      } else {
+        toast.error("Registration failed");
+      }
     }
   };
 
@@ -63,10 +74,7 @@ export default function RegisterPage() {
         </CardHeader>
 
         <CardContent>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             {loading ? (
               <>
                 <Skeleton className="h-10 w-full" />
@@ -90,19 +98,11 @@ export default function RegisterPage() {
                 </Field>
 
                 <Field label="Email Address" error={form.formState.errors.emailAddress}>
-                  <Input
-                    type="email"
-                    placeholder="example@gmail.com"
-                    {...form.register("emailAddress")}
-                  />
+                  <Input type="email" placeholder="example@gmail.com" {...form.register("emailAddress")} />
                 </Field>
 
                 <Field label="Password" error={form.formState.errors.password}>
-                  <Input
-                    type="password"
-                    placeholder="Enter password"
-                    {...form.register("password")}
-                  />
+                  <Input type="password" placeholder="Enter password" {...form.register("password")} />
                 </Field>
 
                 <Button type="submit" className="w-full" disabled={loading}>
@@ -117,12 +117,15 @@ export default function RegisterPage() {
   );
 }
 
+// ---------------------
+// Field Component
+// ---------------------
 function Field({ label, error, children }: FieldProps) {
   return (
     <div className="space-y-1">
       <Label>{label}</Label>
       {children}
-      {error && <p className="text-red-500 text-sm">{error.message}</p>}
+      {error?.message && <p className="text-red-500 text-sm">{error.message as string}</p>}
     </div>
   );
 }
