@@ -117,7 +117,7 @@ export default function RegisterPage() {
   );
 }
 
-function Field({ label, error, children }) {
+function Field({ label, error, children }: FieldProps) {
   return (
     <div className="space-y-1">
       <Label>{label}</Label>
