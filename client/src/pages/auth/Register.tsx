@@ -98,7 +98,7 @@ export default function RegisterPage() {
                 </Field>
 
                 <Field label="Email Address" error={form.formState.errors.emailAddress}>
-                  <Input type="email" placeholder="example@gmail.com" {...form.register("emailAddress")} />
+                  <Input type="email" placeholder="example@gmail.com" {...form.register("emailAddress")} autoComplete="email" />
                 </Field>
 
                 <Field label="Password" error={form.formState.errors.password}>
