@@ -6,7 +6,7 @@ import LoginPage from "../auth/LoginPage";
 import RegisterPage from "../auth/RegisterPage";
 import DashboardPage from "../dashboard/DashboardPage";
 import CreateBlogPage from "../dashboard/create";
-import TrashPage from "../dashboard/trash";
+import TrashPage from "@/pages/dashboard/trash";
 import ProfilePage from "@/pages/profile";
 
 export default function AppRoutes() {
