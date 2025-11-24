@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import Link from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Blog } from "@/types";
 
