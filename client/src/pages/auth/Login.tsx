@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -6,10 +6,17 @@ import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
+import { ReactNode } from "react";
 
 type LoginForm = {
-  emailAddress: string;
+  identifier: string; // backend expects this
   password: string;
+};
+
+type FieldProps = {
+  label: string;
+  error?: FieldErrors<LoginForm>[keyof LoginForm];
+  children: ReactNode;
 };
 
 export default function LoginPage() {
@@ -17,7 +24,7 @@ export default function LoginPage() {
 
   const form = useForm<LoginForm>({
     defaultValues: {
-      emailAddress: "",
+      identifier: "",
       password: "",
     },
   });
@@ -26,13 +33,25 @@ export default function LoginPage() {
 
   const handleSubmit = async (data: LoginForm) => {
     try {
-      const res = await api.post("/auth/login", data);
+      const res = await api.post("/auth/login", data, { withCredentials: true });
 
       toast.success("Logged in successfully");
 
+      // Redirect after login
       setTimeout(() => navigate("/dashboard"), 600);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Login failed");
+      if (err.response?.data?.errors) {
+        // server returned field-specific errors
+        const errors = err.response.data.errors;
+        Object.keys(errors).forEach((key) => {
+          form.setError(key as keyof LoginForm, {
+            type: "server",
+            message: errors[key],
+          });
+        });
+      } else {
+        toast.error(err.response?.data?.message || "Login failed");
+      }
     }
   };
 
@@ -45,25 +64,22 @@ export default function LoginPage() {
 
         <CardContent>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <div>
-              <Label>Email Address</Label>
+            <Field label="Username or Email" error={form.formState.errors.identifier}>
               <Input
-                type="email"
-                placeholder="example@gmail.com"
-                {...form.register("emailAddress")}
-                autoComplete="email"
+                placeholder="Enter your username or email"
+                {...form.register("identifier")}
+                autoComplete="username"
               />
-            </div>
+            </Field>
 
-            <div>
-              <Label>Password</Label>
+            <Field label="Password" error={form.formState.errors.password}>
               <Input
                 type="password"
                 placeholder="Enter password"
                 {...form.register("password")}
                 autoComplete="current-password"
               />
-            </div>
+            </Field>
 
             <Button disabled={loading} type="submit" className="w-full">
               Login
@@ -71,6 +87,19 @@ export default function LoginPage() {
           </form>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+// ---------------------
+// Field Component
+// ---------------------
+function Field({ label, error, children }: FieldProps) {
+  return (
+    <div className="space-y-1">
+      <Label>{label}</Label>
+      {children}
+      {error?.message && <p className="text-red-500 text-sm">{error.message as string}</p>}
     </div>
   );
 }
