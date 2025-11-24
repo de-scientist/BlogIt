@@ -1,11 +1,16 @@
 import express, { type Express, type Request, type Response } from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+
+// Middlewares
 import { checkDetails } from "./middlewares/checkDetails.ts";
 import { checkUserAndEmail } from "./middlewares/checkUserNameAndEmail.ts";
 import { checkPasswordStrength } from "./middlewares/checkPasswordStrength.ts";
 import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
+
+// Controllers
 import { register, login, logout, updatePassword } from "./controllers/auth.ts";
 import {
   createBlog,
@@ -26,49 +31,61 @@ import {
   updateProfile,
 } from "./controllers/users.ts";
 
-const app = express();
 dotenv.config();
+const app: Express = express();
+
+// --------------------
+// Middleware Setup
+// --------------------
 app.use(express.json());
 app.use(cookieParser());
 
+// Enable CORS for frontend
+app.use(cors({
+  origin: "http://localhost:5173", // Vite dev server
+  credentials: true,              // allow cookies to be sent
+}));
+
+// --------------------
+// Basic Route
+// --------------------
 app.get("/", (_req: Request, res: Response) => {
-  res.send("Welcome to Express + TS");
+  res.send("Welcome to Express + TS API");
 });
 
-//add the user route handlers
-app.post(
-  "/auth/register",
-  checkDetails,
-  checkUserAndEmail,
-  checkPasswordStrength,
-  register,
-);
-//login route handler
-app.post("/auth/login", login);
-//logout route handler
-app.post("/auth/logout", logout);
-//update password route handler
-app.patch("/auth/password", verifyToken, checkPasswordStrength, updatePassword);
+// --------------------
+// API Prefix
+// --------------------
+const api = "/api";
 
-//blogs route handler
-app.post("/blogs", verifyToken, validateBlogDetails, createBlog);
-app.get("/blogs", verifyToken, getBlogs);
-app.get("/blogs/:id", verifyToken, getBlog);
-app.get("/blogs/trash", verifyToken, trash);
-app.patch("/blogs/:id", verifyToken, updateBlog);
-app.patch("/blogs/trash/:id", verifyToken, deleteBlog);
-app.patch("/blogs/recover/:id", verifyToken, recoverDeletedBlog);
-app.delete("/blogs/:id", verifyToken, permanentDeleteBlog);
+// --------- AUTH ---------
+app.post(`${api}/auth/register`, checkDetails, checkUserAndEmail, checkPasswordStrength, register);
+app.post(`${api}/auth/login`, login);
+app.post(`${api}/auth/logout`, logout);
+app.patch(`${api}/auth/password`, verifyToken, checkPasswordStrength, updatePassword);
 
-//user route handlers
-app.get("/profile", verifyToken, getUserProfile);
-app.patch("/profile", verifyToken, checkUserAndEmail, updateProfile);
-app.get("/profile/blogs", verifyToken, getUserBlogs);
-app.patch("/users/delete", verifyToken, deleteProfile);
-app.get("/profile/trash", verifyToken, getUserTrash);
-app.delete("/users/delete/:id", verifyToken, permanentDeleteUser);
+// --------- BLOGS ---------
+app.post(`${api}/blogs`, verifyToken, validateBlogDetails, createBlog);
+app.get(`${api}/blogs`, verifyToken, getBlogs);
+app.get(`${api}/blogs/:id`, verifyToken, getBlog);
+app.get(`${api}/blogs/trash`, verifyToken, trash);
+app.patch(`${api}/blogs/:id`, verifyToken, updateBlog);
+app.patch(`${api}/blogs/trash/:id`, verifyToken, deleteBlog);
+app.patch(`${api}/blogs/recover/:id`, verifyToken, recoverDeletedBlog);
+app.delete(`${api}/blogs/:id`, verifyToken, permanentDeleteBlog);
 
-const PORT = 3000;
+// --------- USER PROFILE ---------
+app.get(`${api}/profile`, verifyToken, getUserProfile);
+app.patch(`${api}/profile`, verifyToken, checkUserAndEmail, updateProfile);
+app.get(`${api}/profile/blogs`, verifyToken, getUserBlogs);
+app.patch(`${api}/users/delete`, verifyToken, deleteProfile);
+app.get(`${api}/profile/trash`, verifyToken, getUserTrash);
+app.delete(`${api}/users/delete/:id`, verifyToken, permanentDeleteUser);
+
+// --------------------
+// Server Start
+// --------------------
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
