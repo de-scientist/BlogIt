@@ -21,7 +21,7 @@ const registerSchema = z.object({
 type RegisterForm = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const form = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
@@ -32,17 +32,18 @@ export default function RegisterPage() {
   const handleSubmit = async (data: RegisterForm) => {
     try {
       await axios.post("/api/auth/register", data);
-      toast({ title: "Registration successful" });
+
+      toast.success("Registration successful");
 
       form.reset();
 
-      // 🔥 Redirect to login after success
+      // Redirect after success
       setTimeout(() => {
-        router.push("/auth/login");
+        navigate("/auth/login");
       }, 600);
 
     } catch (e) {
-      toast({ title: "Registration failed", variant: "destructive" });
+      toast.error("Registration failed");
     }
   };
 
@@ -68,45 +69,33 @@ export default function RegisterPage() {
               </>
             ) : (
               <>
-                <div>
-                  <Label>First Name</Label>
+                <Field label="First Name" error={form.formState.errors.firstName}>
                   <Input placeholder="Enter first name" {...form.register("firstName")} />
-                  {form.formState.errors.firstName && (
-                    <p className="text-red-500 text-sm">{form.formState.errors.firstName.message}</p>
-                  )}
-                </div>
+                </Field>
 
-                <div>
-                  <Label>Last Name</Label>
+                <Field label="Last Name" error={form.formState.errors.lastName}>
                   <Input placeholder="Enter last name" {...form.register("lastName")} />
-                  {form.formState.errors.lastName && (
-                    <p className="text-red-500 text-sm">{form.formState.errors.lastName.message}</p>
-                  )}
-                </div>
+                </Field>
 
-                <div>
-                  <Label>Username</Label>
+                <Field label="Username" error={form.formState.errors.userName}>
                   <Input placeholder="Choose a username" {...form.register("userName")} />
-                  {form.formState.errors.userName && (
-                    <p className="text-red-500 text-sm">{form.formState.errors.userName.message}</p>
-                  )}
-                </div>
+                </Field>
 
-                <div>
-                  <Label>Email Address</Label>
-                  <Input type="email" placeholder="example@gmail.com" {...form.register("emailAddress")} />
-                  {form.formState.errors.emailAddress && (
-                    <p className="text-red-500 text-sm">{form.formState.errors.emailAddress.message}</p>
-                  )}
-                </div>
+                <Field label="Email Address" error={form.formState.errors.emailAddress}>
+                  <Input
+                    type="email"
+                    placeholder="example@gmail.com"
+                    {...form.register("emailAddress")}
+                  />
+                </Field>
 
-                <div>
-                  <Label>Password</Label>
-                  <Input type="password" placeholder="Enter password" {...form.register("password")} />
-                  {form.formState.errors.password && (
-                    <p className="text-red-500 text-sm">{form.formState.errors.password.message}</p>
-                  )}
-                </div>
+                <Field label="Password" error={form.formState.errors.password}>
+                  <Input
+                    type="password"
+                    placeholder="Enter password"
+                    {...form.register("password")}
+                  />
+                </Field>
 
                 <Button type="submit" className="w-full" disabled={loading}>
                   Create Account
@@ -116,6 +105,16 @@ export default function RegisterPage() {
           </form>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function Field({ label, error, children }) {
+  return (
+    <div className="space-y-1">
+      <Label>{label}</Label>
+      {children}
+      {error && <p className="text-red-500 text-sm">{error.message}</p>}
     </div>
   );
 }
