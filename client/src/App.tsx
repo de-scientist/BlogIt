@@ -1,4 +1,4 @@
-import "./styles/globals.css";
+//import "./styles/globals.css";
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
