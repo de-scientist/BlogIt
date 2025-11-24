@@ -1,6 +1,9 @@
 import { useState } from "react";
-import api from "../../lib/axios";
-import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/store/authStore";
 
 
 export default function Register() {
