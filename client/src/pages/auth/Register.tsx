@@ -8,7 +8,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name required"),
