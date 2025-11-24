@@ -2,13 +2,12 @@ import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import axios from "axios";
+import { api } from "@/lib/axios"; 
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
-
 
 type FieldProps = {
   label: string;
@@ -23,7 +22,6 @@ type RegisterForm = {
   emailAddress: string;
   password: string;
 };
-
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -42,18 +40,18 @@ export default function RegisterPage() {
 
   const handleSubmit = async (data: RegisterForm) => {
     try {
-      const response = await axios.post("/auth/register", data, { withCredentials: true });
+      const response = await api.post("/auth/register", data, {
+        withCredentials: true,
+      });
 
       toast.success("Registration successful");
       form.reset();
 
-      // Redirect after success
       setTimeout(() => navigate("/auth/login"), 600);
-
     } catch (err: any) {
-      // Handle server errors and display on fields
       if (err.response?.data?.errors) {
         const errors = err.response.data.errors;
+
         Object.keys(errors).forEach((key) => {
           form.setError(key as keyof RegisterForm, {
             type: "server",
@@ -86,23 +84,47 @@ export default function RegisterPage() {
             ) : (
               <>
                 <Field label="First Name" error={form.formState.errors.firstName}>
-                  <Input placeholder="Enter first name" {...form.register("firstName")} autoComplete="firstName" />
+                  <Input
+                    placeholder="Enter first name"
+                    {...form.register("firstName")}
+                    autoComplete="firstName"
+                  />
                 </Field>
 
                 <Field label="Last Name" error={form.formState.errors.lastName}>
-                  <Input placeholder="Enter last name" {...form.register("lastName")} autoComplete="lastName" />
+                  <Input
+                    placeholder="Enter last name"
+                    {...form.register("lastName")}
+                    autoComplete="lastName"
+                  />
                 </Field>
 
                 <Field label="Username" error={form.formState.errors.userName}>
-                  <Input placeholder="Choose a username" {...form.register("userName")} autoComplete="username" />
+                  <Input
+                    placeholder="Choose a username"
+                    {...form.register("userName")}
+                    autoComplete="username"
+                  />
                 </Field>
 
-                <Field label="Email Address" error={form.formState.errors.emailAddress}>
-                  <Input type="email" placeholder="example@gmail.com" {...form.register("emailAddress")} autoComplete="email" />
+                <Field
+                  label="Email Address"
+                  error={form.formState.errors.emailAddress}
+                >
+                  <Input
+                    type="email"
+                    placeholder="example@gmail.com"
+                    {...form.register("emailAddress")}
+                    autoComplete="email"
+                  />
                 </Field>
 
                 <Field label="Password" error={form.formState.errors.password}>
-                  <Input type="password" placeholder="Enter password" {...form.register("password")} autoComplete="password" />
+                  <Input
+                    type="password"
+                    placeholder="Enter password"
+                    {...form.register("password")}
+                  />
                 </Field>
 
                 <Button type="submit" className="w-full" disabled={loading}>
@@ -117,15 +139,14 @@ export default function RegisterPage() {
   );
 }
 
-// ---------------------
-// Field Component
-// ---------------------
 function Field({ label, error, children }: FieldProps) {
   return (
     <div className="space-y-1">
       <Label>{label}</Label>
       {children}
-      {error?.message && <p className="text-red-500 text-sm">{error.message as string}</p>}
+      {error?.message && (
+        <p className="text-red-500 text-sm">{error.message as string}</p>
+      )}
     </div>
   );
 }
