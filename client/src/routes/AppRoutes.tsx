@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 // pages
 import HomePage from "../pages/Home";
-import LoginPage from "../auth/LoginPage";
+import Login from "@/pages/auth/Login";
 import RegisterPage from "@/pages/auth/Register";
 import Dashboard from "@/pages/dashboard";
 import CreateBlogPage from "@/pages/dashboard/create";
@@ -13,7 +13,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/auth/login" element={<LoginPage />} />
+      <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<RegisterPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/create" element={<CreateBlogPage />} />
