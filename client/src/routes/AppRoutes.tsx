@@ -5,7 +5,7 @@ import HomePage from "../pages/Home";
 import LoginPage from "../auth/LoginPage";
 import RegisterPage from "../auth/RegisterPage";
 import DashboardPage from "../dashboard/DashboardPage";
-import CreateBlogPage from "../dashboard/create";
+import CreateBlogPage from "@/pages/dashboard/create";
 import TrashPage from "@/pages/dashboard/trash";
 import ProfilePage from "@/pages/profile";
 
