@@ -1,57 +1,56 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import { Link } from "react-router-dom";
+import Link from "react-router-dom";
 import { toast } from "sonner";
+import { Blog } from "@/types";
 
-type Blog = {
-  id: string;
-  title: string;
-  synopsis: string;
-  featuredImageUrl?: string;
-  createdAt: string;
-  user: { firstName: string; lastName: string };
-};
-
-export default function ListBlogs() {
+export default function BlogList() {
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery<Blog[], any>(["blogs"], async () => {
+  // Fetch blogs
+  const { data: blogs, isLoading } = useQuery<Blog[]>(["blogs"], async () => {
     const { data } = await api.get("/blogs", { withCredentials: true });
     return data.blogs;
   });
 
+  // Soft delete mutation
   const deleteMutation = useMutation(
-    async (id: string) => api.patch(`/blogs/trash/${id}`, {}, { withCredentials: true }),
+    (id: string) => api.patch(`/blogs/trash/${id}`, {}, { withCredentials: true }),
     {
       onSuccess: () => {
         toast.success("Blog moved to trash");
-        queryClient.invalidateQueries(["blogs"]);
+        queryClient.invalidateQueries({ queryKey: ["blogs"] });
       },
+      onError: (err: any) => toast.error(err.response?.data?.message || "Delete failed"),
     }
   );
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">All Blogs</h2>
-        <Link to="/blogs/new" className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+        <Link to="/blogs/new" className="text-green-600 hover:underline">
           Create
         </Link>
       </div>
+
       <div className="grid gap-4">
-        {data?.map((b) => (
-          <div key={b.id} className="p-4 border rounded">
-            <h3 className="font-bold">{b.title}</h3>
-            <p className="text-sm">{b.synopsis}</p>
-            <div className="mt-2 flex gap-2">
-              <Link to={`/blogs/edit/${b.id}`} className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+        {blogs?.map((blog) => (
+          <div key={blog.id} className="p-4 border rounded space-y-2">
+            <h3 className="font-bold">{blog.title}</h3>
+            <p className="text-sm">{blog.synopsis}</p>
+            <div className="flex gap-2">
+              <Link
+                to={`/blogs/edit/${blog.id}`}
+                className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+              >
                 Edit
               </Link>
               <button
-                onClick={() => deleteMutation.mutate(b.id)}
                 className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => deleteMutation.mutate(blog.id)}
               >
                 Trash
               </button>
