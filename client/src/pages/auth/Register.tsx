@@ -124,6 +124,7 @@ export default function RegisterPage() {
                     type="password"
                     placeholder="Enter password"
                     {...form.register("password")}
+                     autoComplete="current-password"
                   />
                 </Field>
 
