@@ -5,6 +5,8 @@ import { PrismaClient, User } from "@prisma/client";
 
 const client = new PrismaClient();
 
+export const me = (req: Request, res: Response) => res.json(req.user);
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, userName, emailAddress, password } = req.body;

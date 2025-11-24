@@ -11,7 +11,7 @@ import { verifyToken } from "./middlewares/verifyToken.ts";
 import { validateBlogDetails } from "./middlewares/validateBlogDetails.ts";
 
 // Controllers
-import { register, login, logout, updatePassword } from "./controllers/auth.ts";
+import { me, register, login, logout, updatePassword } from "./controllers/auth.ts";
 import {
   createBlog,
   getBlog,
@@ -34,29 +34,26 @@ import {
 dotenv.config();
 const app: Express = express();
 
-// --------------------
-// Middleware Setup
-// --------------------
+
 app.use(express.json());
 app.use(cookieParser());
 
 // Enable CORS for frontend
 app.use(cors({
-  origin: "http://localhost:5173", // Vite dev server
-  credentials: true,              // allow cookies to be sent
+  origin: "http://localhost:5173", 
+  credentials: true,              
 }));
 
-// --------------------
-// Basic Route
-// --------------------
+
 app.get("/", (_req: Request, res: Response) => {
   res.send("Welcome to Express + TS API");
 });
 
-// --------------------
-// API Prefix
-// --------------------
+
 const api = "/api";
+
+app.get("/auth/me", verifyToken, me);
+
 
 // --------- AUTH ---------
 app.post(`${api}/auth/register`, checkDetails, checkUserAndEmail, checkPasswordStrength, register);
