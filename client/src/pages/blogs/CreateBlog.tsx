@@ -117,7 +117,7 @@ export default function CreateBlog() {
               className="cursor-pointer border-dashed border-2 border-purple-400 hover:border-purple-500"
             />
             <Button disabled variant="secondary" className="bg-purple-100 text-purple-700 cursor-default">
-              {uploading ? <Spinner size="sm" /> : "Upload"}
+              {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
             </Button>
           </div>
         </div>
