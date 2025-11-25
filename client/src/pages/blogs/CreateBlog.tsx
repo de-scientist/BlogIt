@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 type BlogForm = {
   title: string;
@@ -69,6 +71,10 @@ export default function CreateBlog() {
       toast.error(err.response?.data?.message || "Failed to create blog"),
   });
 
+  // Watch content for live preview
+  const contentValue = form.watch("content");
+  const imageValue = form.watch("featuredImageUrl");
+
   return (
     <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl">
       <CardHeader className="pb-2">
@@ -81,7 +87,8 @@ export default function CreateBlog() {
       </CardHeader>
 
       <CardContent className="space-y-6 pt-4">
-        {/* TITLE */}
+
+        {/* Title */}
         <div>
           <Label htmlFor="title" className="font-medium">Title</Label>
           <Input
@@ -95,7 +102,7 @@ export default function CreateBlog() {
           )}
         </div>
 
-        {/* SYNOPSIS */}
+        {/* Synopsis */}
         <div>
           <Label htmlFor="synopsis" className="font-medium">Synopsis</Label>
           <Input
@@ -109,7 +116,7 @@ export default function CreateBlog() {
           )}
         </div>
 
-        {/* FEATURED IMAGE */}
+        {/* Featured Image */}
         <div>
           <Label className="font-medium">Featured Image</Label>
 
@@ -130,20 +137,18 @@ export default function CreateBlog() {
             </Button>
           </div>
 
-          {form.watch("featuredImageUrl") && (
+          {imageValue && (
             <img
-              src={form.watch("featuredImageUrl")}
+              src={imageValue}
               alt="Preview"
               className="w-full h-56 object-cover rounded-md mt-4 shadow"
             />
           )}
         </div>
 
-        {/* CONTENT */}
+        {/* Content */}
         <div>
-          <Label htmlFor="content" className="font-medium">
-            Content (Markdown supported)
-          </Label>
+          <Label htmlFor="content" className="font-medium">Content (Markdown supported)</Label>
           <Textarea
             id="content"
             placeholder="Let your words dance here..."
@@ -155,7 +160,23 @@ export default function CreateBlog() {
           )}
         </div>
 
-        {/* SUBMIT */}
+        {/* Live Preview */}
+        {(contentValue || imageValue) && (
+          <div className="border rounded-lg p-4 mt-4 bg-gray-50">
+            {imageValue && (
+              <img
+                src={imageValue}
+                alt="Preview"
+                className="w-full h-52 object-cover rounded-md mb-4"
+              />
+            )}
+            <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose max-w-full">
+              {contentValue || ""}
+            </ReactMarkdown>
+          </div>
+        )}
+
+        {/* Submit */}
         <Button
           type="submit"
           disabled={mutation.isLoading || uploading}
