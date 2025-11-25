@@ -45,7 +45,28 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col justify-between bg-white text-gray-900">
 
-      {/* FULL SCREEN HERO + SLIDESHOW */}
+      {/* BELOW HERO SECTION */}
+      <section className="w-full max-w-5xl mx-auto py-20 px-6 text-center space-y-6">
+        <h1 className="text-4xl font-bold text-gray-900">
+          Your Stories. Your Voice.
+        </h1>
+
+        <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+          Welcome to a platform designed for creators — clean, modern, distraction-free.
+          Focus on your ideas. Let the world hear your voice.
+        </p>
+
+        <Button
+          type="button"
+          size="lg"
+          className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
+          onClick={() => navigate("/auth/register")}
+        >
+          Create a Blog
+        </Button>
+      </section>
+
+ 
       <div className="relative w-full h-screen mt-0">
 
         {slides.map((slide, index) => (
@@ -60,7 +81,8 @@ export default function Home() {
               alt={`Slide ${index + 1}`}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-6">
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center">
+
               <h2 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-2xl animate-fadeIn">
                 {slide.title}
               </h2>
@@ -106,27 +128,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-
-      {/* BELOW HERO SECTION */}
-      <section className="w-full max-w-5xl mx-auto py-20 px-6 text-center space-y-6">
-        <h1 className="text-4xl font-bold text-gray-900">
-          Your Stories. Your Voice.
-        </h1>
-
-        <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-          Welcome to a platform designed for creators — clean, modern, distraction-free.
-          Focus on your ideas. Let the world hear your voice.
-        </p>
-
-        <Button
-          type="button"
-          size="lg"
-          className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
-          onClick={() => navigate("/auth/register")}
-        >
-          Create a Blog
-        </Button>
-      </section>
 
       {/* FOOTER */}
       <footer className="py-8 bg-white text-gray-600 border-t">
