@@ -16,14 +16,14 @@ const sampleBlogs = [
   {
     id: "s2",
     title: "Colors, Chaos & Creation",
-    img: "https://i.pinimg.com/564x/9b/84/ae/9b84ae513c86a93a1d1399f6ee67acbb.jpg",
+    img: "/images/colors.jpeg",
     excerpt:
       "A playful splash of art, design, and unfiltered imagination.",
   },
   {
     id: "s3",
     title: "Dear Future Self…",
-    img: "https://i.pinimg.com/564x/b3/15/3c/b3153cc9ad412cc4ce4df0ffb7fdc65a.jpg",
+    img: "/images/self.jpeg",
     excerpt:
       "A letter to the dream-chaser you’re becoming.",
   },
