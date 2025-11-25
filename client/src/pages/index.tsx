@@ -26,11 +26,20 @@ export default function Home() {
   const user = useAuth((s) => s.user);
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
 
+  // Slide auto-advance
   useEffect(() => {
     const interval = setInterval(() => handleNext(), 5000);
     return () => clearInterval(interval);
   }, [currentSlide]);
+
+  // Scroll listener for parallax
+  useEffect(() => {
+    const handleScroll = () => setOffsetY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handlePrev = () => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -43,32 +52,10 @@ export default function Home() {
   const goToSlide = (index: number) => setCurrentSlide(index);
 
   return (
-    <main className="min-h-screen flex flex-col justify-between bg-white text-gray-900">
+    <main className="min-h-screen flex flex-col bg-gray-50 text-gray-900 md:pl-64">
 
-      {/* BELOW HERO SECTION */}
-      <section className="w-full max-w-5xl mx-auto py-20 px-6 text-center space-y-6">
-        <h1 className="text-4xl font-bold text-gray-900">
-          Your Stories. Your Voice.
-        </h1>
-
-        <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-          Welcome to a platform designed for creators — clean, modern, distraction-free.
-          Focus on your ideas. Let the world hear your voice.
-        </p>
-
-        <Button
-          type="button"
-          size="lg"
-          className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
-          onClick={() => navigate("/auth/login")}
-        >
-          Create a Blog
-        </Button>
-      </section>
-
- 
-      <div className="relative w-full h-screen mt-0">
-
+      {/* FULL-VIEW HERO WITH PARALLAX */}
+      <section className="relative w-full h-screen flex flex-col items-center justify-center text-center overflow-hidden">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -80,20 +67,28 @@ export default function Home() {
               src={slide.image}
               alt={`Slide ${index + 1}`}
               className="w-full h-full object-cover"
+              style={{ transform: `translateY(${offsetY * 0.2}px)` }}
             />
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center">
-
+            <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-6">
               <h2 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-2xl animate-fadeIn">
                 {slide.title}
               </h2>
-              <p className="text-xl md:text-2xl text-white/90 mt-3 animate-fadeIn delay-200 max-w-2xl">
+              <p className="text-xl md:text-2xl text-white/90 mt-3 animate-fadeIn delay-200 max-w-3xl">
                 {slide.subtitle}
               </p>
+              <Button
+                type="button"
+                size="lg"
+                className="mt-8 bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-4 shadow-xl animate-fadeIn delay-400"
+                onClick={() => navigate(user ? "/dashboard" : "/auth/login")}
+              >
+                {user ? "Go to Dashboard" : "Create a Blog"}
+              </Button>
             </div>
           </div>
         ))}
 
-        {/* ARROWS */}
+        {/* SLIDE CONTROLS */}
         <button
           type="button"
           title="Previous Slide"
@@ -113,10 +108,9 @@ export default function Home() {
         </button>
 
         {/* INDICATORS */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex space-x-3">
           {slides.map((_, index) => (
             <button
-            title="Go to Slide"
               key={index}
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition ${
@@ -124,13 +118,14 @@ export default function Home() {
                   ? "bg-gradient-to-r from-purple-600 to-pink-500 scale-125"
                   : "bg-white/70"
               }`}
+              title="Go to Slide"
             />
           ))}
         </div>
-      </div>
+      </section>
 
       {/* FOOTER */}
-      <footer className="py-8 bg-white text-gray-600 border-t">
+      <footer className="py-8 bg-gray-50 text-gray-600 border-t">
         <p className="text-center">
           &copy; {new Date().getFullYear()} Your Blog Platform. All rights reserved.
         </p>
@@ -160,9 +155,11 @@ export default function Home() {
           .delay-200 {
             animation-delay: 0.2s;
           }
+          .delay-400 {
+            animation-delay: 0.4s;
+          }
         `}
       </style>
-
     </main>
   );
 }
