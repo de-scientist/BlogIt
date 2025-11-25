@@ -1,13 +1,14 @@
 import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 type RegisterForm = {
   firstName: string;
@@ -25,6 +26,7 @@ type FieldProps = {
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<RegisterForm>({
     defaultValues: {
@@ -64,9 +66,6 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="bg-gray-100">
           <CardTitle className="text-2xl text-gray-800">Create Account</CardTitle>
-            <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 p-6">
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -84,7 +83,6 @@ export default function RegisterPage() {
                   <Input
                     placeholder="Enter first name"
                     {...form.register("firstName")}
-                    autoComplete="firstName"
                     className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
@@ -93,7 +91,6 @@ export default function RegisterPage() {
                   <Input
                     placeholder="Enter last name"
                     {...form.register("lastName")}
-                    autoComplete="lastName"
                     className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
@@ -102,7 +99,6 @@ export default function RegisterPage() {
                   <Input
                     placeholder="Choose a username"
                     {...form.register("userName")}
-                    autoComplete="username"
                     className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
@@ -112,19 +108,27 @@ export default function RegisterPage() {
                     type="email"
                     placeholder="example@gmail.com"
                     {...form.register("emailAddress")}
-                    autoComplete="email"
                     className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
 
+                {/* PASSWORD WITH EYE TOGGLE */}
                 <Field label="Password" error={form.formState.errors.password}>
-                  <Input
-                    type="password"
-                    placeholder="Enter password"
-                    {...form.register("password")}
-                    autoComplete="current-password"
-                    className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter password"
+                      {...form.register("password")}
+                      className="border-gray-300 focus:border-purple-600 focus:ring-purple-600 pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-2 text-gray-600 hover:text-gray-800"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </Field>
 
                 {/* Gradient Submit Button */}
