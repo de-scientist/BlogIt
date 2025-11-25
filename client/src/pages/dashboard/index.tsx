@@ -4,31 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { Link, useNavigate } from "react-router-dom";
 
-// Dummy discoverable blogs (Pinterest-inspired)
-const sampleBlogs = [
-  {
-    id: "s1",
-    title: "The Midnight Train of Thoughts",
-    img: "/images/train.jpeg",
-    excerpt:
-      "A short dive into the mind’s quiet storms… where ideas glow in the dark.",
-  },
-  {
-    id: "s2",
-    title: "Colors, Chaos & Creation",
-    img: "/images/color.jpeg",
-    excerpt:
-      "A playful splash of art, design, and unfiltered imagination.",
-  },
-  {
-    id: "s3",
-    title: "Dear Future Self…",
-    img: "/images/self.jpeg",
-    excerpt:
-      "A letter to the dream-chaser you’re becoming.",
-  },
-];
-
 export default function Dashboard() {
   const navigate = useNavigate();
 
@@ -40,116 +15,87 @@ export default function Dashboard() {
   const blogs = Array.isArray(data) ? data : data?.blogs || [];
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white pb-20">
+    <main className="min-h-screen bg-white text-gray-900 pb-20">
 
       {/* HERO SECTION */}
-      <section className="max-w-6xl mx-auto pt-16 px-6 text-center">
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-orange-300 drop-shadow-lg">
-          Discover. Create. Share Stories.
+      <section className="w-full max-w-5xl mx-auto pt-20 px-6 text-center space-y-6">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 drop-shadow">
+          Your Creative Space
         </h1>
 
-        <p className="text-gray-300 max-w-2xl mx-auto mb-8 text-lg">
-          Step into a living canvas of voices and ideas. Explore stories from creators worldwide — find your spark, then write your own masterpiece.
+        <p className="text-gray-700 text-lg max-w-2xl mx-auto">
+          Every idea deserves a place to bloom. Explore your creations below — 
+          refine them, expand them, or craft something new.
         </p>
 
         <Button
           size="lg"
           onClick={() => navigate("/dashboard/blogs")}
-          className="bg-orange-500 hover:bg-orange-600 text-black font-semibold px-10 py-6 rounded-xl transition-all hover:scale-105"
+          className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-4 shadow-xl"
         >
-          Start Writing
+          Create New Blog
         </Button>
       </section>
 
-      {/* FEATURED / DISCOVERABLE BLOGS */}
-      <section className="max-w-6xl mx-auto mt-20 px-6">
-        <h2 className="text-3xl font-bold mb-6 text-orange-300">
-          Featured Stories
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sampleBlogs.map((blog) => (
-            <Card
-              key={blog.id}
-              className="bg-gray-900/80 border border-gray-800 shadow-2xl backdrop-blur-sm hover:scale-[1.02] transition-all duration-300 overflow-hidden"
-            >
-              <img
-                src={blog.img}
-                alt={blog.title}
-                className="h-52 w-full object-cover"
-              />
-
-              <CardContent className="p-5">
-                <h3 className="text-xl font-semibold text-orange-300 mb-1">
-                  {blog.title}
-                </h3>
-                <p className="text-gray-300 text-sm line-clamp-3 mb-4">
-                  {blog.excerpt}
-                </p>
-
-                <Button
-                  className="bg-orange-500 hover:bg-orange-600 text-black font-semibold w-full"
-                >
-                  Read More
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* DIVIDER */}
-      <div className="max-w-6xl mx-auto border-b border-gray-700 my-16"></div>
-
       {/* USER BLOGS */}
-      <section className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-6 text-blue-300">
+      <section className="w-full max-w-6xl mx-auto mt-24 px-6">
+        <h2 className="text-3xl font-bold mb-8 text-purple-700">
           Your Blogs
         </h2>
 
         {isLoading && (
-          <p className="text-gray-400">Loading your blogs…</p>
+          <p className="text-gray-500">Loading your blogs…</p>
         )}
 
         {!isLoading && blogs.length === 0 && (
-          <p className="text-gray-400 text-lg">
-            You haven’t created any blogs yet — your voice is waiting to be heard.
-          </p>
+          <div className="text-center py-20">
+            <p className="text-gray-600 text-lg mb-6">
+              You haven’t created any blogs yet.
+              <br />Your voice is waiting to step into the light.
+            </p>
+            <Button
+              size="lg"
+              onClick={() => navigate("/dashboard/blogs")}
+              className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-lg"
+            >
+              Write Your First Story
+            </Button>
+          </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {blogs.map((blog: any) => (
             <Card
               key={blog.id}
-              className="bg-gray-900/80 border border-gray-800 shadow-2xl hover:scale-[1.02] transition-all duration-300 overflow-hidden"
+              className="bg-white border border-gray-200 shadow-md hover:shadow-xl rounded-2xl transition-all"
             >
-              <CardContent className="p-5">
-                <h3 className="text-xl font-bold text-blue-300">
+              <CardContent className="p-6">
+                <h3 className="text-2xl font-semibold text-purple-700">
                   {blog.title}
                 </h3>
 
-                <p className="text-gray-300 mt-2 line-clamp-3">
+                <p className="text-gray-600 mt-3 line-clamp-3">
                   {blog.content}
                 </p>
 
-                <div className="flex flex-col gap-3 mt-5">
+                <div className="flex flex-col gap-3 mt-6">
                   <Link to={`/blogs/view/${blog.id}`}>
-                    <Button className="bg-blue-500 hover:bg-blue-600 w-full">
+                    <Button className="bg-purple-600 hover:bg-purple-700 w-full text-white">
                       Read More
                     </Button>
                   </Link>
 
                   <div className="flex gap-3">
-                    <Link to={`/dashboard/edit/${blog.id}`} className="w-full">
-                      <Button className="bg-gray-700 hover:bg-gray-600 w-full">
+                    <Link
+                      to={`/dashboard/edit/${blog.id}`}
+                      className="w-full"
+                    >
+                      <Button className="bg-gray-200 hover:bg-gray-300 w-full text-gray-800">
                         Edit
                       </Button>
                     </Link>
 
-                    <Button
-                      variant="destructive"
-                      className="w-full"
-                    >
+                    <Button variant="destructive" className="w-full">
                       Delete
                     </Button>
                   </div>
@@ -161,18 +107,17 @@ export default function Dashboard() {
       </section>
 
       {/* FOOTER */}
-      <footer className="text-center text-gray-500 mt-20">
-        Built with passion  
+      <footer className="text-center text-gray-600 mt-24">
+        &copy; {new Date().getFullYear()} Your Blog Platform.  
         <a
           href="https://github.com/de-scientist"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-orange-400 hover:text-orange-500 ml-2"
+          className="text-purple-600 hover:text-purple-700 ml-2"
         >
           Explore my GitHub →
         </a>
       </footer>
-
     </main>
   );
 }
