@@ -26,9 +26,6 @@ export default function CreateBlog() {
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
 
-  // ----------------------------
-  // CLOUDINARY IMAGE UPLOAD
-  // ----------------------------
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -42,10 +39,7 @@ export default function CreateBlog() {
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "POST",
-          body: data,
-        }
+        { method: "POST", body: data }
       );
 
       const result = await res.json();
@@ -56,16 +50,13 @@ export default function CreateBlog() {
       } else {
         toast.error("Failed to upload image");
       }
-    } catch (err) {
+    } catch {
       toast.error("Upload error");
     } finally {
       setUploading(false);
     }
   };
 
-  // ----------------------------
-  // BLOG CREATION MUTATION
-  // ----------------------------
   const mutation = useMutation({
     mutationFn: (newBlog: BlogForm) =>
       api.post("/blogs", newBlog, { withCredentials: true }),
@@ -79,18 +70,24 @@ export default function CreateBlog() {
   });
 
   return (
-    <Card className="max-w-3xl mx-auto mt-8">
-      <CardHeader>
-        <h2 className="text-2xl font-bold">Create a New Blog</h2>
+    <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl">
+      <CardHeader className="pb-2">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
+          Write Something Beautiful
+        </h2>
+        <p className="text-gray-500 mt-1">
+          Tell your story. Someone out there needs your voice.
+        </p>
       </CardHeader>
-      <CardContent className="space-y-4">
-        
+
+      <CardContent className="space-y-6 pt-4">
         {/* TITLE */}
         <div>
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title" className="font-medium">Title</Label>
           <Input
             id="title"
-            placeholder="Title"
+            placeholder="Give your blog a powerful title..."
+            className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("title", { required: "Title is required" })}
           />
           {form.formState.errors.title && (
@@ -100,10 +97,11 @@ export default function CreateBlog() {
 
         {/* SYNOPSIS */}
         <div>
-          <Label htmlFor="synopsis">Synopsis</Label>
+          <Label htmlFor="synopsis" className="font-medium">Synopsis</Label>
           <Input
             id="synopsis"
-            placeholder="Short summary..."
+            placeholder="A short teaser that hooks your audience..."
+            className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
           {form.formState.errors.synopsis && (
@@ -111,31 +109,46 @@ export default function CreateBlog() {
           )}
         </div>
 
-        {/* FEATURED IMAGE UPLOAD */}
+        {/* FEATURED IMAGE */}
         <div>
-          <Label>Featured Image</Label>
-          <Input type="file" accept="image/*" onChange={handleImageUpload} />
+          <Label className="font-medium">Featured Image</Label>
 
-          {uploading && <p className="text-yellow-600 mt-2">Uploading...</p>}
+          <div className="mt-2 flex items-center gap-3">
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="cursor-pointer border-dashed border-2 border-purple-400 hover:border-purple-500"
+            />
 
-          {/* Preview */}
+            <Button
+              disabled
+              variant="secondary"
+              className="bg-purple-100 text-purple-700 cursor-default"
+            >
+              {uploading ? "Uploading..." : "Upload"}
+            </Button>
+          </div>
+
           {form.watch("featuredImageUrl") && (
             <img
               src={form.watch("featuredImageUrl")}
               alt="Preview"
-              className="w-full h-48 object-cover rounded-md mt-2 border"
+              className="w-full h-56 object-cover rounded-md mt-4 shadow"
             />
           )}
         </div>
 
-        {/* CONTENT (Markdown Allowed) */}
+        {/* CONTENT */}
         <div>
-          <Label htmlFor="content">Content (Markdown supported)</Label>
+          <Label htmlFor="content" className="font-medium">
+            Content (Markdown supported)
+          </Label>
           <Textarea
             id="content"
-            placeholder="Write your blog here... Markdown supported."
+            placeholder="Let your words dance here..."
             {...form.register("content", { required: "Content is required" })}
-            className="h-40"
+            className="h-48 mt-1 focus:ring-2 focus:ring-purple-500"
           />
           {form.formState.errors.content && (
             <p className="text-red-500">{form.formState.errors.content.message}</p>
@@ -146,10 +159,10 @@ export default function CreateBlog() {
         <Button
           type="submit"
           disabled={mutation.isLoading || uploading}
-          className="w-full"
+          className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl"
           onClick={form.handleSubmit((values) => mutation.mutate(values))}
         >
-          {mutation.isLoading ? "Creating..." : "Create Blog"}
+          {mutation.isLoading ? "Publishing..." : "Publish Blog ✨"}
         </Button>
       </CardContent>
     </Card>
