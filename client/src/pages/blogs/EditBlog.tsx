@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
-import { Blog } from "@/types";
 
 type BlogForm = {
   title: string;
@@ -17,12 +16,9 @@ export default function EditBlog() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { data: blog, isLoading } = useQuery<Blog>(
+  const { data: blog, isLoading } = useQuery(
     ["blog", id],
-    async () => {
-      const { data } = await api.get(`/blogs/${id}`, { withCredentials: true });
-      return data.blog;
-    },
+    async () => (await api.get(`/blogs/${id}`, { withCredentials: true })).data.blog,
     { enabled: !!id }
   );
 
@@ -30,27 +26,17 @@ export default function EditBlog() {
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
 
-  // Populate form when blog loads
-  if (blog) {
-    form.reset({
-      title: blog.title,
-      synopsis: blog.synopsis,
-      featuredImageUrl: blog.featuredImageUrl,
-      content: blog.content || "",
-    });
-  }
+  if (blog) form.reset({ ...blog });
 
   const mutation = useMutation(
-    (updatedData: BlogForm) =>
-      api.patch(`/blogs/${id}`, updatedData, { withCredentials: true }),
+    (updatedData: BlogForm) => api.patch(`/blogs/${id}`, updatedData, { withCredentials: true }),
     {
       onSuccess: () => {
         toast.success("Blog updated");
         queryClient.invalidateQueries({ queryKey: ["blogs"] });
         navigate("/blogs");
       },
-      onError: (err: any) =>
-        toast.error(err.response?.data?.message || "Update failed"),
+      onError: (err: any) => toast.error(err.response?.data?.message || "Update failed"),
     }
   );
 
@@ -59,32 +45,13 @@ export default function EditBlog() {
   return (
     <form
       onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-      className="space-y-4"
+      className="space-y-4 max-w-3xl mx-auto p-4"
     >
-      <input
-        placeholder="Title"
-        {...form.register("title")}
-        className="w-full border p-2 rounded"
-      />
-      <input
-        placeholder="Synopsis"
-        {...form.register("synopsis")}
-        className="w-full border p-2 rounded"
-      />
-      <input
-        placeholder="Featured Image URL"
-        {...form.register("featuredImageUrl")}
-        className="w-full border p-2 rounded"
-      />
-      <textarea
-        placeholder="Content"
-        {...form.register("content")}
-        className="w-full border p-2 rounded h-40"
-      />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-      >
+      <input placeholder="Title" {...form.register("title", { required: "Title required" })} className="w-full border p-2 rounded" />
+      <input placeholder="Synopsis" {...form.register("synopsis", { required: "Synopsis required" })} className="w-full border p-2 rounded" />
+      <input placeholder="Featured Image URL" {...form.register("featuredImageUrl")} className="w-full border p-2 rounded" />
+      <textarea placeholder="Content" {...form.register("content", { required: "Content required" })} className="w-full border p-2 rounded h-40" />
+      <button type="submit" className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
         Update
       </button>
     </form>
