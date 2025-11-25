@@ -31,31 +31,49 @@ export default function LoginPage() {
 
   const loading = form.formState.isSubmitting;
 
-  const handleSubmit = async (data: LoginForm) => {
-    try {
-      const res = await api.post("/auth/login", data, {
-        withCredentials: true,
-      });
+ const handleSubmit = async (data: LoginForm) => {
+  try {
+    const res = await api.post("/auth/login", data, {
+      withCredentials: true,
+    });
 
-      toast.success("Logged in successfully");
+    toast.success("Logged in successfully");
 
-      // Redirect after login
-      setTimeout(() => navigate("/dashboard"), 600);
-    } catch (err: any) {
-      if (err.response?.data?.errors) {
-        // server returned field-specific errors
-        const errors = err.response?.data?.message;
-        Object.keys(errors).forEach((key) => {
-          form.setError(key as keyof LoginForm, {
-            type: "server",
-            message: errors[key],
-          });
-        });
-      } else {
-        toast.error(err.response?.data?.message || "Login failed");
-      }
+    setTimeout(() => navigate("/dashboard"), 600);
+
+  } catch (err: any) {
+    const message = err.response?.data?.message;
+
+    if (!message) {
+      toast.error("Login failed");
+      return;
     }
-  };
+
+    // Map backend messages to the correct input field
+    if (message.toLowerCase().includes("identifier")
+      || message.toLowerCase().includes("email")
+      || message.toLowerCase().includes("username")) {
+
+      form.setError("identifier", {
+        type: "server",
+        message,
+      });
+      return;
+    }
+
+    if (message.toLowerCase().includes("password")) {
+      form.setError("password", {
+        type: "server",
+        message,
+      });
+      return;
+    }
+
+    // fallback
+    toast.error(message);
+  }
+};
+
 
   return (
     <div className="flex justify-center py-10">
