@@ -17,61 +17,70 @@ export default function BlogList() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-8">
-        <p className="text-lg font-medium text-gray-500">Loading blogs...</p>
+        <p className="text-lg font-medium text-gray-500 animate-pulse">
+          Loading blogs...
+        </p>
       </div>
     );
   }
 
-  // At this point, data is ALWAYS an array
   return (
-    <div className="max-w-5xl mx-auto mt-8 px-4">
+    <div className="max-w-6xl mx-auto mt-10 px-6">
       {data.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-lg text-gray-600 mb-4">No blogs found.</p>
-          <Link to="/blogs/create">
-            <Button variant="default">Create your first blog</Button>
+          <p className="text-lg text-gray-600 mb-4">No blogs yet.</p>
+          <Link to="/blogs/create" rel="noopener">
+            <Button>Create your first blog</Button>
           </Link>
         </div>
       ) : (
-        <ScrollArea className="h-[80vh]">
-          <div className="grid gap-6 md:grid-cols-2">
+        <ScrollArea className="h-[82vh]">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900">
+            Explore Stories
+          </h1>
+
+          {/* Pinterest-style grid */}
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
             {data.map((blog: any) => (
               <Card
                 key={blog.id}
-                className="hover:shadow-lg transition-shadow duration-200"
+                className="rounded-xl overflow-hidden bg-gradient-to-br from-pink-100 via-purple-100 to-indigo-100 
+                hover:shadow-2xl hover:-rotate-1 transition-all duration-300 border border-gray-200"
               >
-                <CardHeader>
-                  <h2 className="text-lg font-semibold">{blog.title}</h2>
-                  <p className="text-sm text-gray-500">{blog.synopsis}</p>
+                <CardHeader className="pb-2">
+                  <h2 className="text-xl font-semibold">{blog.title}</h2>
+                  <p className="text-sm text-gray-600 line-clamp-2">{blog.synopsis}</p>
                 </CardHeader>
 
                 {blog.featuredImageUrl && (
                   <img
                     src={blog.featuredImageUrl}
                     alt={blog.title}
-                    className="w-full h-48 object-cover rounded-md mt-2"
+                    className="w-full h-48 object-cover rounded-md"
                   />
                 )}
 
-                <CardContent>
-                  <small className="text-gray-400">
-                    By {blog.user.firstName} {blog.user.lastName} |{" "}
+                <CardContent className="pt-3">
+                  <small className="text-gray-500">
+                    By {blog.user.firstName} {blog.user.lastName} •{" "}
                     {new Date(blog.createdAt).toLocaleDateString()}
                   </small>
                 </CardContent>
 
                 <CardFooter className="flex justify-end gap-2">
-                  <Link to={`/blogs/edit/${blog.id}`}>
+                  <Link to={`/blogs/edit/${blog.id}`} rel="noopener">
                     <Button
                       variant="outline"
-                      className="bg-yellow-500 text-white hover:bg-yellow-600"
+                      className="border-yellow-600 text-yellow-700 hover:bg-yellow-600 hover:text-white"
                     >
                       Edit
                     </Button>
                   </Link>
 
-                  <Link to={`/blogs/view/${blog.id}`}>
-                    <Button variant="default">View</Button>
+                  <Link to={`/blogs/view/${blog.id}`} rel="noopener">
+                    <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                      View
+                    </Button>
                   </Link>
                 </CardFooter>
               </Card>
@@ -82,4 +91,3 @@ export default function BlogList() {
     </div>
   );
 }
-
