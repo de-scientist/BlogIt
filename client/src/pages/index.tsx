@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
   {
-    image: "/images/slide1.jpg",
+    image: "/images/slide1.jpeg",
     title: "Share Your Story",
     subtitle: "Every story deserves to be heard. Start your creative journey today.",
   },
