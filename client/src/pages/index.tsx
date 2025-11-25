@@ -11,7 +11,7 @@ const slides = [
     subtitle: "Every story deserves to be heard. Start your creative journey today.",
   },
   {
-    image: "/images/slide2.jpg",
+    image: "/images/slide2.jpeg",
     title: "Inspire Others",
     subtitle: "Write, share, and impact lives with your ideas and experiences.",
   },
