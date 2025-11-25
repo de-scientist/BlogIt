@@ -46,27 +46,45 @@ export default function RegisterPage() {
       form.reset();
       setTimeout(() => navigate("/auth/login"), 600);
     } catch (err: any) {
-      const message: string = err.response?.data?.message;
+  const message: string = err.response?.data?.message;
 
-      if (message) {
-        // Map backend message to correct field
-        if (message.toLowerCase().includes("first name")) {
-          form.setError("firstName", { type: "server", message });
-        } else if (message.toLowerCase().includes("last name")) {
-          form.setError("lastName", { type: "server", message });
-        } else if (message.toLowerCase().includes("username")) {
-          form.setError("userName", { type: "server", message });
-        } else if (message.toLowerCase().includes("email")) {
-          form.setError("emailAddress", { type: "server", message });
-        } else if (message.toLowerCase().includes("password")) {
-          form.setError("password", { type: "server", message });
-        } else {
-          toast.error(message);
-        }
-      } else {
-        toast.error("Registration failed");
-      }
-    }
+  if (!message) {
+    toast.error("Registration failed");
+    return;
+  }
+
+  const lower = message.toLowerCase();
+
+  // Required fields
+  if (lower.includes("first name")) {
+    form.setError("firstName", { type: "server", message });
+    return;
+  }
+
+  if (lower.includes("last name")) {
+    form.setError("lastName", { type: "server", message });
+    return;
+  }
+
+  if (lower.includes("user name") || lower.includes("username")) {
+    form.setError("userName", { type: "server", message });
+    return;
+  }
+
+  if (lower.includes("email")) {
+    form.setError("emailAddress", { type: "server", message });
+    return;
+  }
+
+  if (lower.includes("password")) {
+    form.setError("password", { type: "server", message });
+    return;
+  }
+
+  // Default fallback
+  toast.error(message);
+}
+
   };
 
   return (
