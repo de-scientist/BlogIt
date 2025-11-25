@@ -31,10 +31,10 @@ export default function AppRoutes() {
       {/* Dashboard / Blogs */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/blogs" element={<BlogList />} />                 {/* all blogs */}
-      <Route path="/dashboard/blogs/create" element={<CreateBlog />} />       {/* create blog */}
-      <Route path="/dashboard/blogs/edit/:id" element={<EditBlog />} />       {/* edit blog */}
-      <Route path="/dashboard/blogs/view/:id" element={<BlogView />} />       {/* view single blog */}
-      <Route path="/dashboard/blogs/trash" element={<Trash />} />             {/* deleted blogs */}
+      <Route path="/blogs/create" element={<CreateBlog />} />       {/* create blog */}
+      <Route path="/blogs/edit/:id" element={<EditBlog />} />       {/* edit blog */}
+      <Route path="/blogs/view/:id" element={<BlogView />} />       {/* view single blog */}
+      <Route path="/blogs/trash" element={<Trash />} />             {/* deleted blogs */}
 
       {/* Profile & User Management */}
       <Route path="/profile" element={<ProfilePage />} />                     {/* update profile */}
