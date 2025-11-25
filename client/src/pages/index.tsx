@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Github } from "lucide-react";
 
 const slides = [
   {
@@ -27,11 +27,8 @@ export default function Home() {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Auto-slide every 5 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 5000);
+    const interval = setInterval(() => handleNext(), 5000);
     return () => clearInterval(interval);
   }, [currentSlide]);
 
@@ -43,29 +40,28 @@ export default function Home() {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
+  const goToSlide = (index: number) => setCurrentSlide(index);
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 text-gray-900">
-      <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-10">
+    <main className="min-h-screen flex flex-col justify-between bg-gray-900 text-white">
+      {/* Hero Section */}
+      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto p-6 gap-10 mt-12">
         {/* Text Section */}
-        <div className="flex-1 text-center md:text-left space-y-6">
-          <h1 className="text-5xl font-extrabold text-gray-900">
+        <div className="flex-1 space-y-6 text-center md:text-left">
+          <h1 className="text-5xl font-extrabold text-white drop-shadow-lg">
             Your Stories. Your Voice.
           </h1>
-          <p className="text-lg text-gray-700">
-            Welcome to our blogging platform, a clean and modern space designed for creators, writers, and thinkers.
-            Share your ideas, explore others’ stories, and become part of a growing creative community.
+          <p className="text-lg text-gray-300 max-w-lg drop-shadow-sm">
+            Welcome to a professional blogging platform designed for creators who want their work to shine.
+            Share, connect, and inspire your audience with every post you create.
           </p>
-          <p className="text-gray-600">
-            Ready to start your journey? Click below to create your first blog post.
+          <p className="text-gray-400 max-w-lg">
+            Join today and start your first blog post by clicking the button below.
           </p>
           <Button
             type="button"
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white animate-pulse-slow"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 shadow-lg"
             onClick={() => navigate("/auth/register")}
           >
             Create a Blog
@@ -73,23 +69,26 @@ export default function Home() {
         </div>
 
         {/* Carousel Section */}
-        <div className="flex-1 relative w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-lg">
+        <div className="flex-1 relative w-full md:h-96 rounded-xl overflow-hidden shadow-2xl border border-gray-700">
           {slides.map((slide, index) => (
             <div
               key={index}
               className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentSlide ? "opacity-100" : "opacity-0"
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
             >
               <img
                 src={slide.image}
                 alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover brightness-90 transition-transform duration-500 hover:scale-105"
               />
-              {/* Text Overlay */}
-              <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-center text-white px-4 space-y-2">
-                <h2 className="text-3xl md:text-4xl font-bold animate-fadeIn">{slide.title}</h2>
-                <p className="text-lg md:text-xl animate-fadeIn delay-200">{slide.subtitle}</p>
+              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center text-white px-4 space-y-2">
+                <h2 className="text-3xl md:text-4xl font-bold animate-fadeIn drop-shadow-lg">
+                  {slide.title}
+                </h2>
+                <p className="text-lg md:text-xl animate-fadeIn delay-200 drop-shadow-sm">
+                  {slide.subtitle}
+                </p>
               </div>
             </div>
           ))}
@@ -99,7 +98,7 @@ export default function Home() {
             type="button"
             title="Previous Slide"
             onClick={handlePrev}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-800/70 transition"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 p-2 bg-gray-800/60 text-white rounded-full hover:bg-gray-800/80 transition shadow"
           >
             <ChevronLeft size={24} />
           </button>
@@ -107,7 +106,7 @@ export default function Home() {
             type="button"
             title="Next Slide"
             onClick={handleNext}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-800/70 transition"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-gray-800/60 text-white rounded-full hover:bg-gray-800/80 transition shadow"
           >
             <ChevronRight size={24} />
           </button>
@@ -121,7 +120,7 @@ export default function Home() {
                 title={`Go to slide ${index + 1}`}
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition ${
-                  index === currentSlide ? "bg-blue-600" : "bg-gray-400"
+                  index === currentSlide ? "bg-indigo-500" : "bg-gray-500"
                 }`}
               />
             ))}
@@ -130,26 +129,31 @@ export default function Home() {
       </div>
 
       {/* Optional Secondary Text */}
-      <div className="mt-12 max-w-4xl text-center text-gray-600 space-y-4">
+      <div className="mt-12 max-w-4xl mx-auto text-center text-gray-400 space-y-4 px-4">
         <p>
-          Discover stories from creators worldwide, follow authors you love, and build your own audience. 
-          Your journey starts here — one story at a time.
+          Discover, create, and share stories with creators worldwide. Focus on your content without distractions.
         </p>
         <p>
-          Our platform provides a simple, distraction-free experience that focuses on what matters most: your content.
+          Whether you're a beginner or an experienced writer, our platform helps you reach your audience effectively.
         </p>
       </div>
+
+      {/* Footer */}
+      <footer className="mt-16 py-6 bg-gray-950 text-gray-400 text-center flex flex-col items-center gap-2 border-t border-gray-700">
+        <p>&copy; {new Date().getFullYear()} Your Blog Platform. All rights reserved.</p>
+        <a
+          href="https://github.com/your-github-username"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 hover:text-white transition"
+        >
+          <Github size={18} /> GitHub
+        </a>
+      </footer>
 
       {/* Tailwind Custom Animation */}
       <style>
         {`
-          @keyframes pulse-slow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-          }
-          .animate-pulse-slow {
-            animation: pulse-slow 2s ease-in-out infinite;
-          }
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
