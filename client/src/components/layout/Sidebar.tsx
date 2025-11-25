@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 export default function Sidebar() {
   const links = [
     { name: "Dashboard", path: "/dashboard" },
-    { name: "Create Blog", path: "/dashboard/create" },
-    { name: "My Blogs", path: "/dashboard/list" },
+    { name: "Create Blog", path: "/blog/create" },
+    { name: "My Blogs", path: "/blog/list" },
     { name: "Blog Trash", path: "/dashboard/trash" },
     { name: "Profile", path: "/profile" },
     { name: "View Profile", path: "/profile/view" },
