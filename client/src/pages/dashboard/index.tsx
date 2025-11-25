@@ -16,7 +16,7 @@ const sampleBlogs = [
   {
     id: "s2",
     title: "Colors, Chaos & Creation",
-    img: "/images/colors.jpeg",
+    img: "/images/color.jpeg",
     excerpt:
       "A playful splash of art, design, and unfiltered imagination.",
   },
