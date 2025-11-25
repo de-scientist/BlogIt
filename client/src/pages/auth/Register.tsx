@@ -1,7 +1,7 @@
 import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/axios";
@@ -66,6 +66,9 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="bg-gray-100">
           <CardTitle className="text-2xl text-gray-800">Create Account</CardTitle>
+           <CardDescription>
+          Enter your details below to create an account
+        </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 p-6">
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
