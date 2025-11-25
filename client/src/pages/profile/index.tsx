@@ -1,37 +1,34 @@
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-const profileSchema = z.object({
-  firstName: z.string().min(1, "First name required"),
-  lastName: z.string().min(1, "Last name required"),
-  emailAddress: z.string().email("Invalid email"),
-  userName: z.string().min(3, "Username must have at least 3 characters"),
-});
-
-type ProfileForm = z.infer<typeof profileSchema>;
+interface ProfileForm {
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  userName: string;
+}
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  // Fetch profile
+  // FETCH USER PROFILE
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () =>
-      (await axios.get("/api/auth/me", { withCredentials: true })).data,
+      (await axios.get("/api/profile", { withCredentials: true })).data,
   });
 
-  // Form
   const form = useForm<ProfileForm>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: data || {
+    defaultValues: {
       firstName: "",
       lastName: "",
       emailAddress: "",
@@ -39,18 +36,26 @@ export default function ProfilePage() {
     },
   });
 
-  // Update mutation
+  // Sync fetched data into form
+  if (data && !isLoading) {
+    form.reset(data);
+  }
+
+  // UPDATE PROFILE
   const mutation = useMutation({
     mutationFn: async (payload: ProfileForm) =>
-      await axios.patch("/api/auth/update", payload, { withCredentials: true }),
+      (await axios.patch("/api/profile", payload, { withCredentials: true }))
+        .data,
     onSuccess: () => {
       toast.success("Profile updated");
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+      navigate("/dashboard"); // redirect to blog dashboard
     },
-    onError: () => toast.error("Update failed"),
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || "Update failed");
+    },
   });
 
-  // Loading skeleton
   if (isLoading) {
     return (
       <div className="p-10 space-y-4">
@@ -68,49 +73,30 @@ export default function ProfilePage() {
         <CardHeader>
           <CardTitle>Your Profile</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+
+        <CardContent>
           <form
-            onSubmit={form.handleSubmit((d) => mutation.mutate(d))}
+            onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
             className="space-y-4"
           >
             <div>
               <Label>First Name</Label>
-              <Input {...form.register("firstName")} />
-              {form.formState.errors.firstName && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.firstName.message}
-                </p>
-              )}
+              <Input {...form.register("firstName", { required: true })} />
             </div>
 
             <div>
               <Label>Last Name</Label>
-              <Input {...form.register("lastName")} />
-              {form.formState.errors.lastName && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.lastName.message}
-                </p>
-              )}
+              <Input {...form.register("lastName", { required: true })} />
             </div>
 
             <div>
               <Label>Email</Label>
-              <Input {...form.register("emailAddress")} />
-              {form.formState.errors.emailAddress && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.emailAddress.message}
-                </p>
-              )}
+              <Input {...form.register("emailAddress", { required: true })} />
             </div>
 
             <div>
               <Label>Username</Label>
-              <Input {...form.register("userName")} />
-              {form.formState.errors.userName && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.userName.message}
-                </p>
-              )}
+              <Input {...form.register("userName", { required: true })} />
             </div>
 
             <Button type="submit" disabled={mutation.isLoading}>
