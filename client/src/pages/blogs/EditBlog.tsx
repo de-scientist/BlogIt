@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Upload, ImageIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -27,16 +27,8 @@ export default function EditBlog() {
   const queryClient = useQueryClient();
   const [uploading, setUploading] = useState(false);
 
-  const { data: blog, isLoading } = useQuery({
-    queryKey: ["blog", id],
-    queryFn: async () => {
-      const res = await api.get(`/blogs/${id}`, { withCredentials: true });
-      return res.data.blog;
-    },
-  });
-
   const form = useForm<BlogForm>({
-    values: blog || {
+    values: {
       title: "",
       synopsis: "",
       featuredImageUrl: "",
@@ -44,38 +36,64 @@ export default function EditBlog() {
     },
   });
 
- const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+  // 🔹 VERIFY USER TOKEN ON MOUNT
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await api.get("/auth/verify-token", { withCredentials: true });
+        // Token valid, allow editing
+      } catch (err) {
+        toast.error("You must be logged in to edit a blog.");
+        navigate("/login"); // redirect to login
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
-  setUploading(true);
-  const toastId = toast.loading("Uploading image...");
+  // 🔹 FETCH BLOG DATA
+  const { data: blog, isLoading } = useQuery({
+    queryKey: ["blog", id],
+    queryFn: async () => {
+      const res = await api.get(`/blogs/${id}`, { withCredentials: true });
+      return res.data.blog;
+    },
+    onSuccess: (data) => {
+      form.reset(data); // populate form with existing blog
+    },
+  });
 
-  const data = new FormData();
-  data.append("file", file);
-  data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+  // 🔹 IMAGE UPLOAD
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  try {
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      { method: "POST", body: data }
-    );
+    setUploading(true);
+    const toastId = toast.loading("Uploading image...");
 
-    const result = await res.json();
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
-    if (result.secure_url) {
-      form.setValue("featuredImageUrl", result.secure_url);
-      toast.success("Image uploaded!");
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: "POST", body: data }
+      );
+      const result = await res.json();
+
+      if (result.secure_url) {
+        form.setValue("featuredImageUrl", result.secure_url);
+        toast.success("Image uploaded!");
+      }
+    } catch {
+      toast.error("Failed to upload image.");
+    } finally {
+      setUploading(false);
+      toast.dismiss(toastId);
     }
-  } catch {
-    toast.error("Failed to upload image.");
-  } finally {
-    setUploading(false);
-    toast.dismiss(toastId);
-  }
-};
+  };
 
-
+  // 🔹 UPDATE BLOG MUTATION
   const mutation = useMutation({
     mutationFn: (updatedBlog: BlogForm) =>
       api.put(`/blogs/${id}`, updatedBlog, { withCredentials: true }),
@@ -87,10 +105,14 @@ export default function EditBlog() {
     onError: (err: any) => {
       if (err.response?.status === 400 && err.response?.data?.message) {
         const msg = err.response.data.message.toLowerCase();
-        if (msg.includes("title")) form.setError("title", { type: "server", message: err.response.data.message });
-        if (msg.includes("synopsis")) form.setError("synopsis", { type: "server", message: err.response.data.message });
-        if (msg.includes("featured image")) form.setError("featuredImageUrl", { type: "server", message: err.response.data.message });
-        if (msg.includes("content")) form.setError("content", { type: "server", message: err.response.data.message });
+        if (msg.includes("title"))
+          form.setError("title", { type: "server", message: err.response.data.message });
+        if (msg.includes("synopsis"))
+          form.setError("synopsis", { type: "server", message: err.response.data.message });
+        if (msg.includes("featured image"))
+          form.setError("featuredImageUrl", { type: "server", message: err.response.data.message });
+        if (msg.includes("content"))
+          form.setError("content", { type: "server", message: err.response.data.message });
       } else {
         toast.error(err.response?.data?.message || "Failed to update blog.");
       }
@@ -115,7 +137,6 @@ export default function EditBlog() {
       </CardHeader>
 
       <CardContent className="space-y-6 pt-2">
-
         {/* TITLE */}
         <div>
           <Label htmlFor="title" className="font-medium">Title</Label>
@@ -147,14 +168,11 @@ export default function EditBlog() {
         {/* FEATURED IMAGE */}
         <div>
           <Label className="font-medium">Featured Image</Label>
-          <label
-            className="flex items-center justify-center gap-2 w-full h-12 border border-dashed border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition"
-          >
+          <label className="flex items-center justify-center gap-2 w-full h-12 border border-dashed border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition">
             <Upload className="w-5 h-5 text-gray-600" />
             <span className="text-gray-600 text-sm flex items-center gap-2">
-  {uploading ? <Spinner className="w-5 h-5" /> : "Click to upload image"}
-</span>
-
+              {uploading ? <Spinner className="w-5 h-5" /> : "Click to upload image"}
+            </span>
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
           {form.formState.errors.featuredImageUrl && (
