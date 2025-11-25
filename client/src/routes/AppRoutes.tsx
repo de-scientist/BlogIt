@@ -14,7 +14,7 @@ import ProfilePage from "@/pages/profile";               // update profile
 import ViewProfilePage from "@/pages/profile/View";      // view profile
 import UserBlogsPage from "@/pages/profile/UserBlogs";   // user's blogs
 import UserTrashPage from "@/pages/profile/Trash";       // user trash
-import DeleteProfilePage from "@/pages/profile/Delete";  // soft delete
+import DeleteProfilePage from "@/pages/profile/DeleteProfilePage";  // soft delete
 import PermanentDeleteUserPage from "@/pages/profile/PermantDeleteUserPage";// hard delete
 
 export default function AppRoutes() {
