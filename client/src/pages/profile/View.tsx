@@ -9,20 +9,30 @@ export default function ViewProfilePage() {
       (await api.get("/profile", { withCredentials: true })).data,
   });
 
-  if (isLoading) return <p className="p-10">Loading...</p>;
+  if (isLoading) return <p className="p-10 text-gray-500">Loading...</p>;
 
   return (
-    <div className="flex justify-center py-10">
-      <Card className="w-full max-w-xl">
+    <div className="flex justify-center py-10 bg-gray-50 min-h-screen">
+      <Card className="w-full max-w-xl shadow-md border border-gray-200">
         <CardHeader>
-          <CardTitle>User Profile</CardTitle>
+          <CardTitle className="text-2xl text-gray-800 font-semibold">
+            User Profile
+          </CardTitle>
         </CardHeader>
 
-        <CardContent className="space-y-3">
-          <p><strong>First Name:</strong> {data.firstName}</p>
-          <p><strong>Last Name:</strong> {data.lastName}</p>
-          <p><strong>Email:</strong> {data.emailAddress}</p>
-          <p><strong>Username:</strong> {data.userName}</p>
+        <CardContent className="space-y-4 text-gray-700">
+          <p>
+            <strong>First Name:</strong> {data.firstName}
+          </p>
+          <p>
+            <strong>Last Name:</strong> {data.lastName}
+          </p>
+          <p>
+            <strong>Email:</strong> {data.emailAddress}
+          </p>
+          <p>
+            <strong>Username:</strong> {data.userName}
+          </p>
         </CardContent>
       </Card>
     </div>
