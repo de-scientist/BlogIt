@@ -44,31 +44,37 @@ export default function EditBlog() {
     },
   });
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+ const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    setUploading(true);
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+  setUploading(true);
+  const toastId = toast.loading("Uploading image...");
 
-    try {
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: data }
-      );
-      const result = await res.json();
-      if (result.secure_url) {
-        form.setValue("featuredImageUrl", result.secure_url);
-        toast.success("Image uploaded!");
-      }
-    } catch {
-      toast.error("Failed to upload image.");
-    } finally {
-      setUploading(false);
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+  try {
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      { method: "POST", body: data }
+    );
+
+    const result = await res.json();
+
+    if (result.secure_url) {
+      form.setValue("featuredImageUrl", result.secure_url);
+      toast.success("Image uploaded!");
     }
-  };
+  } catch {
+    toast.error("Failed to upload image.");
+  } finally {
+    setUploading(false);
+    toast.dismiss(toastId);
+  }
+};
+
 
   const mutation = useMutation({
     mutationFn: (updatedBlog: BlogForm) =>
@@ -145,9 +151,10 @@ export default function EditBlog() {
             className="flex items-center justify-center gap-2 w-full h-12 border border-dashed border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition"
           >
             <Upload className="w-5 h-5 text-gray-600" />
-            <span className="text-gray-600 text-sm">
-              {uploading ? "Uploading..." : "Click to upload image"}
-            </span>
+            <span className="text-gray-600 text-sm flex items-center gap-2">
+  {uploading ? <Spinner className="w-5 h-5" /> : "Click to upload image"}
+</span>
+
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
           {form.formState.errors.featuredImageUrl && (
