@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
+import { Upload, ImageIcon } from "lucide-react";
 
 type BlogForm = {
   title: string;
@@ -21,7 +22,6 @@ export default function EditBlog() {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
   const [uploading, setUploading] = useState(false);
 
   const { data: blog, isLoading } = useQuery({
@@ -29,7 +29,7 @@ export default function EditBlog() {
     queryFn: async () => {
       const res = await api.get(`/blogs/${id}`, { withCredentials: true });
       return res.data.blog;
-    }
+    },
   });
 
   const form = useForm<BlogForm>({
@@ -85,65 +85,81 @@ export default function EditBlog() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-20">
-        <p className="text-gray-500 text-lg">Loading blog...</p>
+        <p className="text-gray-500 text-lg animate-pulse">Loading blog...</p>
       </div>
     );
   }
 
   return (
-    <Card className="max-w-3xl mx-auto mt-8">
+    <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-2xl bg-white">
       <CardHeader>
-        <h2 className="text-2xl font-bold">Edit Blog</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Edit Blog</h2>
+        <p className="text-gray-500 text-sm">Refine your story. Shape your voice.</p>
       </CardHeader>
 
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-6">
 
         {/* Title */}
-        <div>
+        <div className="space-y-1">
           <Label>Title</Label>
           <Input
-            placeholder="Blog title"
+            placeholder="Enter a compelling title..."
+            className="h-11"
             {...form.register("title", { required: "Title is required" })}
           />
         </div>
 
         {/* Synopsis */}
-        <div>
+        <div className="space-y-1">
           <Label>Synopsis</Label>
           <Input
-            placeholder="Short summary"
+            placeholder="Short summary of your blog"
+            className="h-11"
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
         </div>
 
         {/* Image Upload */}
-        <div>
+        <div className="space-y-2">
           <Label>Featured Image</Label>
-          <Input type="file" accept="image/*" onChange={handleImageUpload} />
 
-          {uploading && <p className="text-yellow-600 mt-1">Uploading...</p>}
+          <label
+            className="flex items-center justify-center gap-2 w-full h-12 border border-dashed 
+                       border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition"
+          >
+            <Upload className="w-5 h-5 text-gray-600" />
+            <span className="text-gray-600 text-sm">
+              {uploading ? "Uploading..." : "Click to upload image"}
+            </span>
+            <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+          </label>
 
-          {form.watch("featuredImageUrl") && (
+          {form.watch("featuredImageUrl") ? (
             <img
               src={form.watch("featuredImageUrl")}
-              className="w-full h-48 rounded-md object-cover border mt-2"
+              className="rounded-lg w-full h-52 object-cover border"
             />
+          ) : (
+            <div className="w-full h-52 border rounded-lg flex items-center justify-center text-gray-300">
+              <ImageIcon className="w-10 h-10" />
+            </div>
           )}
         </div>
 
         {/* Content */}
-        <div>
+        <div className="space-y-1">
           <Label>Content (Markdown supported)</Label>
           <Textarea
-            className="h-40"
-            placeholder="Write your blog with Markdown..."
+            className="h-48"
+            placeholder="Write your blog here. Markdown fully supported..."
             {...form.register("content", { required: "Content is required" })}
           />
         </div>
 
+        {/* Submit */}
         <Button
           disabled={mutation.isLoading || uploading}
-          className="w-full"
+          className="w-full h-12 text-lg font-medium rounded-xl bg-black text-white hover:bg-gray-800"
           onClick={form.handleSubmit(values => mutation.mutate(values))}
         >
           {mutation.isLoading ? "Saving changes..." : "Update Blog"}
