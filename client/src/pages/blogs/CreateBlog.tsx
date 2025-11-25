@@ -47,30 +47,38 @@ export default function CreateBlog() {
   }, [navigate]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    setUploading(true);
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+  setUploading(true);
+  const toastId = toast.loading("Uploading image...");
 
-    try {
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: data }
-      );
-      const result = await res.json();
-      if (result.secure_url) {
-        form.setValue("featuredImageUrl", result.secure_url);
-        toast.success("Image uploaded!");
-      }
-    } catch {
-      toast.error("Failed to upload image.");
-    } finally {
-      setUploading(false);
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+  try {
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      { method: "POST", body: data }
+    );
+
+    const result = await res.json();
+
+    if (result.secure_url) {
+      form.setValue("featuredImageUrl", result.secure_url);
+      toast.success("Image uploaded!");
+    } else {
+      toast.error("Failed to upload image");
     }
-  };
+  } catch {
+    toast.error("Upload error");
+  } finally {
+    setUploading(false);
+    toast.dismiss(toastId);
+  }
+};
+
 
   const mutation = useMutation({
     mutationFn: (newBlog: BlogForm) =>
@@ -148,9 +156,9 @@ export default function CreateBlog() {
   variant="secondary"
   className="bg-purple-100 text-purple-700 cursor-default flex items-center justify-center gap-2"
 >
-  {uploading && toast.loading("Uploading image...")}
   {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
 </Button>
+
 
           </div>
           {form.formState.errors.featuredImageUrl && (
