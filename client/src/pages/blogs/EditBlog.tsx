@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
 import { Upload, ImageIcon } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 type BlogForm = {
   title: string;
@@ -90,6 +92,10 @@ export default function EditBlog() {
     );
   }
 
+  // Watch values for live preview
+  const contentValue = form.watch("content");
+  const imageValue = form.watch("featuredImageUrl");
+
   return (
     <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-2xl bg-white">
       <CardHeader>
@@ -134,13 +140,14 @@ export default function EditBlog() {
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
 
-          {form.watch("featuredImageUrl") ? (
+          {/* Live Image Preview */}
+          {imageValue ? (
             <img
-              src={form.watch("featuredImageUrl")}
-              className="rounded-lg w-full h-52 object-cover border"
+              src={imageValue}
+              className="rounded-lg w-full h-52 object-cover border mt-2"
             />
           ) : (
-            <div className="w-full h-52 border rounded-lg flex items-center justify-center text-gray-300">
+            <div className="w-full h-52 border rounded-lg flex items-center justify-center text-gray-300 mt-2">
               <ImageIcon className="w-10 h-10" />
             </div>
           )}
@@ -155,6 +162,22 @@ export default function EditBlog() {
             {...form.register("content", { required: "Content is required" })}
           />
         </div>
+
+        {/* Live Preview */}
+        {(contentValue || imageValue) && (
+          <div className="border rounded-lg p-4 mt-4 bg-gray-50">
+            {imageValue && (
+              <img
+                src={imageValue}
+                alt="Preview"
+                className="w-full h-52 object-cover rounded-md mb-4"
+              />
+            )}
+            <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose max-w-full">
+              {contentValue || ""}
+            </ReactMarkdown>
+          </div>
+        )}
 
         {/* Submit */}
         <Button
