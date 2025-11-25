@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useState } from "react";
 
 type BlogForm = {
   title: string;
@@ -19,13 +20,55 @@ type BlogForm = {
 export default function CreateBlog() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [uploading, setUploading] = useState(false);
 
   const form = useForm<BlogForm>({
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
 
+  // ----------------------------
+  // CLOUDINARY IMAGE UPLOAD
+  // ----------------------------
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      const result = await res.json();
+
+      if (result.secure_url) {
+        form.setValue("featuredImageUrl", result.secure_url);
+        toast.success("Image uploaded!");
+      } else {
+        toast.error("Failed to upload image");
+      }
+    } catch (err) {
+      toast.error("Upload error");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // ----------------------------
+  // BLOG CREATION MUTATION
+  // ----------------------------
   const mutation = useMutation({
-    mutationFn: (newBlog: BlogForm) => api.post("/blogs", newBlog, { withCredentials: true }),
+    mutationFn: (newBlog: BlogForm) =>
+      api.post("/blogs", newBlog, { withCredentials: true }),
     onSuccess: () => {
       toast.success("Blog created successfully");
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
@@ -41,6 +84,8 @@ export default function CreateBlog() {
         <h2 className="text-2xl font-bold">Create a New Blog</h2>
       </CardHeader>
       <CardContent className="space-y-4">
+        
+        {/* TITLE */}
         <div>
           <Label htmlFor="title">Title</Label>
           <Input
@@ -53,11 +98,12 @@ export default function CreateBlog() {
           )}
         </div>
 
+        {/* SYNOPSIS */}
         <div>
           <Label htmlFor="synopsis">Synopsis</Label>
           <Input
             id="synopsis"
-            placeholder="Synopsis"
+            placeholder="Short summary..."
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
           {form.formState.errors.synopsis && (
@@ -65,16 +111,29 @@ export default function CreateBlog() {
           )}
         </div>
 
+        {/* FEATURED IMAGE UPLOAD */}
         <div>
-          <Label htmlFor="featuredImageUrl">Featured Image URL</Label>
-          <Input id="featuredImageUrl" placeholder="Image URL" {...form.register("featuredImageUrl")} />
+          <Label>Featured Image</Label>
+          <Input type="file" accept="image/*" onChange={handleImageUpload} />
+
+          {uploading && <p className="text-yellow-600 mt-2">Uploading...</p>}
+
+          {/* Preview */}
+          {form.watch("featuredImageUrl") && (
+            <img
+              src={form.watch("featuredImageUrl")}
+              alt="Preview"
+              className="w-full h-48 object-cover rounded-md mt-2 border"
+            />
+          )}
         </div>
 
+        {/* CONTENT (Markdown Allowed) */}
         <div>
-          <Label htmlFor="content">Content</Label>
+          <Label htmlFor="content">Content (Markdown supported)</Label>
           <Textarea
             id="content"
-            placeholder="Content"
+            placeholder="Write your blog here... Markdown supported."
             {...form.register("content", { required: "Content is required" })}
             className="h-40"
           />
@@ -83,7 +142,13 @@ export default function CreateBlog() {
           )}
         </div>
 
-        <Button type="submit" disabled={mutation.isLoading} className="w-full">
+        {/* SUBMIT */}
+        <Button
+          type="submit"
+          disabled={mutation.isLoading || uploading}
+          className="w-full"
+          onClick={form.handleSubmit((values) => mutation.mutate(values))}
+        >
           {mutation.isLoading ? "Creating..." : "Create Blog"}
         </Button>
       </CardContent>
