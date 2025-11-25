@@ -16,7 +16,7 @@ const slides = [
     subtitle: "Write, share, and impact lives with your ideas and experiences.",
   },
   {
-    image: "/images/slide3.jpg",
+    image: "/images/slide3.jpeg",
     title: "Join a Community",
     subtitle: "Connect with writers and thinkers from around the world.",
   },
