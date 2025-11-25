@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ViewProfilePage() {
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () =>
-      (await axios.get("/api/profile", { withCredentials: true })).data,
+      (await api.get("/profile", { withCredentials: true })).data,
   });
 
   if (isLoading) return <p className="p-10">Loading...</p>;
