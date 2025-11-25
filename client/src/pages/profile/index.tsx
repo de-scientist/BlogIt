@@ -20,7 +20,6 @@ export default function ProfilePage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // FETCH USER PROFILE
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () =>
@@ -36,36 +35,22 @@ export default function ProfilePage() {
     },
   });
 
-  // Sync fetched data into form
-  if (data && !isLoading) {
-    form.reset(data);
-  }
+  if (data && !isLoading) form.reset(data);
 
-  // UPDATE PROFILE
   const mutation = useMutation({
     mutationFn: async (payload: ProfileForm) =>
-      (await api.patch("/api/profile", payload, { withCredentials: true }))
-        .data,
+      (await api.patch("/api/profile", payload, { withCredentials: true })).data,
     onSuccess: () => {
       toast.success("Profile updated");
       queryClient.invalidateQueries({ queryKey: ["profile"] });
-      navigate("/dashboard"); // redirect to blog dashboard
+      navigate("/dashboard");
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.message || "Update failed");
     },
   });
 
-  if (isLoading) {
-    return (
-      <div className="p-10 space-y-4">
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded" />
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded" />
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded" />
-        <div className="h-10 w-full bg-gray-200 animate-pulse rounded" />
-      </div>
-    );
-  }
+  if (isLoading) return <div className="p-10">Loading...</div>;
 
   return (
     <div className="flex justify-center py-10">
@@ -81,27 +66,25 @@ export default function ProfilePage() {
           >
             <div>
               <Label>First Name</Label>
-              <Input {...form.register("firstName", { required: true })} />
+              <Input {...form.register("firstName")} />
             </div>
 
             <div>
               <Label>Last Name</Label>
-              <Input {...form.register("lastName", { required: true })} />
+              <Input {...form.register("lastName")} />
             </div>
 
             <div>
               <Label>Email</Label>
-              <Input {...form.register("emailAddress", { required: true })} />
+              <Input {...form.register("emailAddress")} />
             </div>
 
             <div>
               <Label>Username</Label>
-              <Input {...form.register("userName", { required: true })} />
+              <Input {...form.register("userName")} />
             </div>
 
-            <Button type="submit" disabled={mutation.isLoading}>
-              {mutation.isLoading ? "Saving..." : "Save Changes"}
-            </Button>
+            <Button type="submit">{mutation.isLoading ? "Saving..." : "Save"}</Button>
           </form>
         </CardContent>
       </Card>

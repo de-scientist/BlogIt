@@ -1,18 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../../lib/axios";
+import axios from "axios";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-async function fetchProfile() {
-  const { data } = await api.get("/auth/me");
-  return data;
-}
+export default function ViewProfilePage() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () =>
+      (await axios.get("/api/profile", { withCredentials: true })).data,
+  });
 
-export default function ProfileView() {
-  const { data } = useQuery(["me"], fetchProfile);
+  if (isLoading) return <p className="p-10">Loading...</p>;
 
   return (
-    <div>
-      <h2>Profile</h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+    <div className="flex justify-center py-10">
+      <Card className="w-full max-w-xl">
+        <CardHeader>
+          <CardTitle>User Profile</CardTitle>
+        </CardHeader>
+
+        <CardContent className="space-y-3">
+          <p><strong>First Name:</strong> {data.firstName}</p>
+          <p><strong>Last Name:</strong> {data.lastName}</p>
+          <p><strong>Email:</strong> {data.emailAddress}</p>
+          <p><strong>Username:</strong> {data.userName}</p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
