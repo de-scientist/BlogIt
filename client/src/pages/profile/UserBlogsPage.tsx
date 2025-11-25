@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function UserBlogsPage() {
   const { data, isLoading } = useQuery({
@@ -14,19 +14,24 @@ export default function UserBlogsPage() {
   const blogs = data.blogs;
 
   return (
-    <div className="p-10 space-y-6">
-      <h1 className="text-2xl font-bold">Your Blogs</h1>
+    <div className="min-h-screen bg-gray-50 p-10 space-y-6">
+      <h1 className="text-3xl font-bold text-gray-800">Your Blogs</h1>
 
       {blogs.length === 0 ? (
-        <p>No blogs yet.</p>
+        <p className="text-gray-500 italic">No blogs yet.</p>
       ) : (
         blogs.map((blog: any, i: number) => (
-          <Card key={i}>
+          <Card
+            key={i}
+            className="shadow-sm hover:shadow-md transition border border-gray-200"
+          >
             <CardHeader>
-              <CardTitle>{blog.title}</CardTitle>
+              <CardTitle className="text-xl text-gray-800">
+                {blog.title}
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p>{blog.synopsis}</p>
+              <p className="text-gray-600">{blog.synopsis}</p>
               <p className="text-sm text-gray-500 mt-2">
                 Created: {new Date(blog.createdAt).toLocaleString()}
               </p>
