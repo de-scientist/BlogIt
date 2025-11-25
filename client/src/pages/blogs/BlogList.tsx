@@ -3,7 +3,7 @@ import { api } from "@/lib/axios";
 import { Link } from "react-router-dom";
 
 export default function BlogList() {
-  // ✅ useQuery v5 syntax: single object with queryKey and queryFn
+
   const { data = [], isLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: async () => {

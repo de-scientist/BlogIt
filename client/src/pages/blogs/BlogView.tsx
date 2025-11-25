@@ -5,7 +5,7 @@ import { api } from "@/lib/axios";
 export default function BlogView() {
   const { id } = useParams<{ id: string }>();
 
-  // ✅ useQuery v5 syntax: object form with queryKey and queryFn
+ 
   const { data: blog, isLoading } = useQuery({
     queryKey: ["blog", id],
     queryFn: async () => {
