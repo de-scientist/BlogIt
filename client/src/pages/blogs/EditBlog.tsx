@@ -3,6 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 type BlogForm = {
   title: string;
@@ -29,8 +34,13 @@ export default function EditBlog() {
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
 
-  // Reset form once blog data is loaded
-  if (blog) form.reset({ title: blog.title, synopsis: blog.synopsis, featuredImageUrl: blog.featuredImageUrl, content: blog.content || "" });
+  if (blog)
+    form.reset({
+      title: blog.title,
+      synopsis: blog.synopsis,
+      featuredImageUrl: blog.featuredImageUrl,
+      content: blog.content || "",
+    });
 
   const mutation = useMutation({
     mutationFn: (updatedData: BlogForm) =>
@@ -47,44 +57,57 @@ export default function EditBlog() {
   if (isLoading) return <div className="p-4">Loading...</div>;
 
   return (
-    <form
-      onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-      className="space-y-4 max-w-3xl mx-auto p-4"
-    >
-      <input
-        placeholder="Title"
-        {...form.register("title", { required: "Title required" })}
-        className="w-full border p-2 rounded"
-      />
-      {form.formState.errors.title && <p className="text-red-500">{form.formState.errors.title.message}</p>}
+    <Card className="max-w-3xl mx-auto mt-8">
+      <CardHeader>
+        <h2 className="text-2xl font-bold">Edit Blog</h2>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div>
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            placeholder="Title"
+            {...form.register("title", { required: "Title required" })}
+          />
+          {form.formState.errors.title && (
+            <p className="text-red-500">{form.formState.errors.title.message}</p>
+          )}
+        </div>
 
-      <input
-        placeholder="Synopsis"
-        {...form.register("synopsis", { required: "Synopsis required" })}
-        className="w-full border p-2 rounded"
-      />
-      {form.formState.errors.synopsis && <p className="text-red-500">{form.formState.errors.synopsis.message}</p>}
+        <div>
+          <Label htmlFor="synopsis">Synopsis</Label>
+          <Input
+            id="synopsis"
+            placeholder="Synopsis"
+            {...form.register("synopsis", { required: "Synopsis required" })}
+          />
+          {form.formState.errors.synopsis && (
+            <p className="text-red-500">{form.formState.errors.synopsis.message}</p>
+          )}
+        </div>
 
-      <input
-        placeholder="Featured Image URL"
-        {...form.register("featuredImageUrl")}
-        className="w-full border p-2 rounded"
-      />
+        <div>
+          <Label htmlFor="featuredImageUrl">Featured Image URL</Label>
+          <Input id="featuredImageUrl" placeholder="Image URL" {...form.register("featuredImageUrl")} />
+        </div>
 
-      <textarea
-        placeholder="Content"
-        {...form.register("content", { required: "Content required" })}
-        className="w-full border p-2 rounded h-40"
-      />
-      {form.formState.errors.content && <p className="text-red-500">{form.formState.errors.content.message}</p>}
+        <div>
+          <Label htmlFor="content">Content</Label>
+          <Textarea
+            id="content"
+            placeholder="Content"
+            {...form.register("content", { required: "Content required" })}
+            className="h-40"
+          />
+          {form.formState.errors.content && (
+            <p className="text-red-500">{form.formState.errors.content.message}</p>
+          )}
+        </div>
 
-      <button
-        type="submit"
-        className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-        disabled={mutation.isLoading}
-      >
-        {mutation.isLoading ? "Updating..." : "Update Blog"}
-      </button>
-    </form>
+        <Button type="submit" disabled={mutation.isLoading} className="w-full">
+          {mutation.isLoading ? "Updating..." : "Update Blog"}
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
