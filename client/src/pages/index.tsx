@@ -43,115 +43,110 @@ export default function Home() {
   const goToSlide = (index: number) => setCurrentSlide(index);
 
   return (
-    <main className="min-h-screen flex flex-col justify-between bg-gray-900 text-white">
-      {/* Hero Section */}
-      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto p-6 gap-10 mt-12">
-        {/* Text Section */}
-        <div className="flex-1 space-y-6 text-center md:text-left">
-          <h1 className="text-5xl font-extrabold text-white drop-shadow-lg">
-            Your Stories. Your Voice.
-          </h1>
-          <p className="text-lg text-gray-300 max-w-lg drop-shadow-sm">
-            Welcome to a professional blogging platform designed for creators who want their work to shine.
-            Share, connect, and inspire your audience with every post you create.
-          </p>
-          <p className="text-gray-400 max-w-lg">
-            Join today and start your first blog post by clicking the button below.
-          </p>
-          <Button
-            type="button"
-            size="lg"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 shadow-lg"
-            onClick={() => navigate("/auth/register")}
-          >
-            Create a Blog
-          </Button>
-        </div>
+    <main className="min-h-screen flex flex-col justify-between bg-white text-gray-900">
 
-        {/* Carousel Section */}
-        <div className="flex-1 relative w-full md:h-96 rounded-xl overflow-hidden shadow-2xl border border-gray-700">
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-              }`}
-            >
-              <img
-                src={slide.image}
-                alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover brightness-90 transition-transform duration-500 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center text-white px-4 space-y-2">
-                <h2 className="text-3xl md:text-4xl font-bold animate-fadeIn drop-shadow-lg">
-                  {slide.title}
-                </h2>
-                <p className="text-lg md:text-xl animate-fadeIn delay-200 drop-shadow-sm">
-                  {slide.subtitle}
-                </p>
-              </div>
+      {/* FULL SCREEN HERO + SLIDESHOW */}
+      <div className="relative w-full h-screen mt-0">
+
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={`Slide ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-6">
+              <h2 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-2xl animate-fadeIn">
+                {slide.title}
+              </h2>
+              <p className="text-xl md:text-2xl text-white/90 mt-3 animate-fadeIn delay-200 max-w-2xl">
+                {slide.subtitle}
+              </p>
             </div>
-          ))}
-
-          {/* Arrows */}
-          <button
-            type="button"
-            title="Previous Slide"
-            onClick={handlePrev}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 p-2 bg-gray-800/60 text-white rounded-full hover:bg-gray-800/80 transition shadow"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <button
-            type="button"
-            title="Next Slide"
-            onClick={handleNext}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-gray-800/60 text-white rounded-full hover:bg-gray-800/80 transition shadow"
-          >
-            <ChevronRight size={24} />
-          </button>
-
-          {/* Indicators */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                title={`Go to slide ${index + 1}`}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition ${
-                  index === currentSlide ? "bg-indigo-500" : "bg-gray-500"
-                }`}
-              />
-            ))}
           </div>
+        ))}
+
+        {/* ARROWS */}
+        <button
+          type="button"
+          title="Previous Slide"
+          onClick={handlePrev}
+          className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/70 hover:bg-white shadow-xl rounded-full transition"
+        >
+          <ChevronLeft size={28} className="text-gray-800" />
+        </button>
+
+        <button
+          type="button"
+          title="Next Slide"
+          onClick={handleNext}
+          className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/70 hover:bg-white shadow-xl rounded-full transition"
+        >
+          <ChevronRight size={28} className="text-gray-800" />
+        </button>
+
+        {/* INDICATORS */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3">
+          {slides.map((_, index) => (
+            <button
+            title="Go to Slide"
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition ${
+                index === currentSlide
+                  ? "bg-gradient-to-r from-purple-600 to-pink-500 scale-125"
+                  : "bg-white/70"
+              }`}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Optional Secondary Text */}
-      <div className="mt-12 max-w-4xl mx-auto text-center text-gray-400 space-y-4 px-4">
-        <p>
-          Discover, create, and share stories with creators worldwide. Focus on your content without distractions.
-        </p>
-        <p>
-          Whether you're a beginner or an experienced writer, our platform helps you reach your audience effectively.
-        </p>
-      </div>
+      {/* BELOW HERO SECTION */}
+      <section className="w-full max-w-5xl mx-auto py-20 px-6 text-center space-y-6">
+        <h1 className="text-4xl font-bold text-gray-900">
+          Your Stories. Your Voice.
+        </h1>
 
-      {/* Footer */}
-      <footer className="mt-16 py-6 bg-gray-950 text-gray-400 text-center flex flex-col items-center gap-2 border-t border-gray-700">
-        <p>&copy; {new Date().getFullYear()} Your Blog Platform. All rights reserved.</p>
-        <a
-          href="https://github.com/your-github-username"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 hover:text-white transition"
+        <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+          Welcome to a platform designed for creators — clean, modern, distraction-free.
+          Focus on your ideas. Let the world hear your voice.
+        </p>
+
+        <Button
+          type="button"
+          size="lg"
+          className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
+          onClick={() => navigate("/auth/register")}
         >
-          <Github size={18} /> GitHub
-        </a>
+          Create a Blog
+        </Button>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-8 bg-white text-gray-600 border-t">
+        <p className="text-center">
+          &copy; {new Date().getFullYear()} Your Blog Platform. All rights reserved.
+        </p>
+
+        <div className="flex justify-center mt-2">
+          <a
+            href="https://github.com/your-github-username"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-gray-900 transition"
+          >
+            <Github size={18} /> GitHub
+          </a>
+        </div>
       </footer>
 
-      {/* Tailwind Custom Animation */}
+      {/* ANIMATIONS */}
       <style>
         {`
           @keyframes fadeIn {
@@ -166,6 +161,7 @@ export default function Home() {
           }
         `}
       </style>
+
     </main>
   );
 }
