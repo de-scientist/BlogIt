@@ -27,7 +27,6 @@ export default function ProfilePage() {
       (await api.get("/profile", { withCredentials: true })).data,
   });
 
-  // Setup validation rules directly in useForm
   const form = useForm<ProfileForm>({
     defaultValues: {
       firstName: "",
@@ -35,7 +34,6 @@ export default function ProfilePage() {
       emailAddress: "",
       userName: "",
     },
-    mode: "onSubmit", // validate on submit
   });
 
   useEffect(() => {
@@ -54,98 +52,64 @@ export default function ProfilePage() {
       (
         await api.patch(
           "/profile",
-          {
-            firstName: payload.firstName,
-            lastName: payload.lastName,
-            emailAddress: payload.emailAddress,
-            userName: payload.userName,
-          },
+          { ...payload },
           { withCredentials: true }
         )
       ).data,
     onSuccess: () => {
-      toast.success("Profile updated");
+      toast.success("Profile updated.");
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       navigate("/dashboard");
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || "Update failed");
+      toast.error(err.response?.data?.message || "Update failed.");
     },
   });
 
-  if (isLoading) return <div className="p-10">Loading...</div>;
+  if (isLoading) return <div className="p-10 text-gray-500">Loading...</div>;
 
   return (
-    <div className="flex justify-center py-10">
-      <Card className="w-full max-w-xl">
+    <div className="flex justify-center py-10 bg-gray-50 min-h-screen">
+      <Card className="w-full max-w-xl shadow-md border border-gray-200">
         <CardHeader>
-          <CardTitle>Your Profile</CardTitle>
+          <CardTitle className="text-2xl font-semibold text-gray-800">
+            Update Your Profile
+          </CardTitle>
         </CardHeader>
 
         <CardContent>
           <form
             onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
-            className="space-y-4"
+            className="space-y-5"
           >
             <div>
               <Label>First Name</Label>
-              <Input
-                {...form.register("firstName", { required: "First name is required" })}
-              />
-              {form.formState.errors.firstName && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.firstName.message}
-                </p>
-              )}
+              <Input {...form.register("firstName", { required: true })} />
             </div>
 
             <div>
               <Label>Last Name</Label>
-              <Input
-                {...form.register("lastName", { required: "Last name is required" })}
-              />
-              {form.formState.errors.lastName && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.lastName.message}
-                </p>
-              )}
+              <Input {...form.register("lastName", { required: true })} />
             </div>
 
             <div>
               <Label>Email</Label>
               <Input
-                {...form.register("emailAddress", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Invalid email address",
-                  },
-                })}
+                {...form.register("emailAddress", { required: true })}
+                type="email"
               />
-              {form.formState.errors.emailAddress && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.emailAddress.message}
-                </p>
-              )}
             </div>
 
             <div>
               <Label>Username</Label>
-              <Input
-                {...form.register("userName", {
-                  required: "Username is required",
-                  minLength: { value: 3, message: "Username must be at least 3 characters" },
-                })}
-              />
-              {form.formState.errors.userName && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.userName.message}
-                </p>
-              )}
+              <Input {...form.register("userName", { required: true })} />
             </div>
 
-            <Button type="submit">
-              {mutation.isLoading ? "Saving..." : "Save"}
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700"
+            >
+              {mutation.isLoading ? "Saving..." : "Save Changes"}
             </Button>
           </form>
         </CardContent>
