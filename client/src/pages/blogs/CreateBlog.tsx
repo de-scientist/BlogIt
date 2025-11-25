@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -108,7 +109,6 @@ export default function CreateBlog() {
         {/* FEATURED IMAGE */}
         <div>
           <Label className="font-medium">Featured Image</Label>
-
           <div className="mt-2 flex items-center gap-3">
             <Input
               type="file"
@@ -116,13 +116,8 @@ export default function CreateBlog() {
               onChange={handleImageUpload}
               className="cursor-pointer border-dashed border-2 border-purple-400 hover:border-purple-500"
             />
-
-            <Button
-              disabled
-              variant="secondary"
-              className="bg-purple-100 text-purple-700 cursor-default"
-            >
-              {uploading ? "Uploading..." : "Upload"}
+            <Button disabled variant="secondary" className="bg-purple-100 text-purple-700 cursor-default">
+              {uploading ? <Spinner size="sm" /> : "Upload"}
             </Button>
           </div>
         </div>
@@ -148,18 +143,7 @@ export default function CreateBlog() {
                 className="w-full h-52 object-cover rounded-md mb-4"
               />
             )}
-            <ReactMarkdown
-              rehypePlugins={[rehypeRaw]}
-              components={{
-                img: ({ node, ...props }) => (
-                  <img
-                    {...props}
-                    alt={props.alt || "Markdown image"}
-                    className="max-w-full rounded-md"
-                  />
-                ),
-              }}
-            >
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>
               {form.watch("content") || ""}
             </ReactMarkdown>
           </div>
@@ -170,9 +154,9 @@ export default function CreateBlog() {
           type="submit"
           disabled={mutation.isLoading || uploading}
           className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl"
-          onClick={form.handleSubmit((values) => mutation.mutate(values))}
+          onClick={form.handleSubmit(values => mutation.mutate(values))}
         >
-          {mutation.isLoading ? "Publishing..." : "Publish Blog ✨"}
+          {mutation.isLoading ? <Spinner size="sm" /> : "Publish Blog ✨"}
         </Button>
       </CardContent>
     </Card>
