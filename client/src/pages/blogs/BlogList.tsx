@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function BlogList() {
-  const { data = [], isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: async () => {
       const res = await api.get("/blogs", { withCredentials: true });
-      return res.data.blogs;
+      return Array.isArray(res.data.blogs) ? res.data.blogs : [];
     },
   });
 
@@ -22,6 +22,7 @@ export default function BlogList() {
     );
   }
 
+  // At this point, data is ALWAYS an array
   return (
     <div className="max-w-5xl mx-auto mt-8 px-4">
       {data.length === 0 ? (
@@ -35,11 +36,15 @@ export default function BlogList() {
         <ScrollArea className="h-[80vh]">
           <div className="grid gap-6 md:grid-cols-2">
             {data.map((blog: any) => (
-              <Card key={blog.id} className="hover:shadow-lg transition-shadow duration-200">
+              <Card
+                key={blog.id}
+                className="hover:shadow-lg transition-shadow duration-200"
+              >
                 <CardHeader>
                   <h2 className="text-lg font-semibold">{blog.title}</h2>
                   <p className="text-sm text-gray-500">{blog.synopsis}</p>
                 </CardHeader>
+
                 {blog.featuredImageUrl && (
                   <img
                     src={blog.featuredImageUrl}
@@ -47,18 +52,24 @@ export default function BlogList() {
                     className="w-full h-48 object-cover rounded-md mt-2"
                   />
                 )}
+
                 <CardContent>
                   <small className="text-gray-400">
                     By {blog.user.firstName} {blog.user.lastName} |{" "}
                     {new Date(blog.createdAt).toLocaleDateString()}
                   </small>
                 </CardContent>
+
                 <CardFooter className="flex justify-end gap-2">
                   <Link to={`/blogs/edit/${blog.id}`}>
-                    <Button variant="outline" className="bg-yellow-500 text-white hover:bg-yellow-600">
+                    <Button
+                      variant="outline"
+                      className="bg-yellow-500 text-white hover:bg-yellow-600"
+                    >
                       Edit
                     </Button>
                   </Link>
+
                   <Link to={`/blogs/view/${blog.id}`}>
                     <Button variant="default">View</Button>
                   </Link>
@@ -71,3 +82,4 @@ export default function BlogList() {
     </div>
   );
 }
+
