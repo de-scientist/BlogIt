@@ -12,7 +12,7 @@ import BlogList from "@/pages/blogs/List";
 
 import ProfilePage from "@/pages/profile";               // update profile
 import ViewProfilePage from "@/pages/profile/View";      // view profile
-import UserBlogsPage from "@/pages/profile/UserBlogs";   // user's blogs
+import UserBlogsPage from "@/pages/profile/UserBlogsPage";   // user's blogs
 import TrashPage from "@/pages/dashboard/trash";     // user trash
 import DeleteProfilePage from "@/pages/profile/DeleteProfilePage";  // soft delete
 import PermanentDeleteUserPage from "@/pages/profile/PermantDeleteUserPage";// hard delete
