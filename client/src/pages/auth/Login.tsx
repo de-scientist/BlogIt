@@ -1,7 +1,7 @@
 import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
@@ -57,6 +57,9 @@ export default function LoginPage() {
       <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="bg-gray-100">
           <CardTitle className="text-2xl text-gray-800">Login</CardTitle>
+            <CardDescription>
+          Enter your email below to login to your account
+        </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 p-6">
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">

@@ -64,6 +64,9 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="bg-gray-100">
           <CardTitle className="text-2xl text-gray-800">Create Account</CardTitle>
+            <CardDescription>
+          Enter your email below to login to your account
+        </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 p-6">
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -82,7 +85,7 @@ export default function RegisterPage() {
                     placeholder="Enter first name"
                     {...form.register("firstName")}
                     autoComplete="firstName"
-                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                    className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
 
@@ -91,7 +94,7 @@ export default function RegisterPage() {
                     placeholder="Enter last name"
                     {...form.register("lastName")}
                     autoComplete="lastName"
-                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                    className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
 
@@ -100,7 +103,7 @@ export default function RegisterPage() {
                     placeholder="Choose a username"
                     {...form.register("userName")}
                     autoComplete="username"
-                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                    className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
 
@@ -110,7 +113,7 @@ export default function RegisterPage() {
                     placeholder="example@gmail.com"
                     {...form.register("emailAddress")}
                     autoComplete="email"
-                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                    className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
 
@@ -120,18 +123,23 @@ export default function RegisterPage() {
                     placeholder="Enter password"
                     {...form.register("password")}
                     autoComplete="current-password"
-                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                    className="border-gray-300 focus:border-purple-600 focus:ring-purple-600"
                   />
                 </Field>
 
-                <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={loading}>
-                  Create Account
+                {/* Gradient Submit Button */}
+                <Button
+                  type="submit"
+                  className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition-all"
+                  disabled={loading}
+                >
+                  {loading ? "Creating Account..." : "Create Account"}
                 </Button>
 
+                {/* Login Redirect Button */}
                 <Button
                   type="button"
-                  variant="outline"
-                  className="w-full mt-2 text-gray-700 border-gray-400 hover:bg-gray-100"
+                  className="w-full mt-2 py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-gray-400 to-gray-500 text-white hover:opacity-90 transition-all"
                   onClick={() => navigate("/auth/login")}
                 >
                   Already have an account? Log In
