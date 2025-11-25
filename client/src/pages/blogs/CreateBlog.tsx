@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Spinner } from "@/components/ui/spinner";
@@ -24,61 +24,43 @@ export default function CreateBlog() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
-  const [loadingUser, setLoadingUser] = useState(true);
 
   const form = useForm<BlogForm>({
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
 
-  // --------------------
-  // Verify Token / Auth Check
-  // --------------------
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await api.get("/auth/verify-token", { withCredentials: true });
-        setLoadingUser(false);
-      } catch {
-        toast.error("You must login to create a blog!");
-        navigate("/auth/login");
-      }
-    };
-    checkAuth();
-  }, [navigate]);
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  setUploading(true);
-  const toastId = toast.loading("Uploading image...");
+    setUploading(true);
+    const toastId = toast.loading("Uploading image...");
 
-  const data = new FormData();
-  data.append("file", file);
-  data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
-  try {
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      { method: "POST", body: data }
-    );
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: "POST", body: data }
+      );
 
-    const result = await res.json();
+      const result = await res.json();
 
-    if (result.secure_url) {
-      form.setValue("featuredImageUrl", result.secure_url);
-      toast.success("Image uploaded!");
-    } else {
-      toast.error("Failed to upload image");
+      if (result.secure_url) {
+        form.setValue("featuredImageUrl", result.secure_url);
+        toast.success("Image uploaded!");
+      } else {
+        toast.error("Failed to upload image");
+      }
+    } catch {
+      toast.error("Upload error");
+    } finally {
+      setUploading(false);
+      toast.dismiss(toastId);
     }
-  } catch {
-    toast.error("Upload error");
-  } finally {
-    setUploading(false);
-    toast.dismiss(toastId);
-  }
-};
-
+  };
 
   const mutation = useMutation({
     mutationFn: (newBlog: BlogForm) =>
@@ -100,8 +82,6 @@ export default function CreateBlog() {
       }
     },
   });
-
-  if (loadingUser) return <Spinner className="w-10 h-10 mx-auto mt-20" />;
 
   return (
     <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl">
@@ -152,14 +132,12 @@ export default function CreateBlog() {
               className="cursor-pointer border-dashed border-2 border-purple-400 hover:border-purple-500"
             />
             <Button
-  disabled
-  variant="secondary"
-  className="bg-purple-100 text-purple-700 cursor-default flex items-center justify-center gap-2"
->
-  {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
-</Button>
-
-
+              disabled
+              variant="secondary"
+              className="bg-purple-100 text-purple-700 cursor-default flex items-center justify-center gap-2"
+            >
+              {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
+            </Button>
           </div>
           {form.formState.errors.featuredImageUrl && (
             <p className="text-red-500">{form.formState.errors.featuredImageUrl.message}</p>
