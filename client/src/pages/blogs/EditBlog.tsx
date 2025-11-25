@@ -88,7 +88,7 @@ export default function EditBlog() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-20">
-        <Spinner size="lg" />
+        <Spinner className="w-5 h-5" />
         <p className="text-gray-500 text-lg ml-4">Loading blog...</p>
       </div>
     );
@@ -135,7 +135,7 @@ export default function EditBlog() {
           >
             <Upload className="w-5 h-5 text-gray-600" />
             <span className="text-gray-600 text-sm">
-              {uploading ? <Spinner size="sm" /> : "Click to upload image"}
+              {uploading ? <Spinner className="w-5 h-5" /> : "Click to upload image"}
             </span>
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
@@ -186,7 +186,7 @@ export default function EditBlog() {
           className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition-all"
           onClick={form.handleSubmit(values => mutation.mutate(values))}
         >
-          {mutation.isLoading ? <Spinner size="sm" /> : "Update Blog ✨"}
+          {mutation.isLoading ? <Spinner className="w-5 h-5" /> : "Update Blog ✨"}
         </Button>
       </CardContent>
     </Card>
