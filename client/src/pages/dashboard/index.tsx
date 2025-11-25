@@ -9,7 +9,7 @@ const sampleBlogs = [
   {
     id: "s1",
     title: "The Midnight Train of Thoughts",
-    img: "https://i.pinimg.com/564x/33/2d/5c/332d5cdb7f9019da5aa5f91d0261f973.jpg",
+    img: "/images/train.jpeg",
     excerpt:
       "A short dive into the mind’s quiet storms… where ideas glow in the dark.",
   },
