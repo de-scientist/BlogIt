@@ -73,7 +73,7 @@ app.delete(`${api}/blogs/:id`, verifyToken, permanentDeleteBlog);
 
 // --------- USER PROFILE ---------
 app.get(`${api}/profile`, verifyToken, getUserProfile);
-app.patch(`${api}/profile`, verifyToken, checkUserAndEmail, updateProfile);
+app.patch(`${api}/profile`, verifyToken, updateProfile);
 app.get(`${api}/profile/blogs`, verifyToken, getUserBlogs);
 app.patch(`${api}/users/delete`, verifyToken, deleteProfile);
 app.get(`${api}/profile/trash`, verifyToken, getUserTrash);

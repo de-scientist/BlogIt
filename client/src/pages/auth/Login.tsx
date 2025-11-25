@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
 
 type LoginForm = {
-  identifier: string; // backend expects this
+  identifier: string;
   password: string;
 };
 
@@ -23,57 +23,45 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const form = useForm<LoginForm>({
-    defaultValues: {
-      identifier: "",
-      password: "",
-    },
+    defaultValues: { identifier: "", password: "" },
+    mode: "onSubmit",
   });
 
   const loading = form.formState.isSubmitting;
 
- const handleSubmit = async (data: LoginForm) => {
-  try {
-    const res = await api.post("/auth/login", data, {
-      withCredentials: true,
-    });
+  const handleSubmit = async (data: LoginForm) => {
+    try {
+      const res = await api.post("/auth/login", data, { withCredentials: true });
+      toast.success("Logged in successfully");
+      setTimeout(() => navigate("/profile"), 600);
+    } catch (err: any) {
+      const message = err.response?.data?.message;
 
-    toast.success("Logged in successfully");
+      if (!message) {
+        toast.error("Login failed");
+        return;
+      }
 
-    setTimeout(() => navigate("/profile"), 600);
+      // Map server errors to input fields
+      if (
+        message.toLowerCase().includes("credentials") ||
+        message.toLowerCase().includes("identifier") ||
+        message.toLowerCase().includes("username") ||
+        message.toLowerCase().includes("email")
+      ) {
+        form.setError("identifier", { type: "server", message });
+        return;
+      }
 
-  } catch (err: any) {
-    const message = err.response?.data?.message;
+      if (message.toLowerCase().includes("password")) {
+        form.setError("password", { type: "server", message });
+        return;
+      }
 
-    if (!message) {
-      toast.error("Login failed");
-      return;
+      // fallback for unexpected server messages
+      toast.error(message);
     }
-
-    // Map backend messages to the correct input field
-    if (message.toLowerCase().includes("identifier")
-      || message.toLowerCase().includes("email")
-      || message.toLowerCase().includes("username")) {
-
-      form.setError("identifier", {
-        type: "server",
-        message,
-      });
-      return;
-    }
-
-    if (message.toLowerCase().includes("password")) {
-      form.setError("password", {
-        type: "server",
-        message,
-      });
-      return;
-    }
-
-    // fallback
-    toast.error(message);
-  }
-};
-
+  };
 
   return (
     <div className="flex justify-center py-10">
@@ -81,19 +69,12 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>
-
         <CardContent>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
-            <Field
-              label="Username or Email"
-              error={form.formState.errors.identifier}
-            >
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <Field label="Username or Email" error={form.formState.errors.identifier}>
               <Input
                 placeholder="Enter your username or email"
-                {...form.register("identifier")}
+                {...form.register("identifier", { required: "This field is required" })}
                 autoComplete="username"
               />
             </Field>
@@ -101,14 +82,14 @@ export default function LoginPage() {
             <Field label="Password" error={form.formState.errors.password}>
               <Input
                 type="password"
-                placeholder="Enter password"
-                {...form.register("password")}
+                placeholder="Enter your password"
+                {...form.register("password", { required: "Password is required" })}
                 autoComplete="current-password"
               />
             </Field>
 
             <Button disabled={loading} type="submit" className="w-full">
-              Login
+              {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
         </CardContent>
@@ -125,9 +106,7 @@ function Field({ label, error, children }: FieldProps) {
     <div className="space-y-1">
       <Label>{label}</Label>
       {children}
-      {error?.message && (
-        <p className="text-red-500 text-sm">{error.message as string}</p>
-      )}
+      {error?.message && <p className="text-red-500 text-sm">{error.message}</p>}
     </div>
   );
 }

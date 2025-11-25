@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
@@ -26,6 +27,7 @@ export default function ProfilePage() {
       (await api.get("/profile", { withCredentials: true })).data,
   });
 
+  // Setup validation rules directly in useForm
   const form = useForm<ProfileForm>({
     defaultValues: {
       firstName: "",
@@ -33,13 +35,34 @@ export default function ProfilePage() {
       emailAddress: "",
       userName: "",
     },
+    mode: "onSubmit", // validate on submit
   });
 
-  if (data && !isLoading) form.reset(data);
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        emailAddress: data.emailAddress,
+        userName: data.userName,
+      });
+    }
+  }, [data, form]);
 
   const mutation = useMutation({
     mutationFn: async (payload: ProfileForm) =>
-      (await api.patch("/api/profile", payload, { withCredentials: true })).data,
+      (
+        await api.patch(
+          "/profile",
+          {
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            emailAddress: payload.emailAddress,
+            userName: payload.userName,
+          },
+          { withCredentials: true }
+        )
+      ).data,
     onSuccess: () => {
       toast.success("Profile updated");
       queryClient.invalidateQueries({ queryKey: ["profile"] });
@@ -66,25 +89,64 @@ export default function ProfilePage() {
           >
             <div>
               <Label>First Name</Label>
-              <Input {...form.register("firstName")} />
+              <Input
+                {...form.register("firstName", { required: "First name is required" })}
+              />
+              {form.formState.errors.firstName && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.firstName.message}
+                </p>
+              )}
             </div>
 
             <div>
               <Label>Last Name</Label>
-              <Input {...form.register("lastName")} />
+              <Input
+                {...form.register("lastName", { required: "Last name is required" })}
+              />
+              {form.formState.errors.lastName && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.lastName.message}
+                </p>
+              )}
             </div>
 
             <div>
               <Label>Email</Label>
-              <Input {...form.register("emailAddress")} />
+              <Input
+                {...form.register("emailAddress", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email address",
+                  },
+                })}
+              />
+              {form.formState.errors.emailAddress && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.emailAddress.message}
+                </p>
+              )}
             </div>
 
             <div>
               <Label>Username</Label>
-              <Input {...form.register("userName")} />
+              <Input
+                {...form.register("userName", {
+                  required: "Username is required",
+                  minLength: { value: 3, message: "Username must be at least 3 characters" },
+                })}
+              />
+              {form.formState.errors.userName && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.userName.message}
+                </p>
+              )}
             </div>
 
-            <Button type="submit">{mutation.isLoading ? "Saving..." : "Save"}</Button>
+            <Button type="submit">
+              {mutation.isLoading ? "Saving..." : "Save"}
+            </Button>
           </form>
         </CardContent>
       </Card>
