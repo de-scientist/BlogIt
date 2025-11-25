@@ -15,11 +15,11 @@ export default function Dashboard() {
   const blogs = Array.isArray(data) ? data : data?.blogs || [];
 
   return (
-    <main className="min-h-screen bg-white text-gray-900 pb-20">
+    <main className="min-h-screen bg-gray-50 text-gray-900 pt-20 md:pl-64 pb-20">
 
       {/* HERO SECTION */}
-      <section className="w-full max-w-5xl mx-auto pt-20 px-6 text-center space-y-6">
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 drop-shadow">
+      <section className="max-w-5xl mx-auto pt-10 px-6 text-center space-y-6">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 drop-shadow-lg">
           Your Creative Space
         </h1>
 
@@ -38,7 +38,7 @@ export default function Dashboard() {
       </section>
 
       {/* USER BLOGS */}
-      <section className="w-full max-w-6xl mx-auto mt-24 px-6">
+      <section className="max-w-6xl mx-auto mt-16 px-6">
         <h2 className="text-3xl font-bold mb-8 text-purple-700">
           Your Blogs
         </h2>
@@ -56,7 +56,7 @@ export default function Dashboard() {
             <Button
               size="lg"
               onClick={() => navigate("/blogs/create")}
-              className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-lg"
+              className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-lg hover:opacity-90 transition-all"
             >
               Write Your First Story
             </Button>
@@ -80,14 +80,14 @@ export default function Dashboard() {
 
                 <div className="flex flex-col gap-3 mt-6">
                   <Link to={`/blogs/view/${blog.id}`}>
-                    <Button className="bg-purple-600 hover:bg-purple-700 w-full text-white">
+                    <Button className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 text-white w-full">
                       Read More
                     </Button>
                   </Link>
 
                   <div className="flex gap-3">
                     <Link
-                      to={`/blog/edit/${blog.id}`}
+                      to={`/blogs/edit/${blog.id}`}
                       className="w-full"
                     >
                       <Button className="bg-gray-200 hover:bg-gray-300 w-full text-gray-800">
