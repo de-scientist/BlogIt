@@ -19,17 +19,16 @@ export default function CreateBlog() {
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
 
-  const mutation = useMutation(
-    (newBlog: BlogForm) => api.post("/blogs", newBlog, { withCredentials: true }),
-    {
-      onSuccess: () => {
-        toast.success("Blog created successfully");
-        queryClient.invalidateQueries({ queryKey: ["blogs"] });
-        navigate("/blogs");
-      },
-      onError: (err: any) => toast.error(err.response?.data?.message || "Failed to create blog"),
-    }
-  );
+  const mutation = useMutation({
+    mutationFn: (newBlog: BlogForm) => api.post("/blogs", newBlog, { withCredentials: true }),
+    onSuccess: () => {
+      toast.success("Blog created successfully");
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      navigate("/blogs");
+    },
+    onError: (err: any) =>
+      toast.error(err.response?.data?.message || "Failed to create blog"),
+  });
 
   return (
     <form
