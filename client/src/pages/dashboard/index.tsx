@@ -41,120 +41,137 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white pb-20">
-      {/* Hero Section */}
-      <section className="max-w-6xl mx-auto pt-12 px-6 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-pink-400">
+
+      {/* HERO SECTION */}
+      <section className="max-w-6xl mx-auto pt-16 px-6 text-center">
+        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-orange-300 drop-shadow-lg">
           Discover. Create. Share Stories.
         </h1>
-        <p className="text-gray-300 max-w-2xl mx-auto mb-6">
-          Step into a world shaped by creators everywhere. Preview stories,
-          draw inspiration, then write your own.
+
+        <p className="text-gray-300 max-w-2xl mx-auto mb-8 text-lg">
+          Step into a living canvas of voices and ideas. Explore stories from creators worldwide — find your spark, then write your own masterpiece.
         </p>
 
         <Button
           size="lg"
           onClick={() => navigate("/dashboard/blogs")}
-          className="bg-blue-500 hover:bg-blue-600 font-semibold px-8 py-6 rounded-xl transition-all hover:scale-105"
+          className="bg-orange-500 hover:bg-orange-600 text-black font-semibold px-10 py-6 rounded-xl transition-all hover:scale-105"
         >
-          Create Your First Blog
+          Start Writing
         </Button>
       </section>
 
-      {/* Featured Blogs (Dummy Discoverable Section) */}
-      <section className="max-w-6xl mx-auto mt-12 px-6">
-        <h2 className="text-2xl font-bold mb-4 text-pink-300">
+      {/* FEATURED / DISCOVERABLE BLOGS */}
+      <section className="max-w-6xl mx-auto mt-20 px-6">
+        <h2 className="text-3xl font-bold mb-6 text-orange-300">
           Featured Stories
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {sampleBlogs.map((blog) => (
             <Card
               key={blog.id}
-              className="relative group bg-gray-900 border border-gray-800 hover:scale-[1.02] transition-all duration-300 overflow-hidden shadow-xl"
+              className="bg-gray-900/80 border border-gray-800 shadow-2xl backdrop-blur-sm hover:scale-[1.02] transition-all duration-300 overflow-hidden"
             >
               <img
                 src={blog.img}
                 alt={blog.title}
-                className="h-44 w-full object-cover"
+                className="h-52 w-full object-cover"
               />
-              <CardContent className="p-4">
-                <h3 className="text-xl font-semibold text-pink-400 mb-1">
+
+              <CardContent className="p-5">
+                <h3 className="text-xl font-semibold text-orange-300 mb-1">
                   {blog.title}
                 </h3>
-                <p className="text-gray-300 text-sm line-clamp-3">
+                <p className="text-gray-300 text-sm line-clamp-3 mb-4">
                   {blog.excerpt}
                 </p>
-              </CardContent>
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
-                <Button className="bg-blue-500 hover:bg-blue-600">
-                  Preview
+                <Button
+                  className="bg-orange-500 hover:bg-orange-600 text-black font-semibold w-full"
+                >
+                  Read More
                 </Button>
-              </div>
+              </CardContent>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="max-w-6xl mx-auto border-b border-gray-700 my-12"></div>
+      {/* DIVIDER */}
+      <div className="max-w-6xl mx-auto border-b border-gray-700 my-16"></div>
 
-      {/* User Blogs Section */}
+      {/* USER BLOGS */}
       <section className="max-w-6xl mx-auto px-6">
-        <h2 className="text-2xl font-bold mb-4 text-blue-300">
+        <h2 className="text-3xl font-bold mb-6 text-blue-300">
           Your Blogs
         </h2>
 
-        {isLoading && <p className="text-gray-400">Loading your blogs…</p>}
+        {isLoading && (
+          <p className="text-gray-400">Loading your blogs…</p>
+        )}
 
         {!isLoading && blogs.length === 0 && (
-          <p className="text-gray-400">
-            You haven’t created any blogs yet. Start something beautiful.
+          <p className="text-gray-400 text-lg">
+            You haven’t created any blogs yet — your voice is waiting to be heard.
           </p>
         )}
 
-        {/* Actual blogs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
           {blogs.map((blog: any) => (
             <Card
               key={blog.id}
-              className="group bg-gray-900 border border-gray-800 hover:scale-[1.02] transition-all duration-300 overflow-hidden shadow-xl"
+              className="bg-gray-900/80 border border-gray-800 shadow-2xl hover:scale-[1.02] transition-all duration-300 overflow-hidden"
             >
-              <CardContent className="p-4">
-                <h3 className="text-xl font-bold text-pink-400">
+              <CardContent className="p-5">
+                <h3 className="text-xl font-bold text-blue-300">
                   {blog.title}
                 </h3>
-                <p className="text-gray-300 line-clamp-3 mt-2">
+
+                <p className="text-gray-300 mt-2 line-clamp-3">
                   {blog.content}
                 </p>
-              </CardContent>
 
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition duration-300">
-                <Link to={`/dashboard/edit/${blog.id}`}>
-                  <Button className="bg-blue-500 hover:bg-blue-600">
-                    Edit
-                  </Button>
-                </Link>
-                <Button variant="destructive">Delete</Button>
-              </div>
+                <div className="flex flex-col gap-3 mt-5">
+                  <Link to={`/blogs/view/${blog.id}`}>
+                    <Button className="bg-blue-500 hover:bg-blue-600 w-full">
+                      Read More
+                    </Button>
+                  </Link>
+
+                  <div className="flex gap-3">
+                    <Link to={`/dashboard/edit/${blog.id}`} className="w-full">
+                      <Button className="bg-gray-700 hover:bg-gray-600 w-full">
+                        Edit
+                      </Button>
+                    </Link>
+
+                    <Button
+                      variant="destructive"
+                      className="w-full"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* Footer */}
-     <footer className="text-center text-gray-500 mt-16">
-  Built with passion.  
-  <a
-    href="https://github.com/de-scientist"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-blue-400 hover:text-blue-500 ml-2"
-  >
-    Visit my GitHub →
-  </a>
-</footer>
+      {/* FOOTER */}
+      <footer className="text-center text-gray-500 mt-20">
+        Built with passion  
+        <a
+          href="https://github.com/de-scientist"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-orange-400 hover:text-orange-500 ml-2"
+        >
+          Explore my GitHub →
+        </a>
+      </footer>
 
     </main>
   );
