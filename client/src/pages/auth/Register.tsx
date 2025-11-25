@@ -2,10 +2,10 @@ import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
 
@@ -41,64 +41,32 @@ export default function RegisterPage() {
   const handleSubmit = async (data: RegisterForm) => {
     try {
       await api.post("/auth/register", data, { withCredentials: true });
-
       toast.success("Registration successful");
       form.reset();
       setTimeout(() => navigate("/auth/login"), 600);
     } catch (err: any) {
-  const message: string = err.response?.data?.message;
+      const message: string = err.response?.data?.message;
+      if (!message) return toast.error("Registration failed");
 
-  if (!message) {
-    toast.error("Registration failed");
-    return;
-  }
+      const lower = message.toLowerCase();
+      if (lower.includes("first name")) return form.setError("firstName", { type: "server", message });
+      if (lower.includes("last name")) return form.setError("lastName", { type: "server", message });
+      if (lower.includes("user name") || lower.includes("username")) return form.setError("userName", { type: "server", message });
+      if (lower.includes("email")) return form.setError("emailAddress", { type: "server", message });
+      if (lower.includes("password")) return form.setError("password", { type: "server", message });
 
-  const lower = message.toLowerCase();
-
-  // Required fields
-  if (lower.includes("first name")) {
-    form.setError("firstName", { type: "server", message });
-    return;
-  }
-
-  if (lower.includes("last name")) {
-    form.setError("lastName", { type: "server", message });
-    return;
-  }
-
-  if (lower.includes("user name") || lower.includes("username")) {
-    form.setError("userName", { type: "server", message });
-    return;
-  }
-
-  if (lower.includes("email")) {
-    form.setError("emailAddress", { type: "server", message });
-    return;
-  }
-
-  if (lower.includes("password")) {
-    form.setError("password", { type: "server", message });
-    return;
-  }
-
-  // Default fallback
-  toast.error(message);
-}
-
+      toast.error(message);
+    }
   };
 
   return (
-    <div className="flex justify-center py-10">
-      <Card className="w-full max-w-xl">
-        <CardHeader>
-          <CardTitle>Create Account</CardTitle>
+    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+      <Card className="w-full max-w-md shadow-lg border border-gray-200">
+        <CardHeader className="bg-gray-100">
+          <CardTitle className="text-2xl text-gray-800">Create Account</CardTitle>
         </CardHeader>
-
-        <CardContent>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
+        <CardContent className="space-y-4 p-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             {loading ? (
               <>
                 <Skeleton className="h-10 w-full" />
@@ -109,14 +77,12 @@ export default function RegisterPage() {
               </>
             ) : (
               <>
-                <Field
-                  label="First Name"
-                  error={form.formState.errors.firstName}
-                >
+                <Field label="First Name" error={form.formState.errors.firstName}>
                   <Input
                     placeholder="Enter first name"
                     {...form.register("firstName")}
                     autoComplete="firstName"
+                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   />
                 </Field>
 
@@ -125,6 +91,7 @@ export default function RegisterPage() {
                     placeholder="Enter last name"
                     {...form.register("lastName")}
                     autoComplete="lastName"
+                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   />
                 </Field>
 
@@ -133,18 +100,17 @@ export default function RegisterPage() {
                     placeholder="Choose a username"
                     {...form.register("userName")}
                     autoComplete="username"
+                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   />
                 </Field>
 
-                <Field
-                  label="Email Address"
-                  error={form.formState.errors.emailAddress}
-                >
+                <Field label="Email Address" error={form.formState.errors.emailAddress}>
                   <Input
                     type="email"
                     placeholder="example@gmail.com"
                     {...form.register("emailAddress")}
                     autoComplete="email"
+                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   />
                 </Field>
 
@@ -154,17 +120,18 @@ export default function RegisterPage() {
                     placeholder="Enter password"
                     {...form.register("password")}
                     autoComplete="current-password"
+                    className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   />
                 </Field>
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={loading}>
                   Create Account
                 </Button>
 
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full mt-2 bg-green-500 text-white hover:bg-green-700"
+                  className="w-full mt-2 text-gray-700 border-gray-400 hover:bg-gray-100"
                   onClick={() => navigate("/auth/login")}
                 >
                   Already have an account? Log In
@@ -181,11 +148,9 @@ export default function RegisterPage() {
 function Field({ label, error, children }: FieldProps) {
   return (
     <div className="space-y-1">
-      <Label>{label}</Label>
+      <Label className="text-gray-700">{label}</Label>
       {children}
-      {error?.message && (
-        <p className="text-red-500 text-sm">{error.message as string}</p>
-      )}
+      {error?.message && <p className="text-red-600 text-sm">{error.message as string}</p>}
     </div>
   );
 }
