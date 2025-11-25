@@ -71,10 +71,6 @@ export default function CreateBlog() {
       toast.error(err.response?.data?.message || "Failed to create blog"),
   });
 
-  // Watch content for live preview
-  const contentValue = form.watch("content");
-  const imageValue = form.watch("featuredImageUrl");
-
   return (
     <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl">
       <CardHeader className="pb-2">
@@ -87,8 +83,7 @@ export default function CreateBlog() {
       </CardHeader>
 
       <CardContent className="space-y-6 pt-4">
-
-        {/* Title */}
+        {/* TITLE */}
         <div>
           <Label htmlFor="title" className="font-medium">Title</Label>
           <Input
@@ -97,12 +92,9 @@ export default function CreateBlog() {
             className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("title", { required: "Title is required" })}
           />
-          {form.formState.errors.title && (
-            <p className="text-red-500">{form.formState.errors.title.message}</p>
-          )}
         </div>
 
-        {/* Synopsis */}
+        {/* SYNOPSIS */}
         <div>
           <Label htmlFor="synopsis" className="font-medium">Synopsis</Label>
           <Input
@@ -111,12 +103,9 @@ export default function CreateBlog() {
             className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
-          {form.formState.errors.synopsis && (
-            <p className="text-red-500">{form.formState.errors.synopsis.message}</p>
-          )}
         </div>
 
-        {/* Featured Image */}
+        {/* FEATURED IMAGE */}
         <div>
           <Label className="font-medium">Featured Image</Label>
 
@@ -136,17 +125,9 @@ export default function CreateBlog() {
               {uploading ? "Uploading..." : "Upload"}
             </Button>
           </div>
-
-          {imageValue && (
-            <img
-              src={imageValue}
-              alt="Preview"
-              className="w-full h-56 object-cover rounded-md mt-4 shadow"
-            />
-          )}
         </div>
 
-        {/* Content */}
+        {/* CONTENT */}
         <div>
           <Label htmlFor="content" className="font-medium">Content (Markdown supported)</Label>
           <Textarea
@@ -155,28 +136,36 @@ export default function CreateBlog() {
             {...form.register("content", { required: "Content is required" })}
             className="h-48 mt-1 focus:ring-2 focus:ring-purple-500"
           />
-          {form.formState.errors.content && (
-            <p className="text-red-500">{form.formState.errors.content.message}</p>
-          )}
         </div>
 
-        {/* Live Preview */}
-        {(contentValue || imageValue) && (
-          <div className="border rounded-lg p-4 mt-4 bg-gray-50">
-            {imageValue && (
+        {/* LIVE PREVIEW */}
+        {(form.watch("featuredImageUrl") || form.watch("content")) && (
+          <div className="mt-4 border rounded-lg p-4 bg-gray-50">
+            {form.watch("featuredImageUrl") && (
               <img
-                src={imageValue}
-                alt="Preview"
+                src={form.watch("featuredImageUrl")}
+                alt="Featured image preview"
                 className="w-full h-52 object-cover rounded-md mb-4"
               />
             )}
-            <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose max-w-full">
-              {contentValue || ""}
+            <ReactMarkdown
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                img: ({ node, ...props }) => (
+                  <img
+                    {...props}
+                    alt={props.alt || "Markdown image"}
+                    className="max-w-full rounded-md"
+                  />
+                ),
+              }}
+            >
+              {form.watch("content") || ""}
             </ReactMarkdown>
           </div>
         )}
 
-        {/* Submit */}
+        {/* SUBMIT */}
         <Button
           type="submit"
           disabled={mutation.isLoading || uploading}
