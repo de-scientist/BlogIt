@@ -6,7 +6,7 @@ import Login from "@/pages/auth/Login";
 import RegisterPage from "@/pages/auth/Register";
 
 import Dashboard from "@/pages/dashboard";
-import CreateBlog from "@/pages/blogs/NewBlog";
+import CreateBlog from "@/pages/blogs/CreateBlog";
 import BlogList from "@/pages/blogs/BlogList";
 //import TrashPage from "@/pages/dashboard/trash";
 
