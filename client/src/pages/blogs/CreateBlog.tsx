@@ -156,7 +156,7 @@ export default function CreateBlog() {
           className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl"
           onClick={form.handleSubmit(values => mutation.mutate(values))}
         >
-          {mutation.isLoading ? <Spinner size="sm" /> : "Publish Blog ✨"}
+          {mutation.isLoading ? <Spinner className="w-5 h-5" /> : "Publish Blog ✨"}
         </Button>
       </CardContent>
     </Card>

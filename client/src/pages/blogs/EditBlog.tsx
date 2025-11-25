@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { useState } from "react";
 import { Upload, ImageIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -87,7 +88,8 @@ export default function EditBlog() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-20">
-        <p className="text-gray-500 text-lg animate-pulse">Loading blog...</p>
+        <Spinner size="lg" />
+        <p className="text-gray-500 text-lg ml-4">Loading blog...</p>
       </div>
     );
   }
@@ -133,7 +135,7 @@ export default function EditBlog() {
           >
             <Upload className="w-5 h-5 text-gray-600" />
             <span className="text-gray-600 text-sm">
-              {uploading ? "Uploading..." : "Click to upload image"}
+              {uploading ? <Spinner size="sm" /> : "Click to upload image"}
             </span>
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
@@ -172,18 +174,7 @@ export default function EditBlog() {
                 className="w-full h-52 object-cover rounded-md mb-4"
               />
             )}
-            <ReactMarkdown
-              rehypePlugins={[rehypeRaw]}
-              components={{
-                img: ({ node, ...props }) => (
-                  <img
-                    {...props}
-                    alt={props.alt || "Markdown image"}
-                    className="max-w-full rounded-md"
-                  />
-                ),
-              }}
-            >
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>
               {form.watch("content") || ""}
             </ReactMarkdown>
           </div>
@@ -195,7 +186,7 @@ export default function EditBlog() {
           className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition-all"
           onClick={form.handleSubmit(values => mutation.mutate(values))}
         >
-          {mutation.isLoading ? "Saving changes..." : "Update Blog ✨"}
+          {mutation.isLoading ? <Spinner size="sm" /> : "Update Blog ✨"}
         </Button>
       </CardContent>
     </Card>
