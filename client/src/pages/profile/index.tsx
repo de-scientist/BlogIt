@@ -69,45 +69,56 @@ export default function ProfilePage() {
   if (isLoading) return <div className="p-10 text-gray-500">Loading...</div>;
 
   return (
-    <div className="flex justify-center py-10 bg-gray-50 min-h-screen">
-      <Card className="w-full max-w-xl shadow-md border border-gray-200">
+    <div className="flex justify-center py-14 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <Card className="w-full max-w-xl shadow-xl border-gray-200 rounded-2xl bg-white">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-gray-800">
+          <CardTitle className="text-3xl font-bold text-gray-800 text-center">
             Update Your Profile
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="mt-4">
           <form
             onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
-            className="space-y-5"
+            className="space-y-6"
           >
-            <div>
-              <Label>First Name</Label>
-              <Input {...form.register("firstName", { required: true })} />
-            </div>
-
-            <div>
-              <Label>Last Name</Label>
-              <Input {...form.register("lastName", { required: true })} />
-            </div>
-
-            <div>
-              <Label>Email</Label>
+            <div className="space-y-2">
+              <Label className="font-medium">First Name</Label>
               <Input
-                {...form.register("emailAddress", { required: true })}
-                type="email"
+                className="rounded-xl"
+                {...form.register("firstName", { required: true })}
               />
             </div>
 
-            <div>
-              <Label>Username</Label>
-              <Input {...form.register("userName", { required: true })} />
+            <div className="space-y-2">
+              <Label className="font-medium">Last Name</Label>
+              <Input
+                className="rounded-xl"
+                {...form.register("lastName", { required: true })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="font-medium">Email Address</Label>
+              <Input
+                type="email"
+                className="rounded-xl"
+                {...form.register("emailAddress", { required: true })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="font-medium">Username</Label>
+              <Input
+                className="rounded-xl"
+                {...form.register("userName", { required: true })}
+              />
             </div>
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              className="w-full py-5 text-white font-semibold rounded-xl shadow-lg
+              bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all"
             >
               {mutation.isLoading ? "Saving..." : "Save Changes"}
             </Button>
