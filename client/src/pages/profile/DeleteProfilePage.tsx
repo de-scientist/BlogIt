@@ -11,19 +11,27 @@ export default function DeleteProfilePage() {
       await api.delete("/profile", { withCredentials: true });
       toast.success("Profile moved to trash.");
       navigate("/");
-    } catch (err: any) {
+    } catch {
       toast.error("Could not delete profile.");
     }
   };
 
   return (
-    <div className="p-10 space-y-4">
-      <h1 className="text-xl font-bold text-red-600">Delete Profile</h1>
-      <p>This action is reversible. Your profile will move to trash.</p>
+    <div className="min-h-screen flex justify-center items-center bg-gray-50 px-4">
+      <div className="max-w-lg w-full bg-white p-8 rounded-xl shadow-md border">
+        <h1 className="text-2xl font-bold text-red-600">Delete Profile</h1>
+        <p className="mt-2 text-gray-600">
+          This action is reversible. Your profile will be moved to trash.
+        </p>
 
-      <Button variant="destructive" onClick={handleDelete}>
-        Move Profile to Trash
-      </Button>
+        <Button
+          variant="destructive"
+          onClick={handleDelete}
+          className="mt-6 w-full"
+        >
+          Move Profile to Trash
+        </Button>
+      </div>
     </div>
   );
 }
