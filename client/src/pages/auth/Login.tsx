@@ -44,7 +44,7 @@ export default function LoginPage() {
     } catch (err: any) {
       if (err.response?.data?.errors) {
         // server returned field-specific errors
-        const errors = err.response.data.errors;
+        const errors = err.response?.data?.message;
         Object.keys(errors).forEach((key) => {
           form.setError(key as keyof LoginForm, {
             type: "server",
