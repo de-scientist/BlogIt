@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ export default function ProfilePage() {
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () =>
-      (await axios.get("/api/profile", { withCredentials: true })).data,
+      (await api.get("/profile", { withCredentials: true })).data,
   });
 
   const form = useForm<ProfileForm>({
@@ -44,7 +44,7 @@ export default function ProfilePage() {
   // UPDATE PROFILE
   const mutation = useMutation({
     mutationFn: async (payload: ProfileForm) =>
-      (await axios.patch("/api/profile", payload, { withCredentials: true }))
+      (await api.patch("/api/profile", payload, { withCredentials: true }))
         .data,
     onSuccess: () => {
       toast.success("Profile updated");
