@@ -39,7 +39,7 @@ export default function LoginPage() {
 
     toast.success("Logged in successfully");
 
-    setTimeout(() => navigate("/dashboard"), 600);
+    setTimeout(() => navigate("/profile"), 600);
 
   } catch (err: any) {
     const message = err.response?.data?.message;
