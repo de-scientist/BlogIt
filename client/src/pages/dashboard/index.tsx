@@ -17,7 +17,7 @@ export default function Dashboard() {
     <main className="p-8 max-w-3xl mx-auto">
       <div className="flex justify-between mb-6">
         <h1 className="text-3xl font-semibold">Your Blogs</h1>
-        <Link to="/dashboard/create">
+        <Link to="/dashboard/blogs">
           <Button>Create New</Button>
         </Link>
       </div>
