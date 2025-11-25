@@ -92,46 +92,44 @@ export default function EditBlog() {
     );
   }
 
-  // Watch values for live preview
-  const contentValue = form.watch("content");
-  const imageValue = form.watch("featuredImageUrl");
-
   return (
-    <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-2xl bg-white">
+    <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl bg-white">
       <CardHeader>
-        <h2 className="text-3xl font-bold tracking-tight">Edit Blog</h2>
-        <p className="text-gray-500 text-sm">Refine your story. Shape your voice.</p>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
+          Edit Your Story
+        </h2>
+        <p className="text-gray-500 mt-1">Refine your words. Shape your voice.</p>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pt-2">
 
-        {/* Title */}
-        <div className="space-y-1">
-          <Label>Title</Label>
+        {/* TITLE */}
+        <div>
+          <Label htmlFor="title" className="font-medium">Title</Label>
           <Input
+            id="title"
             placeholder="Enter a compelling title..."
-            className="h-11"
+            className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("title", { required: "Title is required" })}
           />
         </div>
 
-        {/* Synopsis */}
-        <div className="space-y-1">
-          <Label>Synopsis</Label>
+        {/* SYNOPSIS */}
+        <div>
+          <Label htmlFor="synopsis" className="font-medium">Synopsis</Label>
           <Input
-            placeholder="Short summary of your blog"
-            className="h-11"
+            id="synopsis"
+            placeholder="Short teaser for your blog..."
+            className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
         </div>
 
-        {/* Image Upload */}
-        <div className="space-y-2">
-          <Label>Featured Image</Label>
-
+        {/* FEATURED IMAGE UPLOAD */}
+        <div>
+          <Label className="font-medium">Featured Image</Label>
           <label
-            className="flex items-center justify-center gap-2 w-full h-12 border border-dashed 
-                       border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition"
+            className="flex items-center justify-center gap-2 w-full h-12 border border-dashed border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition"
           >
             <Upload className="w-5 h-5 text-gray-600" />
             <span className="text-gray-600 text-sm">
@@ -140,11 +138,11 @@ export default function EditBlog() {
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
 
-          {/* Live Image Preview */}
-          {imageValue ? (
+          {form.watch("featuredImageUrl") ? (
             <img
-              src={imageValue}
-              className="rounded-lg w-full h-52 object-cover border mt-2"
+              src={form.watch("featuredImageUrl")}
+              alt="Featured image preview"
+              className="rounded-lg w-full h-52 object-cover mt-2 shadow"
             />
           ) : (
             <div className="w-full h-52 border rounded-lg flex items-center justify-center text-gray-300 mt-2">
@@ -153,39 +151,51 @@ export default function EditBlog() {
           )}
         </div>
 
-        {/* Content */}
-        <div className="space-y-1">
-          <Label>Content (Markdown supported)</Label>
+        {/* CONTENT */}
+        <div>
+          <Label htmlFor="content" className="font-medium">Content (Markdown supported)</Label>
           <Textarea
-            className="h-48"
-            placeholder="Write your blog here. Markdown fully supported..."
+            id="content"
+            placeholder="Write your blog here..."
+            className="h-48 mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("content", { required: "Content is required" })}
           />
         </div>
 
-        {/* Live Preview */}
-        {(contentValue || imageValue) && (
-          <div className="border rounded-lg p-4 mt-4 bg-gray-50">
-            {imageValue && (
+        {/* LIVE PREVIEW */}
+        {(form.watch("featuredImageUrl") || form.watch("content")) && (
+          <div className="mt-4 border rounded-lg p-4 bg-gray-50">
+            {form.watch("featuredImageUrl") && (
               <img
-                src={imageValue}
-                alt="Preview"
+                src={form.watch("featuredImageUrl")}
+                alt="Featured image preview"
                 className="w-full h-52 object-cover rounded-md mb-4"
               />
             )}
-            <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose max-w-full">
-              {contentValue || ""}
+            <ReactMarkdown
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                img: ({ node, ...props }) => (
+                  <img
+                    {...props}
+                    alt={props.alt || "Markdown image"}
+                    className="max-w-full rounded-md"
+                  />
+                ),
+              }}
+            >
+              {form.watch("content") || ""}
             </ReactMarkdown>
           </div>
         )}
 
-        {/* Submit */}
+        {/* SUBMIT */}
         <Button
           disabled={mutation.isLoading || uploading}
-          className="w-full h-12 text-lg font-medium rounded-xl bg-black text-white hover:bg-gray-800"
+          className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition-all"
           onClick={form.handleSubmit(values => mutation.mutate(values))}
         >
-          {mutation.isLoading ? "Saving changes..." : "Update Blog"}
+          {mutation.isLoading ? "Saving changes..." : "Update Blog ✨"}
         </Button>
       </CardContent>
     </Card>
