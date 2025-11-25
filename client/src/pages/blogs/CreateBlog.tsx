@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Spinner } from "@/components/ui/spinner";
@@ -24,10 +24,27 @@ export default function CreateBlog() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
 
   const form = useForm<BlogForm>({
     defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
   });
+
+  // --------------------
+  // Verify Token / Auth Check
+  // --------------------
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await api.get("/auth/verify-token", { withCredentials: true });
+        setLoadingUser(false);
+      } catch {
+        toast.error("You must login to create a blog!");
+        navigate("/login");
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -47,11 +64,9 @@ export default function CreateBlog() {
       if (result.secure_url) {
         form.setValue("featuredImageUrl", result.secure_url);
         toast.success("Image uploaded!");
-      } else {
-        toast.error("Failed to upload image");
       }
     } catch {
-      toast.error("Upload error");
+      toast.error("Failed to upload image.");
     } finally {
       setUploading(false);
     }
@@ -78,15 +93,15 @@ export default function CreateBlog() {
     },
   });
 
+  if (loadingUser) return <Spinner className="w-10 h-10 mx-auto mt-20" />;
+
   return (
     <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl">
       <CardHeader className="pb-2">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
           Write Something Beautiful
         </h2>
-        <p className="text-gray-500 mt-1">
-          Tell your story. Someone out there needs your voice.
-        </p>
+        <p className="text-gray-500 mt-1">Tell your story. Someone out there needs your voice.</p>
       </CardHeader>
 
       <CardContent className="space-y-6 pt-4">
@@ -131,7 +146,7 @@ export default function CreateBlog() {
             <Button
               disabled
               variant="secondary"
-              className="bg-purple-100 text-purple-700 cursor-default flex items-center justify-center"
+              className="bg-purple-100 text-purple-700 cursor-default"
             >
               {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
             </Button>
@@ -173,7 +188,6 @@ export default function CreateBlog() {
 
         {/* SUBMIT */}
         <Button
-          type="submit"
           disabled={mutation.isLoading || uploading}
           className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl flex justify-center items-center"
           onClick={form.handleSubmit((values) => mutation.mutate(values))}

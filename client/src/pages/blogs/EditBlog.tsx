@@ -8,11 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Spinner } from "@/components/ui/spinner";
 import { useState } from "react";
 import { Upload, ImageIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import { Spinner } from "@/components/ui/spinner";
 
 type BlogForm = {
   title: string;
@@ -49,7 +49,6 @@ export default function EditBlog() {
     if (!file) return;
 
     setUploading(true);
-
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
@@ -59,9 +58,7 @@ export default function EditBlog() {
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
         { method: "POST", body: data }
       );
-
       const result = await res.json();
-
       if (result.secure_url) {
         form.setValue("featuredImageUrl", result.secure_url);
         toast.success("Image uploaded!");
@@ -81,15 +78,23 @@ export default function EditBlog() {
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
       navigate(`/blogs/view/${id}`);
     },
-    onError: (err: any) =>
-      toast.error(err.response?.data?.message || "Failed to update blog."),
+    onError: (err: any) => {
+      if (err.response?.status === 400 && err.response?.data?.message) {
+        const msg = err.response.data.message.toLowerCase();
+        if (msg.includes("title")) form.setError("title", { type: "server", message: err.response.data.message });
+        if (msg.includes("synopsis")) form.setError("synopsis", { type: "server", message: err.response.data.message });
+        if (msg.includes("featured image")) form.setError("featuredImageUrl", { type: "server", message: err.response.data.message });
+        if (msg.includes("content")) form.setError("content", { type: "server", message: err.response.data.message });
+      } else {
+        toast.error(err.response?.data?.message || "Failed to update blog.");
+      }
+    },
   });
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-20">
-        <Spinner className="w-5 h-5" />
-        <p className="text-gray-500 text-lg ml-4">Loading blog...</p>
+        <p className="text-gray-500 text-lg animate-pulse">Loading blog...</p>
       </div>
     );
   }
@@ -114,6 +119,9 @@ export default function EditBlog() {
             className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("title", { required: "Title is required" })}
           />
+          {form.formState.errors.title && (
+            <p className="text-red-500">{form.formState.errors.title.message}</p>
+          )}
         </div>
 
         {/* SYNOPSIS */}
@@ -125,9 +133,12 @@ export default function EditBlog() {
             className="mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
+          {form.formState.errors.synopsis && (
+            <p className="text-red-500">{form.formState.errors.synopsis.message}</p>
+          )}
         </div>
 
-        {/* FEATURED IMAGE UPLOAD */}
+        {/* FEATURED IMAGE */}
         <div>
           <Label className="font-medium">Featured Image</Label>
           <label
@@ -135,21 +146,19 @@ export default function EditBlog() {
           >
             <Upload className="w-5 h-5 text-gray-600" />
             <span className="text-gray-600 text-sm">
-              {uploading ? <Spinner className="w-5 h-5" /> : "Click to upload image"}
+              {uploading ? "Uploading..." : "Click to upload image"}
             </span>
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           </label>
-
-          {form.watch("featuredImageUrl") ? (
+          {form.formState.errors.featuredImageUrl && (
+            <p className="text-red-500">{form.formState.errors.featuredImageUrl.message}</p>
+          )}
+          {form.watch("featuredImageUrl") && (
             <img
               src={form.watch("featuredImageUrl")}
               alt="Featured image preview"
               className="rounded-lg w-full h-52 object-cover mt-2 shadow"
             />
-          ) : (
-            <div className="w-full h-52 border rounded-lg flex items-center justify-center text-gray-300 mt-2">
-              <ImageIcon className="w-10 h-10" />
-            </div>
           )}
         </div>
 
@@ -162,6 +171,9 @@ export default function EditBlog() {
             className="h-48 mt-1 focus:ring-2 focus:ring-purple-500"
             {...form.register("content", { required: "Content is required" })}
           />
+          {form.formState.errors.content && (
+            <p className="text-red-500">{form.formState.errors.content.message}</p>
+          )}
         </div>
 
         {/* LIVE PREVIEW */}
@@ -183,8 +195,8 @@ export default function EditBlog() {
         {/* SUBMIT */}
         <Button
           disabled={mutation.isLoading || uploading}
-          className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition-all"
-          onClick={form.handleSubmit(values => mutation.mutate(values))}
+          className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl flex justify-center items-center"
+          onClick={form.handleSubmit((values) => mutation.mutate(values))}
         >
           {mutation.isLoading ? <Spinner className="w-5 h-5" /> : "Update Blog ✨"}
         </Button>
