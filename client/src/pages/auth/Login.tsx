@@ -53,7 +53,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50 space-y-4">
       <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="bg-gray-100">
           <CardTitle className="text-2xl text-gray-800">Login</CardTitle>
@@ -82,11 +82,23 @@ export default function LoginPage() {
             <Button
               disabled={loading}
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition-all"
             >
               {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
+
+          {/* 🔹 REGISTER BUTTON */}
+          <div className="text-center mt-4">
+            <p className="text-gray-600 text-sm mb-2">Don't have an account?</p>
+            <Button
+              variant="default"
+              className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 transition-all"
+              onClick={() => navigate("/auth/register")}
+            >
+              Register
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
@@ -102,3 +114,4 @@ function Field({ label, error, children }: FieldProps) {
     </div>
   );
 }
+
