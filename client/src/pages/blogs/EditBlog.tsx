@@ -8,8 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useState, useEffect } from "react";
-import { Upload, ImageIcon } from "lucide-react";
+import { useState } from "react";
+import { Upload } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Spinner } from "@/components/ui/spinner";
@@ -35,20 +35,6 @@ export default function EditBlog() {
       content: "",
     },
   });
-
-  // 🔹 VERIFY USER TOKEN ON MOUNT
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await api.get("/auth/verify-token", { withCredentials: true });
-        // Token valid, allow editing
-      } catch (err) {
-        toast.error("You must be logged in to edit a blog.");
-        navigate("/login"); // redirect to login
-      }
-    };
-    checkAuth();
-  }, [navigate]);
 
   // 🔹 FETCH BLOG DATA
   const { data: blog, isLoading } = useQuery({
