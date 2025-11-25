@@ -60,7 +60,7 @@ export default function Home() {
           type="button"
           size="lg"
           className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
-          onClick={() => navigate("/auth/register")}
+          onClick={() => navigate("/auth/login")}
         >
           Create a Blog
         </Button>
