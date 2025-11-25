@@ -30,7 +30,7 @@ export default function Dashboard() {
 
         <Button
           size="lg"
-          onClick={() => navigate("/dashboard/blogs")}
+          onClick={() => navigate("/blogs/create")}
           className="bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-4 shadow-xl"
         >
           Create New Blog
@@ -55,7 +55,7 @@ export default function Dashboard() {
             </p>
             <Button
               size="lg"
-              onClick={() => navigate("/dashboard/blogs")}
+              onClick={() => navigate("/blogs/create")}
               className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-lg"
             >
               Write Your First Story
@@ -87,7 +87,7 @@ export default function Dashboard() {
 
                   <div className="flex gap-3">
                     <Link
-                      to={`/dashboard/edit/${blog.id}`}
+                      to={`/blog/edit/${blog.id}`}
                       className="w-full"
                     >
                       <Button className="bg-gray-200 hover:bg-gray-300 w-full text-gray-800">
