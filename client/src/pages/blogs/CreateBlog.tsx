@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 type BlogForm = {
   title: string;
@@ -31,44 +36,57 @@ export default function CreateBlog() {
   });
 
   return (
-    <form
-      onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-      className="space-y-4 max-w-3xl mx-auto p-4"
-    >
-      <input
-        placeholder="Title"
-        {...form.register("title", { required: "Title is required" })}
-        className="w-full border p-2 rounded"
-      />
-      {form.formState.errors.title && <p className="text-red-500">{form.formState.errors.title.message}</p>}
+    <Card className="max-w-3xl mx-auto mt-8">
+      <CardHeader>
+        <h2 className="text-2xl font-bold">Create a New Blog</h2>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div>
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            placeholder="Title"
+            {...form.register("title", { required: "Title is required" })}
+          />
+          {form.formState.errors.title && (
+            <p className="text-red-500">{form.formState.errors.title.message}</p>
+          )}
+        </div>
 
-      <input
-        placeholder="Synopsis"
-        {...form.register("synopsis", { required: "Synopsis is required" })}
-        className="w-full border p-2 rounded"
-      />
-      {form.formState.errors.synopsis && <p className="text-red-500">{form.formState.errors.synopsis.message}</p>}
+        <div>
+          <Label htmlFor="synopsis">Synopsis</Label>
+          <Input
+            id="synopsis"
+            placeholder="Synopsis"
+            {...form.register("synopsis", { required: "Synopsis is required" })}
+          />
+          {form.formState.errors.synopsis && (
+            <p className="text-red-500">{form.formState.errors.synopsis.message}</p>
+          )}
+        </div>
 
-      <input
-        placeholder="Featured Image URL"
-        {...form.register("featuredImageUrl")}
-        className="w-full border p-2 rounded"
-      />
+        <div>
+          <Label htmlFor="featuredImageUrl">Featured Image URL</Label>
+          <Input id="featuredImageUrl" placeholder="Image URL" {...form.register("featuredImageUrl")} />
+        </div>
 
-      <textarea
-        placeholder="Content"
-        {...form.register("content", { required: "Content is required" })}
-        className="w-full border p-2 rounded h-40"
-      />
-      {form.formState.errors.content && <p className="text-red-500">{form.formState.errors.content.message}</p>}
+        <div>
+          <Label htmlFor="content">Content</Label>
+          <Textarea
+            id="content"
+            placeholder="Content"
+            {...form.register("content", { required: "Content is required" })}
+            className="h-40"
+          />
+          {form.formState.errors.content && (
+            <p className="text-red-500">{form.formState.errors.content.message}</p>
+          )}
+        </div>
 
-      <button
-        type="submit"
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        disabled={mutation.isLoading}
-      >
-        {mutation.isLoading ? "Creating..." : "Create Blog"}
-      </button>
-    </form>
+        <Button type="submit" disabled={mutation.isLoading} className="w-full">
+          {mutation.isLoading ? "Creating..." : "Create Blog"}
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
