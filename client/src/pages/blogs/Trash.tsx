@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Trash() {
   const queryClient = useQueryClient();
 
-  // ✅ useQuery v5 object syntax
   const { data = [], isLoading } = useQuery({
     queryKey: ["trash"],
     queryFn: async () => {
@@ -14,7 +16,6 @@ export default function Trash() {
     },
   });
 
-  // ✅ useMutation v5 object syntax
   const recoverMutation = useMutation({
     mutationFn: (id: string) => api.patch(`/blogs/recover/${id}`, {}, { withCredentials: true }),
     onSuccess: () => {
@@ -33,34 +34,26 @@ export default function Trash() {
 
   if (isLoading) return <div className="p-4">Loading...</div>;
 
+  if (data.length === 0) return <p className="text-center p-8">Your trash is empty.</p>;
+
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-4">
-      {data.length === 0 ? (
-        <p>Your trash is empty.</p>
-      ) : (
-        data.map((blog: any) => (
-          <div key={blog.id} className="border p-4 rounded flex justify-between items-center">
-            <div>
-              <h2 className="font-bold">{blog.title}</h2>
-              <small>{new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()}</small>
-            </div>
-            <div className="space-x-2">
-              <button
-                className="px-2 py-1 bg-green-500 text-white rounded"
-                onClick={() => recoverMutation.mutate(blog.id)}
-              >
-                Recover
-              </button>
-              <button
-                className="px-2 py-1 bg-red-500 text-white rounded"
-                onClick={() => deleteMutation.mutate(blog.id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))
-      )}
-    </div>
+    <ScrollArea className="max-w-4xl mx-auto mt-8 space-y-4 h-[70vh]">
+      {data.map((blog: any) => (
+        <Card key={blog.id} className="hover:shadow-lg transition-shadow duration-200">
+          <CardHeader>
+            <h2 className="font-bold text-lg">{blog.title}</h2>
+            <small className="text-gray-400">{new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()}</small>
+          </CardHeader>
+          <CardFooter className="flex justify-end gap-2">
+            <Button className="bg-green-500 text-white hover:bg-green-600" onClick={() => recoverMutation.mutate(blog.id)}>
+              Recover
+            </Button>
+            <Button className="bg-red-500 text-white hover:bg-red-600" onClick={() => deleteMutation.mutate(blog.id)}>
+              Delete
+            </Button>
+          </CardFooter>
+        </Card>
+      ))}
+    </ScrollArea>
   );
 }
