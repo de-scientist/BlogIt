@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
-import { Blog } from "./types";
+import { Blog } from "@/types";
 
 type BlogForm = {
   title: string;

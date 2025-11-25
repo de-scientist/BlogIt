@@ -6,7 +6,7 @@ import Login from "@/pages/auth/Login";
 import RegisterPage from "@/pages/auth/Register";
 
 import Dashboard from "@/pages/dashboard";
-import CreateBlogPage from "@/pages/dashboard/create";
+import CreateBlog from "@/pages/blogs/NewBlog";
 import BlogList from "@/pages/blogs/List";
 //import TrashPage from "@/pages/dashboard/trash";
 
@@ -28,7 +28,7 @@ export default function AppRoutes() {
 
       {/* Dashboard */}
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/dashboard/create" element={<CreateBlogPage />} />
+      <Route path="/dashboard/create" element={<CreateBlog />} />
       <Route path="/dashboard/list" element={<BlogList />} />
       
 
