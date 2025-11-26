@@ -127,25 +127,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FOOTER */}
-      <footer className="py-8 bg-gray-50 text-gray-600 border-t mt-16">
-        <p className="text-center">
-          &copy; {new Date().getFullYear()} Your Blog Platform. All rights
-          reserved.
-        </p>
-
-        <div className="flex justify-center mt-2">
-          <a
-            href="https://github.com/your-github-username"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-gray-900 transition"
-          >
-            <Github size={18} /> GitHub
-          </a>
-        </div>
-      </footer>
-
       {/* ANIMATIONS */}
       <style>
         {`
