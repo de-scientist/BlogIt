@@ -20,6 +20,16 @@ type BlogForm = {
   content: string;
 };
 
+// --- Error Mapping Dictionary (Refined) ---
+// Maps key phrases in server error messages to the corresponding form field key.
+const serverErrorMap = new Map<string, keyof BlogForm>([
+    ["title", "title"],
+    ["synopsis", "synopsis"],
+    ["featured image", "featuredImageUrl"],
+    ["content", "content"],
+]);
+
+
 export default function CreateBlog() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -76,30 +86,43 @@ export default function CreateBlog() {
       navigate("/blogs");
     },
     onError: (err: any) => {
-      if (err.response?.status === 400 && err.response?.data?.message) {
-        const msg = err.response.data.message.toLowerCase();
-        if (msg.includes("title"))
-          form.setError("title", {
-            type: "server",
-            message: err.response.data.message,
-          });
-        if (msg.includes("synopsis"))
-          form.setError("synopsis", {
-            type: "server",
-            message: err.response.data.message,
-          });
-        if (msg.includes("featured image"))
-          form.setError("featuredImageUrl", {
-            type: "server",
-            message: err.response.data.message,
-          });
-        if (msg.includes("content"))
-          form.setError("content", {
-            type: "server",
-            message: err.response.data.message,
-          });
-      } else {
-        toast.error(err.response?.data?.message || "Failed to create blog");
+      const errorMessage = err.response?.data?.message;
+      const statusCode = err.response?.status;
+
+      if (statusCode === 401) {
+        // Handle Unauthorized/Session Expired
+        toast.error(errorMessage || "Session expired. Please log in.");
+        navigate("/login"); 
+        return;
+      } 
+      
+      if (statusCode === 400 && errorMessage) {
+        const msgLower = errorMessage.toLowerCase();
+        let fieldToTarget: keyof BlogForm | undefined = undefined;
+
+        // 💡 Refined Error Mapping Logic
+        for (const [keyPhrase, fieldName] of serverErrorMap.entries()) {
+            if (msgLower.includes(keyPhrase)) {
+                fieldToTarget = fieldName;
+                break;
+            }
+        }
+
+        if (fieldToTarget) {
+            form.setError(fieldToTarget, {
+                type: "server",
+                message: errorMessage,
+            });
+            // Show a general toast for context
+            toast.error(`Validation failed: ${errorMessage}`);
+        } else {
+            // If 400 but message doesn't map to a specific field
+            toast.error(errorMessage);
+        }
+      } 
+      // Handle 500 or other unhandled errors
+      else {
+        toast.error(errorMessage || "Failed to create blog");
       }
     },
   });
@@ -128,7 +151,7 @@ export default function CreateBlog() {
             {...form.register("title", { required: "Title is required" })}
           />
           {form.formState.errors.title && (
-            <p className="text-red-500">
+            <p className="text-sm text-red-500">
               {form.formState.errors.title.message}
             </p>
           )}
@@ -146,7 +169,7 @@ export default function CreateBlog() {
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
           {form.formState.errors.synopsis && (
-            <p className="text-red-500">
+            <p className="text-sm text-red-500">
               {form.formState.errors.synopsis.message}
             </p>
           )}
@@ -170,8 +193,9 @@ export default function CreateBlog() {
               {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
             </Button>
           </div>
+          {/* Use the form.watch value to display server/validation error */}
           {form.formState.errors.featuredImageUrl && (
-            <p className="text-red-500">
+            <p className="text-sm text-red-500 mt-2">
               {form.formState.errors.featuredImageUrl.message}
             </p>
           )}
@@ -189,7 +213,7 @@ export default function CreateBlog() {
             className="h-48 mt-1 focus:ring-2 focus:ring-purple-500"
           />
           {form.formState.errors.content && (
-            <p className="text-red-500">
+            <p className="text-sm text-red-500">
               {form.formState.errors.content.message}
             </p>
           )}
