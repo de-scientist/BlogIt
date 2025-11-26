@@ -50,7 +50,7 @@ const blogs = [
     synopsis: "Fear whispers; purpose roars.",
     description:
       "Fear only survives when you stop moving. Boldness starves it.",
-    image: "/images/inspire4.jpg",
+    image: "/images/inspire4.jpeg",
     content: `
       Your gift wasn’t meant to die inside your doubts.
       It was designed to breathe on stages, pages, screens, hearts.
