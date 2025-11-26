@@ -1,7 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -49,7 +54,9 @@ export default function BlogList() {
               >
                 <CardHeader className="pb-2">
                   <h2 className="text-xl font-semibold">{blog.title}</h2>
-                  <p className="text-sm text-gray-600 line-clamp-2">{blog.synopsis}</p>
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {blog.synopsis}
+                  </p>
                 </CardHeader>
 
                 {blog.featuredImageUrl && (

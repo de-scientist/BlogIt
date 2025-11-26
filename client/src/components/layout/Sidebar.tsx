@@ -32,9 +32,8 @@ export default function Sidebar() {
               // ACTIVE
               isActive
                 ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-purple-400 before:to-pink-400 before:opacity-40 before:blur-xl"
-
-                // INACTIVE
-                : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
+                : // INACTIVE
+                  "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white",
             )
           }
         >
@@ -65,7 +64,11 @@ export default function Sidebar() {
           onClick={() => setMobileOpen(!mobileOpen)}
           className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-slate-700 transition"
         >
-          {mobileOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
+          {mobileOpen ? (
+            <HiOutlineXMark size={24} />
+          ) : (
+            <HiOutlineBars3 size={24} />
+          )}
         </button>
       </div>
 

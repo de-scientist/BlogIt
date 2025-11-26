@@ -8,7 +8,8 @@ const slides = [
   {
     image: "/images/slide1.jpeg",
     title: "Share Your Story",
-    subtitle: "Every story deserves to be heard. Start your creative journey today.",
+    subtitle:
+      "Every story deserves to be heard. Start your creative journey today.",
   },
   {
     image: "/images/slide2.jpeg",
@@ -44,7 +45,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col justify-between bg-gray-50 text-gray-900 md:pl-64">
-
       {/* HERO / INTRO SECTION */}
       <section className="w-full max-w-5xl mx-auto py-20 px-6 text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 drop-shadow-lg">
@@ -52,8 +52,8 @@ export default function Home() {
         </h1>
 
         <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-          Welcome to a platform designed for creators — clean, modern, distraction-free.
-          Focus on your ideas. Let the world hear your voice.
+          Welcome to a platform designed for creators — clean, modern,
+          distraction-free. Focus on your ideas. Let the world hear your voice.
         </p>
 
         <Button
@@ -68,7 +68,6 @@ export default function Home() {
 
       {/* SLIDES / HERO CAROUSEL */}
       <div className="relative w-full h-[60vh] max-h-[600px] mt-10 px-6">
-
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -131,7 +130,8 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="py-8 bg-gray-50 text-gray-600 border-t mt-16">
         <p className="text-center">
-          &copy; {new Date().getFullYear()} Your Blog Platform. All rights reserved.
+          &copy; {new Date().getFullYear()} Your Blog Platform. All rights
+          reserved.
         </p>
 
         <div className="flex justify-center mt-2">
@@ -161,7 +161,6 @@ export default function Home() {
           }
         `}
       </style>
-
     </main>
   );
 }

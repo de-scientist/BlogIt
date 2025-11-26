@@ -15,7 +15,9 @@ export default function ViewProfilePage() {
   if (isLoading)
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-gray-500 text-lg animate-pulse">Loading profile...</p>
+        <p className="text-gray-500 text-lg animate-pulse">
+          Loading profile...
+        </p>
       </div>
     );
 
@@ -27,15 +29,21 @@ export default function ViewProfilePage() {
           <div className="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center text-3xl font-bold">
             {data.firstName.charAt(0)}
           </div>
-          <h1 className="mt-4 text-3xl font-bold drop-shadow">{data.firstName} {data.lastName}</h1>
+          <h1 className="mt-4 text-3xl font-bold drop-shadow">
+            {data.firstName} {data.lastName}
+          </h1>
           <p className="text-sm mt-1 opacity-80">@{data.userName}</p>
         </div>
 
         {/* Content */}
         <CardContent className="space-y-6 p-6">
           <div className="space-y-2">
-            <p className="text-gray-700"><strong>Email:</strong> {data.emailAddress}</p>
-            <p className="text-gray-700"><strong>Username:</strong> {data.userName}</p>
+            <p className="text-gray-700">
+              <strong>Email:</strong> {data.emailAddress}
+            </p>
+            <p className="text-gray-700">
+              <strong>Username:</strong> {data.userName}
+            </p>
           </div>
 
           {/* Action Buttons */}

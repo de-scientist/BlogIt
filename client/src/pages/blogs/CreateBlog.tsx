@@ -26,7 +26,12 @@ export default function CreateBlog() {
   const [uploading, setUploading] = useState(false);
 
   const form = useForm<BlogForm>({
-    defaultValues: { title: "", synopsis: "", featuredImageUrl: "", content: "" },
+    defaultValues: {
+      title: "",
+      synopsis: "",
+      featuredImageUrl: "",
+      content: "",
+    },
   });
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +48,7 @@ export default function CreateBlog() {
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: data }
+        { method: "POST", body: data },
       );
 
       const result = await res.json();
@@ -73,10 +78,26 @@ export default function CreateBlog() {
     onError: (err: any) => {
       if (err.response?.status === 400 && err.response?.data?.message) {
         const msg = err.response.data.message.toLowerCase();
-        if (msg.includes("title")) form.setError("title", { type: "server", message: err.response.data.message });
-        if (msg.includes("synopsis")) form.setError("synopsis", { type: "server", message: err.response.data.message });
-        if (msg.includes("featured image")) form.setError("featuredImageUrl", { type: "server", message: err.response.data.message });
-        if (msg.includes("content")) form.setError("content", { type: "server", message: err.response.data.message });
+        if (msg.includes("title"))
+          form.setError("title", {
+            type: "server",
+            message: err.response.data.message,
+          });
+        if (msg.includes("synopsis"))
+          form.setError("synopsis", {
+            type: "server",
+            message: err.response.data.message,
+          });
+        if (msg.includes("featured image"))
+          form.setError("featuredImageUrl", {
+            type: "server",
+            message: err.response.data.message,
+          });
+        if (msg.includes("content"))
+          form.setError("content", {
+            type: "server",
+            message: err.response.data.message,
+          });
       } else {
         toast.error(err.response?.data?.message || "Failed to create blog");
       }
@@ -89,13 +110,17 @@ export default function CreateBlog() {
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
           Write Something Beautiful
         </h2>
-        <p className="text-gray-500 mt-1">Tell your story. Someone out there needs your voice.</p>
+        <p className="text-gray-500 mt-1">
+          Tell your story. Someone out there needs your voice.
+        </p>
       </CardHeader>
 
       <CardContent className="space-y-6 pt-4">
         {/* TITLE */}
         <div>
-          <Label htmlFor="title" className="font-medium">Title</Label>
+          <Label htmlFor="title" className="font-medium">
+            Title
+          </Label>
           <Input
             id="title"
             placeholder="Give your blog a powerful title..."
@@ -103,13 +128,17 @@ export default function CreateBlog() {
             {...form.register("title", { required: "Title is required" })}
           />
           {form.formState.errors.title && (
-            <p className="text-red-500">{form.formState.errors.title.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.title.message}
+            </p>
           )}
         </div>
 
         {/* SYNOPSIS */}
         <div>
-          <Label htmlFor="synopsis" className="font-medium">Synopsis</Label>
+          <Label htmlFor="synopsis" className="font-medium">
+            Synopsis
+          </Label>
           <Input
             id="synopsis"
             placeholder="A short teaser that hooks your audience..."
@@ -117,7 +146,9 @@ export default function CreateBlog() {
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
           {form.formState.errors.synopsis && (
-            <p className="text-red-500">{form.formState.errors.synopsis.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.synopsis.message}
+            </p>
           )}
         </div>
 
@@ -140,13 +171,17 @@ export default function CreateBlog() {
             </Button>
           </div>
           {form.formState.errors.featuredImageUrl && (
-            <p className="text-red-500">{form.formState.errors.featuredImageUrl.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.featuredImageUrl.message}
+            </p>
           )}
         </div>
 
         {/* CONTENT */}
         <div>
-          <Label htmlFor="content" className="font-medium">Content (Markdown supported)</Label>
+          <Label htmlFor="content" className="font-medium">
+            Content (Markdown supported)
+          </Label>
           <Textarea
             id="content"
             placeholder="Let your words dance here..."
@@ -154,7 +189,9 @@ export default function CreateBlog() {
             className="h-48 mt-1 focus:ring-2 focus:ring-purple-500"
           />
           {form.formState.errors.content && (
-            <p className="text-red-500">{form.formState.errors.content.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.content.message}
+            </p>
           )}
         </div>
 
@@ -180,7 +217,11 @@ export default function CreateBlog() {
           className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl flex justify-center items-center"
           onClick={form.handleSubmit((values) => mutation.mutate(values))}
         >
-          {mutation.isLoading ? <Spinner className="w-5 h-5" /> : "Publish Blog ✨"}
+          {mutation.isLoading ? (
+            <Spinner className="w-5 h-5" />
+          ) : (
+            "Publish Blog ✨"
+          )}
         </Button>
       </CardContent>
     </Card>

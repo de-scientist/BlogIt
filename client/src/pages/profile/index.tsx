@@ -49,13 +49,8 @@ export default function ProfilePage() {
 
   const mutation = useMutation({
     mutationFn: async (payload: ProfileForm) =>
-      (
-        await api.patch(
-          "/profile",
-          { ...payload },
-          { withCredentials: true }
-        )
-      ).data,
+      (await api.patch("/profile", { ...payload }, { withCredentials: true }))
+        .data,
     onSuccess: () => {
       toast.success("Profile updated.");
       queryClient.invalidateQueries({ queryKey: ["profile"] });

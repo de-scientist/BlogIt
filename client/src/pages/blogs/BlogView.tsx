@@ -24,7 +24,6 @@ export default function BlogView() {
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4">
       <Card className="shadow-lg border rounded-xl overflow-hidden">
-
         {blog.featuredImageUrl && (
           <img
             src={blog.featuredImageUrl}
@@ -62,7 +61,6 @@ export default function BlogView() {
             <Button>Edit Blog</Button>
           </Link>
         </CardFooter>
-
       </Card>
     </div>
   );

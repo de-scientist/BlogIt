@@ -16,7 +16,6 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 pt-20 md:pl-64 pb-20">
-
       {/* HERO SECTION */}
       <section className="max-w-5xl mx-auto pt-10 px-6 text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 drop-shadow-lg">
@@ -24,7 +23,7 @@ export default function Dashboard() {
         </h1>
 
         <p className="text-gray-700 text-lg max-w-2xl mx-auto">
-          Every idea deserves a place to bloom. Explore your creations below — 
+          Every idea deserves a place to bloom. Explore your creations below —
           refine them, expand them, or craft something new.
         </p>
 
@@ -39,19 +38,16 @@ export default function Dashboard() {
 
       {/* USER BLOGS */}
       <section className="max-w-6xl mx-auto mt-16 px-6">
-        <h2 className="text-3xl font-bold mb-8 text-purple-700">
-          Your Blogs
-        </h2>
+        <h2 className="text-3xl font-bold mb-8 text-purple-700">Your Blogs</h2>
 
-        {isLoading && (
-          <p className="text-gray-500">Loading your blogs…</p>
-        )}
+        {isLoading && <p className="text-gray-500">Loading your blogs…</p>}
 
         {!isLoading && blogs.length === 0 && (
           <div className="text-center py-20">
             <p className="text-gray-600 text-lg mb-6">
               You haven’t created any blogs yet.
-              <br />Your voice is waiting to step into the light.
+              <br />
+              Your voice is waiting to step into the light.
             </p>
             <Button
               size="lg"
@@ -86,10 +82,7 @@ export default function Dashboard() {
                   </Link>
 
                   <div className="flex gap-3">
-                    <Link
-                      to={`/blogs/edit/${blog.id}`}
-                      className="w-full"
-                    >
+                    <Link to={`/blogs/edit/${blog.id}`} className="w-full">
                       <Button className="bg-gray-200 hover:bg-gray-300 w-full text-gray-800">
                         Edit
                       </Button>
@@ -108,7 +101,7 @@ export default function Dashboard() {
 
       {/* FOOTER */}
       <footer className="text-center text-gray-600 mt-24">
-        &copy; {new Date().getFullYear()} Your Blog Platform.  
+        &copy; {new Date().getFullYear()} Your Blog Platform.
         <a
           href="https://github.com/de-scientist"
           target="_blank"

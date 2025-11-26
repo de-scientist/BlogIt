@@ -63,7 +63,7 @@ export default function EditBlog() {
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: data }
+        { method: "POST", body: data },
       );
       const result = await res.json();
 
@@ -92,13 +92,25 @@ export default function EditBlog() {
       if (err.response?.status === 400 && err.response?.data?.message) {
         const msg = err.response.data.message.toLowerCase();
         if (msg.includes("title"))
-          form.setError("title", { type: "server", message: err.response.data.message });
+          form.setError("title", {
+            type: "server",
+            message: err.response.data.message,
+          });
         if (msg.includes("synopsis"))
-          form.setError("synopsis", { type: "server", message: err.response.data.message });
+          form.setError("synopsis", {
+            type: "server",
+            message: err.response.data.message,
+          });
         if (msg.includes("featured image"))
-          form.setError("featuredImageUrl", { type: "server", message: err.response.data.message });
+          form.setError("featuredImageUrl", {
+            type: "server",
+            message: err.response.data.message,
+          });
         if (msg.includes("content"))
-          form.setError("content", { type: "server", message: err.response.data.message });
+          form.setError("content", {
+            type: "server",
+            message: err.response.data.message,
+          });
       } else {
         toast.error(err.response?.data?.message || "Failed to update blog.");
       }
@@ -119,13 +131,17 @@ export default function EditBlog() {
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
           Edit Your Story
         </h2>
-        <p className="text-gray-500 mt-1">Refine your words. Shape your voice.</p>
+        <p className="text-gray-500 mt-1">
+          Refine your words. Shape your voice.
+        </p>
       </CardHeader>
 
       <CardContent className="space-y-6 pt-2">
         {/* TITLE */}
         <div>
-          <Label htmlFor="title" className="font-medium">Title</Label>
+          <Label htmlFor="title" className="font-medium">
+            Title
+          </Label>
           <Input
             id="title"
             placeholder="Enter a compelling title..."
@@ -133,13 +149,17 @@ export default function EditBlog() {
             {...form.register("title", { required: "Title is required" })}
           />
           {form.formState.errors.title && (
-            <p className="text-red-500">{form.formState.errors.title.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.title.message}
+            </p>
           )}
         </div>
 
         {/* SYNOPSIS */}
         <div>
-          <Label htmlFor="synopsis" className="font-medium">Synopsis</Label>
+          <Label htmlFor="synopsis" className="font-medium">
+            Synopsis
+          </Label>
           <Input
             id="synopsis"
             placeholder="Short teaser for your blog..."
@@ -147,7 +167,9 @@ export default function EditBlog() {
             {...form.register("synopsis", { required: "Synopsis is required" })}
           />
           {form.formState.errors.synopsis && (
-            <p className="text-red-500">{form.formState.errors.synopsis.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.synopsis.message}
+            </p>
           )}
         </div>
 
@@ -157,12 +179,23 @@ export default function EditBlog() {
           <label className="flex items-center justify-center gap-2 w-full h-12 border border-dashed border-gray-400 rounded-lg cursor-pointer hover:bg-gray-50 transition">
             <Upload className="w-5 h-5 text-gray-600" />
             <span className="text-gray-600 text-sm flex items-center gap-2">
-              {uploading ? <Spinner className="w-5 h-5" /> : "Click to upload image"}
+              {uploading ? (
+                <Spinner className="w-5 h-5" />
+              ) : (
+                "Click to upload image"
+              )}
             </span>
-            <Input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
           </label>
           {form.formState.errors.featuredImageUrl && (
-            <p className="text-red-500">{form.formState.errors.featuredImageUrl.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.featuredImageUrl.message}
+            </p>
           )}
           {form.watch("featuredImageUrl") && (
             <img
@@ -175,7 +208,9 @@ export default function EditBlog() {
 
         {/* CONTENT */}
         <div>
-          <Label htmlFor="content" className="font-medium">Content (Markdown supported)</Label>
+          <Label htmlFor="content" className="font-medium">
+            Content (Markdown supported)
+          </Label>
           <Textarea
             id="content"
             placeholder="Write your blog here..."
@@ -183,7 +218,9 @@ export default function EditBlog() {
             {...form.register("content", { required: "Content is required" })}
           />
           {form.formState.errors.content && (
-            <p className="text-red-500">{form.formState.errors.content.message}</p>
+            <p className="text-red-500">
+              {form.formState.errors.content.message}
+            </p>
           )}
         </div>
 
@@ -209,7 +246,11 @@ export default function EditBlog() {
           className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl flex justify-center items-center"
           onClick={form.handleSubmit((values) => mutation.mutate(values))}
         >
-          {mutation.isLoading ? <Spinner className="w-5 h-5" /> : "Update Blog ✨"}
+          {mutation.isLoading ? (
+            <Spinner className="w-5 h-5" />
+          ) : (
+            "Update Blog ✨"
+          )}
         </Button>
       </CardContent>
     </Card>

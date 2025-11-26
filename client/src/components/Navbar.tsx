@@ -39,7 +39,6 @@ export default function Navbar() {
   return (
     <header className="bg-white dark:bg-slate-900/95 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-200/50 dark:border-slate-700/50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        
         {/* Logo */}
         <Link
           to="/"
@@ -97,9 +96,15 @@ export default function Navbar() {
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? (
-            <HiOutlineXMark size={24} className="text-gray-700 dark:text-gray-200" />
+            <HiOutlineXMark
+              size={24}
+              className="text-gray-700 dark:text-gray-200"
+            />
           ) : (
-            <HiOutlineBars3 size={24} className="text-gray-700 dark:text-gray-200" />
+            <HiOutlineBars3
+              size={24}
+              className="text-gray-700 dark:text-gray-200"
+            />
           )}
         </button>
       </div>
@@ -125,7 +130,9 @@ export default function Navbar() {
                 <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold shadow-sm">
                   {getInitials()}
                 </div>
-                <span className="text-gray-800 dark:text-gray-200">Profile</span>
+                <span className="text-gray-800 dark:text-gray-200">
+                  Profile
+                </span>
               </Link>
 
               <button

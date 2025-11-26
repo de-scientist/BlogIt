@@ -1,7 +1,13 @@
 import { useForm, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardDescription, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardDescription,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/axios";
@@ -51,11 +57,16 @@ export default function RegisterPage() {
       if (!message) return toast.error("Registration failed");
 
       const lower = message.toLowerCase();
-      if (lower.includes("first name")) return form.setError("firstName", { type: "server", message });
-      if (lower.includes("last name")) return form.setError("lastName", { type: "server", message });
-      if (lower.includes("user name") || lower.includes("username")) return form.setError("userName", { type: "server", message });
-      if (lower.includes("email")) return form.setError("emailAddress", { type: "server", message });
-      if (lower.includes("password")) return form.setError("password", { type: "server", message });
+      if (lower.includes("first name"))
+        return form.setError("firstName", { type: "server", message });
+      if (lower.includes("last name"))
+        return form.setError("lastName", { type: "server", message });
+      if (lower.includes("user name") || lower.includes("username"))
+        return form.setError("userName", { type: "server", message });
+      if (lower.includes("email"))
+        return form.setError("emailAddress", { type: "server", message });
+      if (lower.includes("password"))
+        return form.setError("password", { type: "server", message });
 
       toast.error(message);
     }
@@ -65,13 +76,18 @@ export default function RegisterPage() {
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="bg-gray-100">
-          <CardTitle className="text-2xl text-gray-800">Create Account</CardTitle>
-           <CardDescription>
-          Enter your details below to create an account
-        </CardDescription>
+          <CardTitle className="text-2xl text-gray-800">
+            Create Account
+          </CardTitle>
+          <CardDescription>
+            Enter your details below to create an account
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 p-6">
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             {loading ? (
               <>
                 <Skeleton className="h-10 w-full" />
@@ -82,7 +98,10 @@ export default function RegisterPage() {
               </>
             ) : (
               <>
-                <Field label="First Name" error={form.formState.errors.firstName}>
+                <Field
+                  label="First Name"
+                  error={form.formState.errors.firstName}
+                >
                   <Input
                     placeholder="Enter first name"
                     {...form.register("firstName")}
@@ -106,7 +125,10 @@ export default function RegisterPage() {
                   />
                 </Field>
 
-                <Field label="Email Address" error={form.formState.errors.emailAddress}>
+                <Field
+                  label="Email Address"
+                  error={form.formState.errors.emailAddress}
+                >
                   <Input
                     type="email"
                     placeholder="example@gmail.com"
@@ -145,13 +167,12 @@ export default function RegisterPage() {
 
                 {/* Login Redirect Button */}
                 <Button
-  type="button"
-  onClick={() => navigate("/auth/login")}
-   className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 transition-all"
->
-  Already have an account? Log In
-</Button>
-
+                  type="button"
+                  onClick={() => navigate("/auth/login")}
+                  className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 transition-all"
+                >
+                  Already have an account? Log In
+                </Button>
               </>
             )}
           </form>
@@ -166,7 +187,9 @@ function Field({ label, error, children }: FieldProps) {
     <div className="space-y-1">
       <Label className="text-gray-700">{label}</Label>
       {children}
-      {error?.message && <p className="text-red-600 text-sm">{error.message as string}</p>}
+      {error?.message && (
+        <p className="text-red-600 text-sm">{error.message as string}</p>
+      )}
     </div>
   );
 }

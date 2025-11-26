@@ -13,8 +13,8 @@ export default function BlogFooter() {
               TechVision S & S
             </h2>
             <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-              Writing, building, and shaping the future — one idea,
-              one creation, one innovation at a time.
+              Writing, building, and shaping the future — one idea, one
+              creation, one innovation at a time.
             </p>
           </div>
 
@@ -95,8 +95,8 @@ export default function BlogFooter() {
 
         {/* Bottom Section */}
         <div className="text-center text-xs text-gray-500">
-          © {new Date().getFullYear()} TechVision Studios & Solutions —
-          Crafted with intention. Built with excellence.
+          © {new Date().getFullYear()} TechVision Studios & Solutions — Crafted
+          with intention. Built with excellence.
         </div>
       </div>
     </footer>
