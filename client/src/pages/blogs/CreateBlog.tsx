@@ -213,11 +213,11 @@ export default function CreateBlog() {
 
         {/* SUBMIT */}
         <Button
-          disabled={mutation.isLoading || uploading}
+          disabled={mutation.isPending || uploading}
           className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl flex justify-center items-center"
           onClick={form.handleSubmit((values) => mutation.mutate(values))}
         >
-          {mutation.isLoading ? (
+          {mutation.isPending ? (
             <Spinner className="w-5 h-5" />
           ) : (
             "Publish Blog ✨"
