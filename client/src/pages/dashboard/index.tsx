@@ -15,7 +15,7 @@ export default function Dashboard() {
   const blogs = Array.isArray(data) ? data : data?.blogs || [];
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 pt-20 md:pl-64 pb-20">
+    <main className="min-h-screen bg-gray-50 text-gray-900 pt-20  pb-20">
       {/* HERO SECTION */}
       <section className="max-w-5xl mx-auto pt-10 px-6 text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 drop-shadow-lg">
