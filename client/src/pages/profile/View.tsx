@@ -50,13 +50,13 @@ export default function ViewProfilePage() {
           <div className="flex gap-4 mt-4">
             <Button
               className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
-              onClick={() => navigate("/profile/edit")}
+              onClick={() => navigate("/profile")}
             >
               Edit Profile
             </Button>
             <Button
               className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800"
-              onClick={() => navigate("/profile/change-password")}
+              onClick={() => navigate("/profile")}
             >
               Change Password
             </Button>
