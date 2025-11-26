@@ -127,6 +127,15 @@ export default function Inspiration() {
           </Card>
         ))}
       </div>
+
+       {/* CTA Button for Creating a Blog */}
+      <div className="mt-12 text-center">
+        <Link to="/blogs/create">
+          <Button className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-xl hover:opacity-90 transition-all font-semibold">
+            Create Your Own Blog
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
