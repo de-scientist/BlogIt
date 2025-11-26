@@ -84,7 +84,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => navigate("/auth/login")}
-              className="px-5 py-1.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-sm"
+              className="px-5 py-1.5 rounded-xl bg-blue-600 text-white font-medium bg-gradient-to-r from-purple-600 to-pink-500 transition shadow-sm"
             >
               Login
             </button>

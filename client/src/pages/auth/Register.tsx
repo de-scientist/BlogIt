@@ -145,12 +145,13 @@ export default function RegisterPage() {
 
                 {/* Login Redirect Button */}
                 <Button
-                  type="button"
-                  className="w-full mt-2 py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-gray-400 to-gray-500 text-white hover:opacity-90 transition-all"
-                  onClick={() => navigate("/auth/login")}
-                >
-                  Already have an account? Log In
-                </Button>
+  type="button"
+  onClick={() => navigate("/auth/login")}
+   className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 transition-all"
+>
+  Already have an account? Log In
+</Button>
+
               </>
             )}
           </form>
