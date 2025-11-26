@@ -53,19 +53,19 @@ export default function LogoutPage() {
           {/* Logout Button */}
           <Button
             onClick={handleLogout}
-            disabled={logoutMutation.isLoading}
+            disabled={logoutMutation.isPending}
             className="w-full py-3 text-lg font-semibold rounded-xl 
                        bg-gradient-to-r from-green-500 to-teal-400 text-white 
                        hover:opacity-90 transition-all shadow-lg"
           >
-            {logoutMutation.isLoading ? "Logging Out..." : "Yes, Log Out"}
+            {logoutMutation.isPending ? "Logging Out..." : "Yes, Log Out"}
           </Button>
 
           {/* Cancel Button */}
           <Button
             onClick={handleCancel}
             variant="ghost" // Use shadcn's ghost variant or customize directly
-            disabled={logoutMutation.isLoading}
+            disabled={logoutMutation.isPending}
             className="w-full py-3 text-lg font-semibold rounded-xl 
                        bg-gradient-to-r from-purple-600 to-pink-500 text-white 
                        hover:opacity-90 transition-all shadow-lg"
