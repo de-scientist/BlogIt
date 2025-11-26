@@ -20,6 +20,11 @@ import UserBlogsPage from "@/pages/profile/UserBlogsPage"; // user's blogs
 import DeleteProfilePage from "@/pages/profile/DeleteProfilePage"; // soft delete
 import PermanentDeleteUserPage from "@/pages/profile/PermantDeleteUserPage"; // hard delete
 
+// New Pages
+import ContactUs from "@/pages/ContactUs";
+import Inspiration from "@/pages/Inspiration";
+import InspirationSingle from "@/pages/InspirationSingle";
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -27,29 +32,30 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<RegisterPage />} />
+
       {/* Dashboard / Blogs */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/blogs" element={<BlogList />} /> {/* all blogs */}
-      <Route path="/blogs/create" element={<CreateBlog />} />{" "}
-      {/* create blog */}
+      <Route path="/blogs/create" element={<CreateBlog />} /> {/* create blog */}
       <Route path="/blogs/edit/:id" element={<EditBlog />} /> {/* edit blog */}
-      <Route path="/blogs/view/:id" element={<BlogView />} />{" "}
-      {/* view single blog */}
+      <Route path="/blogs/view/:id" element={<BlogView />} /> {/* view single blog */}
       <Route path="/blogs/trash" element={<Trash />} /> {/* deleted blogs */}
+
       {/* Profile & User Management */}
       <Route path="/profile" element={<ProfilePage />} /> {/* update profile */}
-      <Route path="/profile/view" element={<ViewProfilePage />} />{" "}
-      {/* view profile */}
-      <Route path="/profile/blogs" element={<UserBlogsPage />} />{" "}
-      {/* user's blogs */}
+      <Route path="/profile/view" element={<ViewProfilePage />} /> {/* view profile */}
+      <Route path="/profile/blogs" element={<UserBlogsPage />} /> {/* user's blogs */}
       <Route path="/profile/trash" element={<Trash />} /> {/* user trash */}
-      <Route path="/profile/delete" element={<DeleteProfilePage />} />{" "}
-      {/* soft delete */}
+      <Route path="/profile/delete" element={<DeleteProfilePage />} /> {/* soft delete */}
       <Route
         path="/profile/delete/permanent/:id"
         element={<PermanentDeleteUserPage />}
-      />{" "}
-      {/* hard delete */}
+      /> {/* hard delete */}
+
+      {/* New Pages */}
+      <Route path="/contact-us" element={<ContactUs />} />
+      <Route path="/inspiration" element={<Inspiration />} />
+      <Route path="/inspiration/:id" element={<InspirationSingle />} />
     </Routes>
   );
 }
