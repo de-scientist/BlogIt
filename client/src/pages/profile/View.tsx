@@ -68,9 +68,10 @@ export default function ViewProfilePage() {
             </Button>
 
             <Button
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800"
+              className="flex-1 bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 transition-all"
               onClick={() => navigate("/profile")}
             >
+              
               Update Password
             </Button>
           </div>
