@@ -5,6 +5,7 @@ import Home from "@/pages";
 import Login from "@/pages/auth/Login";
 import RegisterPage from "@/pages/auth/Register";
 import LogoutPage from "@/pages/auth/LogOut";
+import UpdatePasswordPage from "@/pages/auth/UpdatePasswordPage";
 
 // Dashboard / Blogs
 import Dashboard from "@/pages/dashboard";
@@ -34,6 +35,7 @@ export default function AppRoutes() {
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<RegisterPage />} />
       <Route path="/auth/logout" element={<LogoutPage />} />
+      <Route path="/auth/password" element={<UpdatePasswordPage />} />
 
       {/* Dashboard / Blogs */}
       <Route path="/dashboard" element={<Dashboard />} />
