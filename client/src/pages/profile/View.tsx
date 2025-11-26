@@ -62,7 +62,7 @@ export default function ViewProfilePage() {
               className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800"
               onClick={() => navigate("/profile")}
             >
-              Change Password
+              Update Password
             </Button>
           </div>
         </CardContent>
