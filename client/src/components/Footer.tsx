@@ -61,7 +61,7 @@ export default function BlogFooter() {
               <li className="flex items-center gap-2">
                 <Github className="h-5 w-5" />
                 <a
-                  href="https://github.com/De-Scientist"
+                  href="https://github.com/de-cientist"
                   target="_blank"
                   className="hover:text-gray-900 transition-colors"
                   rel="noopener noreferrer"
@@ -81,7 +81,7 @@ export default function BlogFooter() {
               <li className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
                 <a
-                  href="https://techvisionstudios.co"
+                  href="https://1descientist.vercel.app/"
                   target="_blank"
                   className="hover:text-gray-900 transition-colors"
                   rel="noopener noreferrer"
