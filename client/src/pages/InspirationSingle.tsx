@@ -1,4 +1,3 @@
-// src/pages/InspirationSingle.tsx
 import { useParams } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

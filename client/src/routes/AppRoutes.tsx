@@ -53,7 +53,7 @@ export default function AppRoutes() {
       /> {/* hard delete */}
 
       {/* New Pages */}
-      <Route path="/contact-us" element={<ContactUs />} />
+      <Route path="/contact" element={<ContactUs />} />
       <Route path="/inspiration" element={<Inspiration />} />
       <Route path="/inspiration/:id" element={<InspirationSingle />} />
     </Routes>
