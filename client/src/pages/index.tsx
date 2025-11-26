@@ -69,7 +69,7 @@ export default function Home() {
         <Button
           type="button"
           size="lg"
-          className="bg-gradient-to-r from-gray-400 to-gray-600 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
+          className="bg-gradient-to-r from-green-500 to-teal-400 hover:opacity-90 transition-all text-white font-semibold rounded-xl px-10 py-3 shadow-xl"
           onClick={() => navigate("/inspiration")}
         >
           View Inspiration
