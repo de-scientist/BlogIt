@@ -17,7 +17,6 @@ interface ProfileData {
   lastName: string;
   emailAddress: string;
   userName: string;
-  // Note: Add 'avatarUrl?: string' here if you include avatar logic later
 }
 
 type ProfileForm = ProfileData; // Form payload matches data structure
@@ -27,15 +26,27 @@ export default function EditProfilePage() {
   const navigate = useNavigate();
 
   // 1. FETCH current profile data
-  const { data, isLoading: isFetching } = useQuery<ProfileData>({
+  const { 
+    data, 
+    isLoading: isFetching,
+    isError, // 💡 Extract isError state
+    error    // 💡 Extract error object
+  } = useQuery<ProfileData, Error>({ // 💡 Use Error as the error type
     queryKey: ["profile"],
     queryFn: async () =>
       (await api.get("/profile")).data, // Assuming /profile is your GET endpoint
     staleTime: 5 * 60 * 1000, // Data is considered fresh for 5 minutes
-    onError: (error: any) => {
-        toast.error(error.response?.data?.message || "Failed to load profile data.");
-    }
+    // ❌ REMOVED: The invalid 'onError' block from useQuery options
   });
+
+  // 💡 NEW: Handle Fetching Error using useEffect
+  useEffect(() => {
+    if (isError && error) {
+      // Safely access the server's error message if available, otherwise use a default
+      const errorMessage = (error as any).response?.data?.message || error.message || "Failed to load profile data.";
+      toast.error(errorMessage);
+    }
+  }, [isError, error]); // Dependency array ensures it runs when error state changes
 
   // 2. Setup Form
   const form = useForm<ProfileForm>({
@@ -55,7 +66,7 @@ export default function EditProfilePage() {
   }, [data, form]);
 
 
-  // 4. Setup Mutation Hook
+  // 4. Setup Mutation Hook (onError is correct here)
   const updateMutation = useMutation({
     mutationFn: async (payload: ProfileForm) => {
       // Send the PATCH request to the server
@@ -69,6 +80,7 @@ export default function EditProfilePage() {
       navigate("/profile"); 
     },
     onError: (error: any) => {
+      // onError is correct for useMutation
       toast.error(error.response?.data?.message || "Update failed! Please try again.");
     },
   });
