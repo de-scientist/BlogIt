@@ -44,7 +44,7 @@ export default function Home() {
   const goToSlide = (index: number) => setCurrentSlide(index);
 
   return (
-    <main className="min-h-screen flex flex-col justify-between bg-gray-50 text-gray-900 md:pl-64">
+    <main className="min-h-screen flex flex-col justify-between bg-gray-50 text-gray-900 ">
       {/* HERO / INTRO SECTION */}
       <section className="w-full max-w-5xl mx-auto py-20 px-6 text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 drop-shadow-lg">
