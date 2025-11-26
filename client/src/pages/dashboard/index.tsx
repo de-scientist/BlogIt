@@ -99,18 +99,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="text-center text-gray-600 mt-24">
-        &copy; {new Date().getFullYear()} Your Blog Platform.
-        <a
-          href="https://github.com/de-scientist"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-purple-600 hover:text-purple-700 ml-2"
-        >
-          Explore my GitHub →
-        </a>
-      </footer>
     </main>
   );
 }
