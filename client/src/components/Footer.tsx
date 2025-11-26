@@ -40,7 +40,7 @@ export default function BlogFooter() {
                   href="/projects"
                   className="hover:text-gray-900 transition-colors"
                 >
-                  Projects
+                  Be Inspired
                 </a>
               </li>
               <li>
@@ -48,7 +48,7 @@ export default function BlogFooter() {
                   href="/contact"
                   className="hover:text-gray-900 transition-colors"
                 >
-                  Contact
+                  Talk to Us
                 </a>
               </li>
             </ul>
