@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import blogs from "@/data/blog"; // import your expanded blogs
+import blogs from "@/data/blog"; // your expanded blogs
 
 export default function InspirationSingle() {
   const { id } = useParams();
@@ -38,8 +38,8 @@ export default function InspirationSingle() {
             {blog.description}
           </p>
 
-          {/* Markdown rendering */}
-          <div className="prose prose-slate dark:prose-invert max-w-none">
+          {/* Markdown content rendered with Tailwind Typography */}
+          <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {blog.content}
             </ReactMarkdown>
@@ -47,7 +47,7 @@ export default function InspirationSingle() {
         </CardContent>
       </Card>
 
-      {/* CTA Button for Creating a Blog */}
+      {/* CTA Button */}
       <div className="mt-12 text-center">
         <Link to="/auth/login">
           <Button className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-xl hover:opacity-90 transition-all font-semibold">
