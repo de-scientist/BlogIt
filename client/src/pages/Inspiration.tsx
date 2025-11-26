@@ -64,7 +64,7 @@ const blogs = [
     synopsis: "Failure is not the opposite of success—it's the raw material.",
     description:
       "Every restart is a sharpened version of who you were before.",
-    image: "/images/inspire5.jpg",
+    image: "/images/inspire5.jpeg",
     content: `
       Starting again doesn’t mean you lost.
       It means you learned.
