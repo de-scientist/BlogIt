@@ -6,7 +6,13 @@ const client = new PrismaClient();
 //create a blog
 export const createBlog = async (req: Request, res: Response) => {
   try {
+    if (!req.user || !req.user.id) {
+      // Return 401 Unauthorized if the user ID is missing
+      return res.status(401).json({ message: "Unauthorized. Please log in to create a blog." });
+    }
+
     const { title, synopsis, featuredImageUrl, content } = req.body;
+    const userId = req.user.id;
 
     await client.blog.create({
       data: {
@@ -20,6 +26,7 @@ export const createBlog = async (req: Request, res: Response) => {
     res.status(201).json({ message: "Blog created successfully" });
     return;
   } catch (error) {
+    console.error("Error creating blog:", error);
     res
       .status(500)
       .json({ message: "Something went wrong! Kindly try again." });
