@@ -119,7 +119,7 @@ export default function Inspiration() {
               </p>
 
               <Link to={`/inspiration/${blog.id}`}>
-                <Button className="w-full bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded-xl hover:opacity-90 transition">
+                <Button className="w-full bg-gradient-to-r from-green-500 to-teal-400 text-white rounded-xl hover:opacity-90 transition">
                   Read More
                 </Button>
               </Link>
