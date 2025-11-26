@@ -29,7 +29,7 @@ export default function BlogFooter() {
               </li>
               <li>
                 <a
-                  href="/blog"
+                  href="/dashboard"
                   className="hover:text-gray-900 transition-colors"
                 >
                   Blog
@@ -61,7 +61,7 @@ export default function BlogFooter() {
               <li className="flex items-center gap-2">
                 <Github className="h-5 w-5" />
                 <a
-                  href="https://github.com/de-cientist"
+                  href="https://github.com/de-scientist"
                   target="_blank"
                   className="hover:text-gray-900 transition-colors"
                   rel="noopener noreferrer"
@@ -86,7 +86,7 @@ export default function BlogFooter() {
                   className="hover:text-gray-900 transition-colors"
                   rel="noopener noreferrer"
                 >
-                  Portfolio Site
+                  Check out my works
                 </a>
               </li>
             </ul>
