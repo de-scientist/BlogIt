@@ -22,7 +22,7 @@ Every person you admire has one thing in common: they showed up. Day after day. 
 ---
 
 ## The Science Behind Showing Up
-Research shows that habits and consistent behaviors shape our brains more than sudden bursts of effort. Neural pathways strengthen when actions are repeated. That’s why small, regular actions compound into extraordinary outcomes over time.
+Research shows that habits and repeated behaviors shape our brains more than sudden bursts of effort. Neural pathways strengthen when actions are repeated. That’s why small, regular actions compound into extraordinary outcomes over time.
 
 Consider an aspiring musician practicing 20 minutes daily. It seems small at first, but in a year, that musician has invested over 120 hours. That’s a tangible edge over someone waiting for “inspiration” to strike.
 
@@ -31,6 +31,7 @@ Consider an aspiring musician practicing 20 minutes daily. It seems small at fir
 ## Examples From Everyday Life
 - **The Writer:** J.K. Rowling wrote in cafes every day, often while facing rejection and criticism. Showing up consistently allowed her ideas to mature and her craft to sharpen.
 - **The Athlete:** Michael Jordan famously said, "I’ve missed more than 9,000 shots in my career… I’ve lost over 300 games. And I’ve failed over and over again in my life. And that is why I succeed." His presence on the court, practice after practice, created mastery.
+- **The Scientist:** Marie Curie’s persistence in the lab, despite skepticism and hardships, produced groundbreaking discoveries.
 
 These examples prove that presence, not talent alone, separates success from mediocrity.
 
@@ -45,15 +46,12 @@ Showing up is never easy. Life throws challenges: fatigue, discouragement, distr
 
 ---
 
-## The Long-Term Rewards
-Consistency creates compounding returns:
+## Building Momentum
+Momentum is the reward for consistent action. Early effort may feel invisible, but every repetition compounds.
 
-- Trust and reliability in relationships and work  
-- Improved skills and expertise  
-- A strong internal sense of identity and discipline  
-- Momentum that attracts opportunities  
+> "Small daily improvements over time lead to stunning results." – Robin Sharma
 
-> “Success doesn’t come from what you do occasionally; it comes from what you do consistently.” – Marie Forleo
+Use a journal or tracker to measure progress. Celebrate the tiny victories—they build the psychological momentum that makes showing up easier each day.
 
 ---
 
@@ -80,16 +78,55 @@ Your presence is a seed. Consistency is the water. Time is the sunlight. And whe
       "Your habits shape your identity, and your identity shapes your destiny.",
     image: "/images/inspire2.jpeg",
     content: `
-Becoming isn’t magic. It’s sweat. It’s silence. It's choosing purpose over pleasure. Every routine is a seed. Every sacrifice is sunlight. Every morning you rise is rain. One day, the garden inside you blooms—and the world calls it success.
+## Introduction: Becoming is a Journey
+Life isn’t about sudden transformation. It’s about consistent growth, about becoming the person who can handle greater challenges, opportunities, and responsibilities.
 
-The journey of becoming is personal. It doesn’t require comparison. It requires reflection. It requires embracing discomfort. Growth is rarely convenient, and comfort is rarely transformative. The path to mastery and fulfillment demands consistent, disciplined choices every day.
+> "We are what we repeatedly do. Excellence, then, is not an act, but a habit." – Aristotle
 
-Discipline is freedom. Ironically, the more you train your focus, your habits, and your mind, the more expansive your life becomes. You gain control over your attention, your time, and your actions. You are no longer subject to whims, distractions, or reactive impulses. You become deliberate. You become intentional. 
+Becoming requires patience. It asks you to trust the process, to invest daily effort into incremental improvements.
 
-Every choice, however small, accumulates into a life aligned with your values. The books you read, the conversations you have, the thoughts you entertain, the work you put in—these compound silently. You become the sum of what you consistently do, not what you occasionally dream about.
+---
 
-Embrace the mundane, the repetitive, the hard work. It is here, in the quiet discipline, that greatness grows. Every morning you wake, every plan you execute, every self you refine is a step toward becoming who you were meant to be.
-`,
+## The Role of Habits
+Habits are the scaffolding of identity. When you perform a small action repeatedly, it shapes your beliefs about yourself. The discipline of becoming is built on small, intentional habits that reinforce growth.
+
+**Example:**  
+- Morning routines: Meditation, journaling, exercise  
+- Learning routines: 30 minutes of reading daily  
+- Reflection routines: End-of-day review of achievements and challenges
+
+---
+
+## Overcoming Resistance
+Resistance is part of growth. It manifests as procrastination, distraction, or self-doubt. Recognize it as a signal that you are stepping outside your comfort zone.
+
+> "Resistance is a sign you’re on the right path." – Steven Pressfield
+
+Practical tips to overcome resistance:  
+- Break large tasks into micro-actions  
+- Schedule non-negotiable time blocks  
+- Pair discipline with accountability partners
+
+---
+
+## Examples of Becoming
+- **Leaders:** Oprah Winfrey’s daily discipline in learning, reflection, and preparation built her media empire.  
+- **Entrepreneurs:** Elon Musk tackled failures with relentless iteration, refining his ventures step by step.  
+- **Artists:** Frida Kahlo honed her craft despite pain and personal challenges, producing timeless art.
+
+---
+
+## Reflection Exercise
+Consider these questions:  
+1. What habits define your current identity?  
+2. Which new habits will move you toward your aspirational self?  
+3. How will you sustain consistency amidst distractions?
+
+---
+
+## Closing Thoughts
+Becoming is not a destination; it’s a journey. The discipline of showing up, learning, and adapting transforms ordinary people into extraordinary individuals.
+    `,
   },
   {
     id: 3,
@@ -99,14 +136,47 @@ Embrace the mundane, the repetitive, the hard work. It is here, in the quiet dis
       "Tough seasons aren’t dead ends; they are corridors leading to stronger rooms.",
     image: "/images/inspire3.jpeg",
     content: `
-Darkness isn’t your enemy—it’s your instructor. It teaches patience, endurance, and clarity. Walk the valley with your head high, warrior. You’re not buried. You’re being planted.
+## Introduction: Embrace the Valley
+Life will challenge you. Valleys are inevitable, but they are not your end—they are preparation grounds for elevation.
 
-Hard times are not punishments—they are the soil in which resilience grows. Each challenge tests your limits, stretches your perspective, and refines your character. Pain can be a sculptor of your potential if you let it teach instead of deter.
+> "The darkest hour is just before the dawn." – Thomas Fuller
 
-Notice the lessons hidden in adversity. Embrace the uncertainty and use it to examine what matters most. The difficulties you face are not permanent. They are transient corridors that guide you toward a stronger, wiser self.
+Walking the valley with your head high isn’t denial—it’s courage, patience, and vision.
 
-Stand tall, even when fear tries to bow you. Move forward, even when the path is unclear. The strength you cultivate during these times becomes the foundation for everything you will achieve. Shadows only exist because there is light. Your trials are proof that brighter days are coming. Every step you take with courage and awareness moves you closer to the horizon you are destined for.
-`,
+---
+
+## Lessons from Hard Times
+Adversity teaches lessons you cannot learn in comfort. Pain fosters empathy, humility, and problem-solving.
+
+**Example:**  
+- J.K. Rowling faced rejection and poverty before publishing Harry Potter.  
+- Nelson Mandela endured 27 years of imprisonment but emerged a global leader.
+
+---
+
+## Strategies to Navigate Challenges
+1. Maintain perspective: Remember this is a season, not a life sentence.  
+2. Seek mentors: Guidance accelerates learning during tough times.  
+3. Reflect: Journaling helps identify growth within struggle.
+
+---
+
+## Blockquote Insight
+> "It is not the mountain we conquer, but ourselves." – Sir Edmund Hillary
+
+---
+
+## Reflection Exercise
+Ask yourself:  
+- What current valley am I in?  
+- What skills or traits am I developing through this struggle?  
+- How can I transform adversity into growth?
+
+---
+
+## Closing Thoughts
+Your valleys are not prisons. They are preparation chambers for your ascent. Walk them with intention, dignity, and courage. One day, you’ll look back and thank them for the strength they carved within you.
+    `,
   },
   {
     id: 4,
@@ -116,14 +186,45 @@ Stand tall, even when fear tries to bow you. Move forward, even when the path is
       "Fear only survives when you stop moving. Boldness starves it.",
     image: "/images/inspire4.jpeg",
     content: `
-Your gift wasn’t meant to die inside your doubts. It was designed to breathe on stages, pages, screens, hearts. Step toward the calling—even with shaking hands. Courage grows with motion, not certainty.
+## Introduction: Recognize Your Fear
+Fear is natural. But it is not stronger than purpose. Your gift is bigger than the doubts that hold you back.
 
-Fear is a signal, not a prison. It marks the boundary of comfort, inviting growth. Each time you move despite fear, you expand the territory of possibility. Every step you take toward your purpose diminishes the grip of fear.
+> "Do the thing you fear, and the death of fear is certain." – Ralph Waldo Emerson
 
-Your potential is bigger than the shadows cast by hesitation. Let passion, curiosity, and dedication guide you forward. Fear may roar, but your purpose has a voice louder than any doubt. Take that first action. Write that page. Speak that word. Create that work.
+---
 
-By showing up in alignment with your calling, fear transforms into fuel. It teaches you to be vigilant, courageous, and resilient. Your gift will find its audience because courage attracts opportunity. Move forward relentlessly. Your purpose deserves presence.
-`,
+## How Fear Holds Us Back
+Fear disguises itself as caution. But often, it prevents action entirely, keeping potential locked away.
+
+**Example:**  
+- A writer hesitates to submit a manuscript.  
+- An entrepreneur delays launching a business.  
+- A speaker refuses the stage.
+
+---
+
+## Overcoming Fear
+1. Reframe fear as guidance.  
+2. Take micro-steps daily toward your goal.  
+3. Focus on purpose, not perfection.
+
+---
+
+## Blockquote Insight
+> "Fear is a natural reaction to moving closer to the truth." – Pema Chödrön
+
+---
+
+## Reflection Exercise
+- Identify your biggest fear right now.  
+- Write one bold action to confront it.  
+- Commit to taking that step within 48 hours.
+
+---
+
+## Closing Thoughts
+Your fear cannot extinguish your calling unless you let it. Step forward intentionally, boldly, and consistently. Your gift is waiting for the world.
+    `,
   },
   {
     id: 5,
@@ -133,14 +234,37 @@ By showing up in alignment with your calling, fear transforms into fuel. It teac
       "Every restart is a sharpened version of who you were before.",
     image: "/images/inspire5.jpeg",
     content: `
-Starting again doesn’t mean you lost. It means you learned. You are returning to the battlefield with better armor, keener vision, and scars that make you wiser. Begin again—this time with fire.
+## Introduction: Restarts as Renewal
+Starting again is not failure—it’s recalibration. Life gives you endless opportunities to reset, refine, and relaunch.
 
-Failure and endings are part of the rhythm of growth. Each reset is a lesson disguised as disruption. They provide clarity, humility, and renewed focus. Use what you’ve learned. Honor the experience. Then pivot, refine, and recommit.
+> "Every new beginning comes from some other beginning’s end." – Seneca
 
-Courage is required to start anew. Hope is required to persist. Vision is required to steer through the unknown. Every restart carries the opportunity to build stronger systems, make wiser choices, and craft a life aligned with your purpose.
+---
 
-Embrace the process. Celebrate progress. Recognize that mastery and transformation require iteration. Begin again with confidence, armed with the wisdom of experience, and let the journey unfold with intention.
-`,
+## Lessons from Restarts
+- Thomas Edison: thousands of failed experiments led to the lightbulb.  
+- Steve Jobs: after being fired from Apple, he founded Pixar and returned stronger.  
+- Any personal endeavor: every setback is a lesson.
+
+---
+
+## How to Start Again
+1. Reflect on lessons learned.  
+2. Identify what must change for better outcomes.  
+3. Commit fully to the new approach.
+
+---
+
+## Reflection Exercise
+- List one area of your life needing a restart.  
+- Write a plan of three actionable steps.  
+- Set a timeline and commit.
+
+---
+
+## Closing Thoughts
+Starting again is a superpower. It’s not about losing; it’s about refining, evolving, and returning stronger than before. Embrace the reset.
+    `,
   },
   {
     id: 6,
@@ -150,16 +274,40 @@ Embrace the process. Celebrate progress. Recognize that mastery and transformati
       "Where your mind goes, your life eventually follows.",
     image: "/images/inspire6.jpeg",
     content: `
-Protect your peace as though it's the crown jewel of your kingdom. Let no thought enter unchallenged. Let no fear reign unchecked. Rule your mind with intentionality—and your life becomes a masterpiece.
+## Introduction: Your Mind is Sacred
+Your thoughts shape your world. Guard them carefully.
 
-Your thoughts are the architects of your reality. Every belief, idea, and reflection builds the framework for your actions, relationships, and results. Mindfulness is the defense, discipline is the guide, and self-awareness is the key.
+> "The mind is everything. What you think you become." – Buddha
 
-Evaluate what you allow into your consciousness. Guard against negativity, unproductive comparisons, and distractions that dilute focus. Instead, feed your mind with insight, inspiration, and constructive challenge.
+---
 
-By intentionally curating your inner world, you create the environment for innovation, resilience, and creativity to flourish. The external world may be chaotic, but your internal kingdom can remain sovereign, vibrant, and aligned with your purpose. Invest daily in your thoughts. Protect them fiercely. The life you desire is constructed from the fortress of your mind.
-`,
+## Strategies for Mental Stewardship
+- Curate input: limit negativity, consume knowledge intentionally  
+- Daily reflection: journaling, meditation  
+- Affirmations: reinforce constructive thought patterns
+
+---
+
+## Examples in Practice
+- Entrepreneurs focus on opportunity, not fear  
+- Artists filter distractions to create masterpieces  
+- Leaders cultivate clarity amidst chaos
+
+---
+
+## Reflection Exercise
+- Identify recurring negative thoughts  
+- Replace one with a positive actionable belief  
+- Track your mental state daily for a month
+
+---
+
+## Closing Thoughts
+Your mind is a kingdom. Rule it with intention. Protect it fiercely. Cultivate clarity, creativity, and courage. What you nurture internally manifests externally.
+    `,
   },
 ];
+
 
 export default function InspirationSingle() {
   const { id } = useParams();
