@@ -26,14 +26,18 @@ export default function ViewProfilePage() {
       <Card className="w-full max-w-xl shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-pink-500 p-6 flex flex-col items-center text-white">
-          <div className="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center text-3xl font-bold">
-            {data.firstName.charAt(0)}
-          </div>
-          <h1 className="mt-4 text-3xl font-bold drop-shadow">
-            {data.firstName} {data.lastName}
-          </h1>
-          <p className="text-sm mt-1 opacity-80">@{data.userName}</p>
-        </div>
+  <img
+    src={data.avatarUrl}
+    alt="Profile"
+    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+  />
+
+  <h1 className="mt-4 text-3xl font-bold drop-shadow">
+    {data.firstName} {data.lastName}
+  </h1>
+  <p className="text-sm mt-1 opacity-80">@{data.userName}</p>
+</div>
+
 
         {/* Content */}
         <CardContent className="space-y-6 p-6">

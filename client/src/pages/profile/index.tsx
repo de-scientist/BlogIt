@@ -15,6 +15,7 @@ interface ProfileForm {
   lastName: string;
   emailAddress: string;
   userName: string;
+  avatar?: File; // NEW
 }
 
 export default function ProfilePage() {
@@ -48,9 +49,22 @@ export default function ProfilePage() {
   }, [data, form]);
 
   const mutation = useMutation({
-    mutationFn: async (payload: ProfileForm) =>
-      (await api.patch("/profile", { ...payload }, { withCredentials: true }))
-        .data,
+    mutationFn: async (payload: ProfileForm) => {
+      const formData = new FormData();
+      formData.append("firstName", payload.firstName);
+      formData.append("lastName", payload.lastName);
+      formData.append("emailAddress", payload.emailAddress);
+      formData.append("userName", payload.userName);
+
+      if (payload.avatar) formData.append("avatar", payload.avatar);
+
+      return (
+        await api.patch("/profile", formData, {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+      ).data;
+    },
     onSuccess: () => {
       toast.success("Profile updated.");
       queryClient.invalidateQueries({ queryKey: ["profile"] });
@@ -77,6 +91,19 @@ export default function ProfilePage() {
             onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
             className="space-y-6"
           >
+            {/* AVATAR UPLOAD */}
+            <div className="space-y-2">
+              <Label className="font-medium">Avatar</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                className="rounded-xl"
+                onChange={(e) =>
+                  form.setValue("avatar", e.target.files?.[0] || undefined)
+                }
+              />
+            </div>
+
             <div className="space-y-2">
               <Label className="font-medium">First Name</Label>
               <Input
