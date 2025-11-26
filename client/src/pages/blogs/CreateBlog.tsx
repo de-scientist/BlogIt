@@ -92,7 +92,7 @@ export default function CreateBlog() {
       if (statusCode === 401) {
         // Handle Unauthorized/Session Expired
         toast.error(errorMessage || "Session expired. Please log in.");
-        navigate("/login"); 
+        navigate("/auth/login"); 
         return;
       } 
       
