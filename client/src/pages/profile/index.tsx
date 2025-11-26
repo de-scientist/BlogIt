@@ -15,7 +15,6 @@ interface ProfileForm {
   lastName: string;
   emailAddress: string;
   userName: string;
-  avatar?: File; // NEW
 }
 
 export default function ProfilePage() {
@@ -50,18 +49,10 @@ export default function ProfilePage() {
 
   const mutation = useMutation({
     mutationFn: async (payload: ProfileForm) => {
-      const formData = new FormData();
-      formData.append("firstName", payload.firstName);
-      formData.append("lastName", payload.lastName);
-      formData.append("emailAddress", payload.emailAddress);
-      formData.append("userName", payload.userName);
-
-      if (payload.avatar) formData.append("avatar", payload.avatar);
-
       return (
-        await api.patch("/profile", formData, {
+        await api.patch("/profile", payload, {
           withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "application/json" },
         })
       ).data;
     },
@@ -77,73 +68,68 @@ export default function ProfilePage() {
 
   if (isLoading) return <div className="p-10 text-gray-500">Loading...</div>;
 
+  function onSubmit(values: ProfileForm) {
+    mutation.mutate(values);
+  }
+
   return (
-    <div className="flex justify-center py-14 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <Card className="w-full max-w-xl shadow-xl border-gray-200 rounded-2xl bg-white">
+    <div className="max-w-2xl mx-auto mt-10">
+      <Card className="shadow-lg">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-gray-800 text-center">
-            Update Your Profile
-          </CardTitle>
+          <CardTitle className="text-xl font-semibold">Edit Profile</CardTitle>
         </CardHeader>
 
-        <CardContent className="mt-4">
+        <CardContent>
           <form
-            onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
-            className="space-y-6"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
-            {/* AVATAR UPLOAD */}
-            <div className="space-y-2">
-              <Label className="font-medium">Avatar</Label>
+            <div>
+              <Label>First Name</Label>
               <Input
-                type="file"
-                accept="image/*"
-                className="rounded-xl"
-                onChange={(e) =>
-                  form.setValue("avatar", e.target.files?.[0] || undefined)
-                }
+                {...form.register("firstName")}
+                className="mt-1"
+                placeholder="Enter first name"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="font-medium">First Name</Label>
+            <div>
+              <Label>Last Name</Label>
               <Input
-                className="rounded-xl"
-                {...form.register("firstName", { required: true })}
+                {...form.register("lastName")}
+                className="mt-1"
+                placeholder="Enter last name"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="font-medium">Last Name</Label>
+            <div className="md:col-span-2">
+              <Label>Email Address</Label>
               <Input
-                className="rounded-xl"
-                {...form.register("lastName", { required: true })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="font-medium">Email Address</Label>
-              <Input
+                {...form.register("emailAddress")}
+                className="mt-1"
+                placeholder="Enter email"
                 type="email"
-                className="rounded-xl"
-                {...form.register("emailAddress", { required: true })}
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="font-medium">Username</Label>
+            <div className="md:col-span-2">
+              <Label>Username</Label>
               <Input
-                className="rounded-xl"
-                {...form.register("userName", { required: true })}
+                {...form.register("userName")}
+                className="mt-1"
+                placeholder="Enter username"
               />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full py-5 text-white font-semibold rounded-xl shadow-lg
-              bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 transition-all"
-            >
-              {mutation.isLoading ? "Saving..." : "Save Changes"}
-            </Button>
+            <div className="md:col-span-2 flex justify-end">
+              <Button
+                type="submit"
+                disabled={mutation.isPending}
+                className="px-6"
+              >
+                {mutation.isPending ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
