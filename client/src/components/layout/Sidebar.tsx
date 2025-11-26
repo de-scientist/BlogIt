@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -18,13 +20,12 @@ export default function Sidebar() {
   const [avatarOpen, setAvatarOpen] = useState(false);
   const avatarRef = useRef<HTMLDivElement>(null);
 
-  // Fake user data — replace with real API later
-  const user = {
-    name: "Mark K.",
-    email: "gitaumark502@gmail.com",
-    avatar:
-      "https://ui-avatars.com/api/?name=Mark+K&background=8b5cf6&color=fff",
-  };
+ const { data: user } = useQuery({
+  queryKey: ["profile"],
+  queryFn: async () =>
+    (await api.get("/profile", { withCredentials: true })).data,
+});
+
 
   // Load saved sidebar group
   useEffect(() => {
