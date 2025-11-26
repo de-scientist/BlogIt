@@ -36,7 +36,7 @@ const blogs = [
     synopsis: "Even shadows prove that light exists.",
     description:
       "Tough seasons aren’t dead ends; they are corridors leading to stronger rooms.",
-    image: "/images/inspire3.jpg",
+    image: "/images/inspire3.jpeg",
     content: `
       Darkness isn’t your enemy—it’s your instructor.
       It teaches patience, endurance, and clarity.
