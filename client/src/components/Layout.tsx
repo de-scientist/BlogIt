@@ -13,11 +13,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Main Section: Sidebar + Page Content */}
       <div className="flex flex-1 w-full">
 
-        {/* Sidebar (already handles mobile/desktop internally) */}
         <Sidebar />
 
         {/* Page Content */}
-        <main className="flex-1 px-6 py-8 lg:px-10">
+        <main className="flex-1  py-3 lg:px-1">
           <div className="max-w-5xl mx-auto">
             {children}
           </div>
