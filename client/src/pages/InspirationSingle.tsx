@@ -1,6 +1,8 @@
 // src/pages/InspirationSingle.tsx
 import { useParams } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const blogs = [
   {
@@ -9,7 +11,7 @@ const blogs = [
     synopsis: "Greatness isn’t born in noise—it’s forged in consistency.",
     description:
       "Small steps compound into momentum. Momentum compounds into transformation.",
-    image: "/images/inspire1.jpg",
+    image: "/images/inspire1.jpeg",
     content: `
       When the world feels loud and overwhelming, showing up becomes a rebellion.
       Not for applause. Not for recognition. But for yourself.
@@ -23,7 +25,7 @@ const blogs = [
     synopsis: "You don’t attract the life you want—you grow into it.",
     description:
       "Your habits shape your identity, and your identity shapes your destiny.",
-    image: "/images/inspire2.jpg",
+    image: "/images/inspire2.jpeg",
     content: `
       Becoming isn’t magic. It’s sweat. It’s silence. It's choosing purpose over pleasure.
       Every routine is a seed. Every sacrifice is sunlight. Every morning you rise is rain.
@@ -36,7 +38,7 @@ const blogs = [
     synopsis: "Even shadows prove that light exists.",
     description:
       "Tough seasons aren’t dead ends; they are corridors leading to stronger rooms.",
-    image: "/images/inspire3.jpg",
+    image: "/images/inspire3.jpeg",
     content: `
       Darkness isn’t your enemy—it’s your instructor.
       It teaches patience, endurance, and clarity.
@@ -50,7 +52,7 @@ const blogs = [
     synopsis: "Fear whispers; purpose roars.",
     description:
       "Fear only survives when you stop moving. Boldness starves it.",
-    image: "/images/inspire4.jpg",
+    image: "/images/inspire4.jpeg",
     content: `
       Your gift wasn’t meant to die inside your doubts.
       It was designed to breathe on stages, pages, screens, hearts.
@@ -64,7 +66,7 @@ const blogs = [
     synopsis: "Failure is not the opposite of success—it's the raw material.",
     description:
       "Every restart is a sharpened version of who you were before.",
-    image: "/images/inspire5.jpg",
+    image: "/images/inspire5.jpeg",
     content: `
       Starting again doesn’t mean you lost.
       It means you learned.
@@ -79,7 +81,7 @@ const blogs = [
     synopsis: "Your thoughts are architects, not spectators.",
     description:
       "Where your mind goes, your life eventually follows.",
-    image: "/images/inspire6.jpg",
+    image: "/images/inspire6.jpeg",
     content: `
       Protect your peace as though it's the crown jewel of your kingdom.
       Let no thought enter unchallenged. Let no fear reign unchecked.
@@ -128,6 +130,14 @@ export default function InspirationSingle() {
           </div>
         </CardContent>
       </Card>
+      {/* CTA Button for Creating a Blog */}
+      <div className="mt-12 text-center">
+        <Link to="/blogs/create">
+          <Button className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-xl shadow-xl hover:opacity-90 transition-all font-semibold">
+            Create Your Own Blog
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
