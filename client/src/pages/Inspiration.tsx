@@ -9,7 +9,7 @@ const blogs = [
     synopsis: "Greatness isn’t born in noise—it’s forged in consistency.",
     description:
       "Small steps compound into momentum. Momentum compounds into transformation.",
-    image: "/images/inspire1.jpg",
+    image: "/images/inspire1.jpeg",
     content: `
       When the world feels loud and overwhelming, showing up becomes a rebellion.
       Not for applause. Not for recognition. But for yourself.
