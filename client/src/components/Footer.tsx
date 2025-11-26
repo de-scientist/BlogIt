@@ -80,6 +80,7 @@ export default function BlogFooter() {
               <li className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
                 <a
+                rel="n"
                   href="https://techvisionstudios.co"
                   target="_blank"
                   className="hover:text-gray-900 transition-colors"
