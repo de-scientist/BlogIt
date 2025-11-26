@@ -20,7 +20,7 @@ import UserBlogsPage from "@/pages/profile/UserBlogsPage"; // user's blogs
 import DeleteProfilePage from "@/pages/profile/DeleteProfilePage"; // soft delete
 import PermanentDeleteUserPage from "@/pages/profile/PermantDeleteUserPage"; // hard delete
 
-// New Pages
+// New experience
 import ContactUs from "@/pages/ContactUs";
 import Inspiration from "@/pages/Inspiration";
 import InspirationSingle from "@/pages/InspirationSingle";
