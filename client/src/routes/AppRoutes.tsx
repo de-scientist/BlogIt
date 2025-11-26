@@ -18,6 +18,7 @@ import Trash from "@/pages/blogs/Trash";
 // Profile & User Management
 import ProfilePage from "@/pages/profile"; // update profile
 import ViewProfilePage from "@/pages/profile/View"; // view profile
+import EditProfilePage from "@/pages/profile/EditProfilePage"; // edit profile
 import UserBlogsPage from "@/pages/profile/UserBlogsPage"; // user's blogs
 import DeleteProfilePage from "@/pages/profile/DeleteProfilePage"; // soft delete
 import PermanentDeleteUserPage from "@/pages/profile/PermantDeleteUserPage"; // hard delete
@@ -48,6 +49,7 @@ export default function AppRoutes() {
       {/* Profile & User Management */}
       <Route path="/profile" element={<ProfilePage />} /> {/* update profile */}
       <Route path="/profile/view" element={<ViewProfilePage />} /> {/* view profile */}
+      <Route path="/profile/edit" element={<EditProfilePage />} /> {/* edit profile */}
       <Route path="/profile/blogs" element={<UserBlogsPage />} /> {/* user's blogs */}
       <Route path="/profile/trash" element={<Trash />} /> {/* user trash */}
       <Route path="/profile/delete" element={<DeleteProfilePage />} /> {/* soft delete */}
