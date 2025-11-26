@@ -56,6 +56,7 @@ export default function Home() {
           distraction-free. Focus on your ideas. Let the world hear your voice.
         </p>
 
+<div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
         <Button
           type="button"
           size="lg"
@@ -74,6 +75,7 @@ export default function Home() {
         >
           View Inspiration
         </Button>
+        </div>
       </section>
 
       {/* SLIDES / HERO CAROUSEL */}
