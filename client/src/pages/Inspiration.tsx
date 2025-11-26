@@ -23,7 +23,7 @@ const blogs = [
     synopsis: "You don’t attract the life you want—you grow into it.",
     description:
       "Your habits shape your identity, and your identity shapes your destiny.",
-    image: "/images/inspire2.jpg",
+    image: "/images/inspire2.jpeg",
     content: `
       Becoming isn’t magic. It’s sweat. It’s silence. It's choosing purpose over pleasure.
       Every routine is a seed. Every sacrifice is sunlight. Every morning you rise is rain.
