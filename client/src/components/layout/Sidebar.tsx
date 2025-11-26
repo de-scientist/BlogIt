@@ -130,30 +130,47 @@ export default function Sidebar() {
     </div>
   );
 
-  const AvatarSection = () => (
+  const AvatarSection = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState(user.avatar);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => setPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  return (
     <div className="relative mb-8" ref={avatarRef}>
       {/* Avatar Button */}
       <button
-        className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all w-full"
+        className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 
+        hover:bg-gray-200 dark:hover:bg-slate-700 transition-all w-full shadow-sm"
         onClick={() => setAvatarOpen(!avatarOpen)}
       >
         <img
-          src={user.avatar}
+          src={preview}
           alt="User Avatar"
-          className="h-10 w-10 rounded-full object-cover border border-gray-300 dark:border-gray-700"
+          className="h-10 w-10 rounded-full object-cover border-2 
+          border-purple-500/60 shadow-md"
         />
 
         <div className="text-left">
           <p className="text-sm font-semibold text-gray-900 dark:text-white">
             {user.name}
           </p>
-          <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            {user.email}
+          </p>
         </div>
 
         <HiChevronDown
           size={18}
           className={cn(
-            "ml-auto transition-transform",
+            "ml-auto transition-transform text-purple-600 dark:text-purple-400",
             avatarOpen && "rotate-180"
           )}
         />
@@ -161,18 +178,90 @@ export default function Sidebar() {
 
       {/* Dropdown */}
       {avatarOpen && (
-        <div className="absolute mt-2 w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 animate-fadeIn">
+        <div
+          className="absolute mt-2 w-full bg-gray-50 dark:bg-slate-900 
+          border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg 
+          p-4 animate-fadeIn"
+        >
+          {/* User Full Details */}
+          <div className="pb-3 mb-3 border-b border-gray-300/40 dark:border-gray-700/40">
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+              {user.name}
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              {user.email}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+              Member since: Jan 2024
+            </p>
+          </div>
+
+          {/* Change Photo Button */}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center gap-2 w-full text-left px-3 py-2 mb-2 
+            rounded-md text-sm transition 
+            hover:bg-purple-600 hover:text-white 
+            dark:hover:bg-purple-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-purple-600 dark:text-purple-400 group-hover:text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M3 7h2l2-3h10l2 3h2v13H3V7z" />
+            </svg>
+            Change Photo
+          </button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+            aria-label="upload image"
+          />
+
+          {/* View Profile */}
           <button
             onClick={() => navigate("/profile/view")}
-            className="block w-full text-left px-3 py-2 rounded-md text-sm hover:bg-gray-200 dark:hover:bg-slate-700 transition"
+            className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-md 
+            text-sm transition hover:bg-gray-200 
+            dark:hover:bg-slate-700"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-purple-600 dark:text-purple-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
             View Profile
           </button>
 
+          {/* Logout */}
           <button
             onClick={handleLogout}
-            className="block w-full text-left px-3 py-2 text-sm rounded-md text-red-600 hover:bg-red-100 dark:hover:bg-red-900/40 transition"
+            className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-md 
+            text-sm text-red-600 hover:bg-red-100 dark:hover:bg-red-900/40 transition"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-red-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5" />
+            </svg>
             Logout
           </button>
         </div>
@@ -186,12 +275,14 @@ export default function Sidebar() {
             to { opacity: 1; transform: translateY(0); }
           }
           .animate-fadeIn {
-            animation: fadeIn 0.2s ease-out forwards;
+            animation: fadeIn 0.25s ease-out forwards;
           }
         `}
       </style>
     </div>
   );
+};
+
 
   const SidebarContent = () => (
     <nav className="flex flex-col gap-4">
