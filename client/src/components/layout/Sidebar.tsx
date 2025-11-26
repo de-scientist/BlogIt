@@ -19,7 +19,7 @@ export default function Sidebar() {
   ];
 
   const SidebarContent = () => (
-    <nav className="flex flex-col gap-3">
+    <nav className="flex flex-col gap-2">
       {links.map((link) => (
         <NavLink
           key={link.path}
@@ -27,10 +27,14 @@ export default function Sidebar() {
           onClick={() => setMobileOpen(false)}
           className={({ isActive }) =>
             cn(
-              "block px-4 py-3 rounded-xl font-medium text-center transition-all duration-300 shadow-sm relative",
+              "block px-4 py-2.5 rounded-lg text-sm font-medium tracking-wide text-left transition-all duration-300 shadow-sm relative",
+
+              // ACTIVE
               isActive
-                ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg before:absolute before:-inset-1 before:rounded-xl before:bg-gradient-to-r before:from-purple-400 before:to-pink-400 before:opacity-40 before:blur-xl"
-                : "bg-gray-100 dark:bg-slate-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
+                ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-purple-400 before:to-pink-400 before:opacity-40 before:blur-xl"
+
+                // INACTIVE
+                : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white"
             )
           }
         >
@@ -45,7 +49,7 @@ export default function Sidebar() {
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex w-64 bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-200 h-screen p-6 sticky top-0 shadow-md">
         <div>
-          <h2 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold tracking-tight mb-8 text-gray-900 dark:text-white">
             User Panel
           </h2>
           <SidebarContent />
@@ -54,7 +58,7 @@ export default function Sidebar() {
 
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between bg-gray-50 dark:bg-slate-900 px-4 py-4 shadow-md">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
           User Panel
         </h2>
         <button
@@ -69,7 +73,7 @@ export default function Sidebar() {
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 bg-black/30 z-50">
           <div className="fixed top-0 left-0 h-full w-64 bg-gray-50 dark:bg-slate-900 p-6 shadow-lg overflow-y-auto animate-slideIn">
-            <h2 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold tracking-tight mb-8 text-gray-900 dark:text-white">
               User Panel
             </h2>
             <SidebarContent />
