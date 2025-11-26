@@ -79,7 +79,7 @@ const blogs = [
     synopsis: "Your thoughts are architects, not spectators.",
     description:
       "Where your mind goes, your life eventually follows.",
-    image: "/images/inspire6.jpg",
+    image: "/images/inspire6.jpeg",
     content: `
       Protect your peace as though it's the crown jewel of your kingdom.
       Let no thought enter unchallenged. Let no fear reign unchecked.
