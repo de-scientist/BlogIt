@@ -78,7 +78,6 @@ export default function Sidebar() {
       items: [
         { name: "Profile", path: "/profile" },
         { name: "View Profile", path: "/profile/view" },
-        { name: "Edit Profile", path: "/profile/edit" },
         { name: "My Blog Posts", path: "/profile/blogs" },
         { name: "My Trash", path: "/profile/trash" },
         { name: "Delete Account", path: "/profile/delete" },
