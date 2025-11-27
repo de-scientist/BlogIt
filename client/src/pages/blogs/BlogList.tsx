@@ -10,12 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
-    PenTool, 
-    Search, 
-    PlusCircle, 
-    CornerUpLeft, 
-    Lightbulb, 
-    Loader2, // 💡 Added Loader2 icon for professional loading state
+    PenTool, 
+    Search, 
+    PlusCircle, 
+    CornerUpLeft, 
+    Lightbulb, 
+    Loader2, // 💡 Added Loader2 icon for professional loading state
 } from "lucide-react"; 
 
 // 💡 Simple list of fun facts (for the empty state)
@@ -35,43 +35,50 @@ export default function BlogList() {
     queryKey: ["blogs"],
     queryFn: async () => {
       const res = await api.get("/blogs", { withCredentials: true });
-      return Array.isArray(res.data.blogs) ? res.data.blogs : [];
+      return res.data.blogs || []; // Return the blogs array, or an empty array if it's missing or null
     },
   });
+
+  // 🔑 FIX: Normalize the data access. Assuming the API response is structured as { blogs: [...] }
+  // We already try to return only the array in queryFn, but if 'data' is undefined/null initially,
+  // or if the server returns an object even when successful, this helps.
+  // We extract the array only once here.
+  const blogs = Array.isArray(data) ? data : data?.blogs || [];
+
 
   // --- 1. Loading State (Improved) ---
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 pl-4 flex justify-center items-center">
-        <Loader2 className="w-8 h-8 mr-2 text-purple-600 animate-spin" />
+        <Loader2 className="w-8 h-8 mr-2 text-purple-600 animate-spin" />
         <p className="text-xl font-medium text-gray-500 dark:text-gray-400">
           Loading amazing stories...
         </p>
       </div>
     );
   }
-    
+    
   // --- 2. Error State ---
-    if (isError) {
-        return (
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 pl-4 flex justify-center items-center p-8">
-                <Card className="p-8 text-center shadow-xl dark:bg-slate-800 border-red-500 border-l-4">
-                    <h2 className="text-2xl font-bold text-red-500 mb-2">
-                        Connection Error 🔌
-                    </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-400">
-                        Failed to fetch blog posts. Please check your network connection or try again later.
-                    </p>
-                </Card>
-            </div>
-        );
-    }
+    if (isError) {
+        return (
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 pl-4 flex justify-center items-center p-8">
+                <Card className="p-8 text-center shadow-xl dark:bg-slate-800 border-red-500 border-l-4">
+                    <h2 className="text-2xl font-bold text-red-500 mb-2">
+                        Connection Error 🔌
+                    </h2>
+                    <p className="text-lg text-gray-600 dark:text-gray-400">
+                        Failed to fetch blog posts. Please check your network connection or try again later.
+                    </p>
+                </Card>
+            </div>
+        );
+    }
 
   return (
-    // 💡 APPLIED: pt-16 (Navbar) and pl-4 (Sidebar) to the main container
+    // 💡 APPLIED: pt-16 (Navbar) and pl-4 (Sidebar) to the main container
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-4 pb-10">
-        <div className="max-w-6xl mx-auto py-8">
-      {data.length === 0 ? (
+        <div className="max-w-6xl mx-auto py-8">
+      {blogs.length === 0 ? ( // 🔑 Using the normalized 'blogs' array
         // 🔹 ENHANCED EMPTY STATE UI/UX (Centered and polished)
         <div className="max-w-xl mx-auto py-16 px-8 bg-white dark:bg-slate-800 rounded-xl shadow-2xl text-center border-t-4 border-purple-600">
           <PenTool className="w-12 h-12 mx-auto text-purple-600 mb-4" />
@@ -114,79 +121,79 @@ export default function BlogList() {
             title="Click to see another fact"
           >
             <p className="font-semibold text-purple-800 dark:text-purple-300 flex items-start">
-                <Lightbulb className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
+                <Lightbulb className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
               {currentFact}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Click the box for a new writing tip!</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Click the box for a new writing tip!</p>
           </div>
         </div>
       ) : (
         // 🔹 BLOG LIST VIEW (Enhanced Layout)
-        <>
-            <h1 className="text-3xl font-extrabold mb-8 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text flex items-center">
-                <Search className="w-7 h-7 mr-3 text-purple-600" /> Explore Stories
-            </h1>
-            
-            <ScrollArea className="h-[80vh]">
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
-                    {data.map((blog: any) => (
-                        <Card
-                            key={blog.id}
-                            className="rounded-xl overflow-hidden shadow-xl border border-gray-100 dark:border-slate-700 dark:bg-slate-900 
-                            hover:shadow-purple-500/30 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
-                        >
-                            {/* Card Image */}
-                            {blog.featuredImageUrl && (
-                                <div className="w-full h-48 overflow-hidden">
-                                    <img
-                                        src={blog.featuredImageUrl}
-                                        alt={blog.title}
-                                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                                    />
-                                </div>
-                            )}
+        <>
+            <h1 className="text-3xl font-extrabold mb-8 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text flex items-center">
+                <Search className="w-7 h-7 mr-3 text-purple-600" /> Explore Stories
+            </h1>
+            
+            <ScrollArea className="h-[80vh]">
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
+                    {blogs.map((blog: any) => ( // 🔑 Calling .map on the normalized 'blogs' array
+                        <Card
+                            key={blog.id}
+                            className="rounded-xl overflow-hidden shadow-xl border border-gray-100 dark:border-slate-700 dark:bg-slate-900 
+                            hover:shadow-purple-500/30 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
+                        >
+                            {/* Card Image */}
+                            {blog.featuredImageUrl && (
+                                <div className="w-full h-48 overflow-hidden">
+                                    <img
+                                        src={blog.featuredImageUrl}
+                                        alt={blog.title}
+                                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                                    />
+                                </div>
+                            )}
 
-                            {/* Card Content */}
-                            <CardContent className="p-4"> 
-                                <h2 className="text-xl font-bold mb-1 text-gray-900 dark:text-gray-100 line-clamp-2">
-                                    {blog.title}
-                                </h2>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 mb-3">
-                                    {blog.synopsis}
-                                </p>
-                                
-                                <small className="block text-xs text-gray-500 dark:text-gray-500">
-                                    By **{blog.user.firstName} {blog.user.lastName}** •{" "}
-                                    {new Date(blog.createdAt).toLocaleDateString()}
-                                </small>
-                            </CardContent>
+                            {/* Card Content */}
+                            <CardContent className="p-4"> 
+                                <h2 className="text-xl font-bold mb-1 text-gray-900 dark:text-gray-100 line-clamp-2">
+                                    {blog.title}
+                                </h2>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 mb-3">
+                                    {blog.synopsis}
+                                </p>
+                                
+                                <small className="block text-xs text-gray-500 dark:text-gray-500">
+                                    By **{blog.user.firstName} {blog.user.lastName}** •{" "}
+                                    {new Date(blog.createdAt).toLocaleDateString()}
+                                </small>
+                            </CardContent>
 
-                            {/* Card Footer */}
-                            <CardFooter className="flex justify-between p-4 border-t border-gray-100 dark:border-slate-700">
-                                <Link to={`/blogs/edit/${blog.id}`} rel="noopener">
-                                    <Button
-                                        variant="outline"
-                                        className="text-sm font-semibold border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white transition-colors"
-                                    >
-                                        Edit
-                                    </Button>
-                                </Link>
+                            {/* Card Footer */}
+                            <CardFooter className="flex justify-between p-4 border-t border-gray-100 dark:border-slate-700">
+                                <Link to={`/blogs/edit/${blog.id}`} rel="noopener">
+                                    <Button
+                                        variant="outline"
+                                        className="text-sm font-semibold border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white transition-colors"
+                                    >
+                                        Edit
+                                    </Button>
+                                </Link>
 
-                                <Link to={`/blogs/view/${blog.id}`} rel="noopener">
-                                    <Button 
-                                        className="text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-md shadow-purple-500/50 hover:opacity-90"
-                                    >
-                                        Read More
-                                    </Button>
-                                </Link>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            </ScrollArea>
-        </>
+                                <Link to={`/blogs/view/${blog.id}`} rel="noopener">
+                                    <Button 
+                                        className="text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-md shadow-purple-500/50 hover:opacity-90"
+                                    >
+                                        Read More
+                                    </Button>
+                                </Link>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+            </ScrollArea>
+        </>
       )}
-    </div>
+    </div>
   </div>
   );
 }
