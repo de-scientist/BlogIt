@@ -4,15 +4,47 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // 💡 Added CardTitle
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react"; 
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import { Loader2, Save, PenTool, Eye } from "lucide-react"; // 💡 Added icons
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Assuming you have a Tabs component
+import { Loader2, Save, PenTool, Eye, Bot, Wand2 } from "lucide-react"; 
+// Assuming the following components are installed via shadcn/ui
+// import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"; 
+
+
+// 💡 Mock Rich Text Editor Component (Placeholder for a real library like Tiptap/Quill)
+const RichTextEditor = ({ 
+    value, 
+    onChange, 
+    placeholder, 
+    error,
+}: { 
+    value: string; 
+    onChange: (newValue: string) => void; 
+    placeholder: string; 
+    error?: string;
+}) => {
+    // In a production app, this would be the wrapper for the actual RTF library.
+    // We use a textarea here to simulate its basic function.
+    return (
+        <div className="space-y-1">
+            <textarea
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={placeholder}
+                className={`w-full p-4 border rounded-lg resize-y focus:outline-none focus:ring-2 min-h-[300px] 
+                           dark:bg-slate-900 ${error ? 'border-red-500 ring-red-500' : 'border-gray-300 focus:ring-purple-500 dark:border-slate-700'}`}
+            />
+            {error && (
+                <p className="text-sm text-red-500">{error}</p>
+            )}
+        </div>
+    );
+};
+// -----------------------------------------------------
 
 // --- Type Definitions ---
 type BlogForm = {
@@ -42,9 +74,8 @@ const getInitialValues = (): BlogForm => {
 		}
 	} catch (error) {
 		console.error("Error parsing stored data:", error);
-		localStorage.removeItem(LOCAL_STORAGE_KEY); // Clear bad data
+		localStorage.removeItem(LOCAL_STORAGE_KEY);
 	}
-	// Default empty state if nothing is stored or storage fails
 	return {
 		title: "",
 		synopsis: "",
@@ -58,35 +89,57 @@ export default function CreateBlog() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const [uploading, setUploading] = useState(false);
-	const [isSaving, setIsSaving] = useState(false); // State for draft saving notification
+	const [isSaving, setIsSaving] = useState(false);
+	const [isGenerating, setIsGenerating] = useState(false); // State for AI generation
 
 	const form = useForm<BlogForm>({
 		defaultValues: getInitialValues(),
 	});
+    const { getValues, setValue, register, watch, handleSubmit, formState: { errors } } = form;
 
 	// 💡 PERSISTENCE: Save form data to local storage on change
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;
 
-		const subscription = form.watch((value) => {
-			// Clear any previous debounce timer
+		const subscription = watch(() => {
 			clearTimeout(timeoutId);
-			setIsSaving(true); // Show saving indicator
+			setIsSaving(true);
 
 			timeoutId = setTimeout(() => {
-				// Save the current form values (draft) after a short delay
-				localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
-				setIsSaving(false); // Hide saving indicator
-				// Optional toast for auto-save confirmation
-				// toast.info("Draft saved locally.", { position: "bottom-left", duration: 1500 }); 
-			}, 1000); // 1-second debounce
+				localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(getValues()));
+				setIsSaving(false);
+			}, 1000); 
 
 			return () => clearTimeout(timeoutId);
 		});
 
-		// Unsubscribe when the component unmounts
 		return () => subscription.unsubscribe();
-	}, [form]);
+	}, [watch, getValues]);
+
+
+	// 💡 SIMULATED AI SUGGESTION FUNCTION
+	const handleGenerateAISuggestion = () => {
+		if (isGenerating) return;
+
+		setIsGenerating(true);
+		const currentContent = getValues("content");
+        const currentTitle = getValues("title");
+        
+		toast.info("AI is analyzing content for suggestions...", { position: "bottom-left" });
+
+		// Simulate API call delay (Replace with actual AI API call)
+		setTimeout(() => {
+			setIsGenerating(false);
+            
+            // Placeholder Logic for AI Response
+            const suggestion = `\n\n**[AI Suggestion]** You could elaborate on the following point: "${currentTitle || 'the main topic'}". Consider adding a section about practical examples or a concluding thought on future trends in this area.`;
+
+            // Append suggestion to content
+            setValue("content", currentContent + suggestion, { shouldDirty: true });
+            
+			toast.success("AI suggestions generated and appended to content!", { position: "bottom-left" });
+		}, 2000); 
+	};
 
 
 	// 💡 IMAGE UPLOAD
@@ -95,7 +148,7 @@ export default function CreateBlog() {
 		if (!file) return;
 
 		setUploading(true);
-		const toastId = toast.loading("Uploading image...", { position: "bottom-left" }); // 💡 Set toast position
+		const toastId = toast.loading("Uploading image...", { position: "bottom-left" }); 
 
 		const data = new FormData();
 		data.append("file", file);
@@ -110,13 +163,13 @@ export default function CreateBlog() {
 			const result = await res.json();
 
 			if (result.secure_url) {
-				form.setValue("featuredImageUrl", result.secure_url, { shouldValidate: true }); 
-				toast.success("Image uploaded!", { position: "bottom-left" }); // 💡 Set toast position
+				setValue("featuredImageUrl", result.secure_url, { shouldValidate: true }); 
+				toast.success("Image uploaded!", { position: "bottom-left" }); 
 			} else {
-				toast.error("Failed to upload image", { position: "bottom-left" }); // 💡 Set toast position
+				toast.error("Failed to upload image", { position: "bottom-left" }); 
 			}
 		} catch {
-			toast.error("Upload error", { position: "bottom-left" }); // 💡 Set toast position
+			toast.error("Upload error", { position: "bottom-left" }); 
 		} finally {
 			setUploading(false);
 			toast.dismiss(toastId);
@@ -127,10 +180,9 @@ export default function CreateBlog() {
 		mutationFn: (newBlog: BlogForm) =>
 			api.post("/blogs", newBlog, { withCredentials: true }),
 		onSuccess: () => {
-			// SUCCESS: Clear the local storage draft
 			localStorage.removeItem(LOCAL_STORAGE_KEY); 
 			
-			toast.success("Blog created successfully", { position: "bottom-left" }); // 💡 Set toast position
+			toast.success("Blog created successfully", { position: "bottom-left" }); 
 			queryClient.invalidateQueries({ queryKey: ["blogs"] });
 			navigate("/blogs");
 		},
@@ -138,8 +190,9 @@ export default function CreateBlog() {
 			const errorMessage = err.response?.data?.message;
 			const statusCode = err.response?.status;
 
+			// Error handling logic (keeping toasts set to bottom-left)
 			if (statusCode === 401) {
-				toast.error(errorMessage || "Session expired. Please log in.", { position: "bottom-left" }); // 💡 Set toast position
+				toast.error(errorMessage || "Session expired. Please log in.", { position: "bottom-left" });
 				navigate("/auth/login"); 
 				return;
 			} 
@@ -160,24 +213,24 @@ export default function CreateBlog() {
 							type: "server",
 							message: errorMessage,
 						});
-						toast.error(`Validation failed: ${errorMessage}`, { position: "bottom-left" }); // 💡 Set toast position
+						toast.error(`Validation failed: ${errorMessage}`, { position: "bottom-left" });
 				} else {
-						toast.error(errorMessage, { position: "bottom-left" }); // 💡 Set toast position
+						toast.error(errorMessage, { position: "bottom-left" });
 				}
 			} 
 			else {
-				toast.error(errorMessage || "Failed to create blog", { position: "bottom-left" }); // 💡 Set toast position
+				toast.error(errorMessage || "Failed to create blog", { position: "bottom-left" });
 			}
 		},
 	});
 
 	const isSubmitting = mutation.isPending;
-	const content = form.watch("content");
-	const featuredImageUrl = form.watch("featuredImageUrl");
+	const content = watch("content");
+	const featuredImageUrl = watch("featuredImageUrl");
 
 
 	return (
-		// 💡 ADJUSTED: Padding for Navbar (pt-16) and Sidebar (pl-4)
+		// ADJUSTED: Padding for Navbar (pt-16) and Sidebar (pl-4)
 		<div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-4 pb-10">
 
 			<div className="max-w-6xl mx-auto py-8">
@@ -195,7 +248,7 @@ export default function CreateBlog() {
 					<hr className="mt-4 border-gray-200 dark:border-gray-700" />
 				</header>
 
-				{/* 💡 NEW: Auto-Save Status Banner */}
+				{/* 💡 Auto-Save Status Banner */}
 				<div className={`flex items-center p-3 text-sm rounded-lg border mb-6 transition-all duration-300 ${
 					isSaving 
 						? "bg-yellow-50 text-yellow-800 border-yellow-200 dark:bg-gray-800 dark:text-yellow-300"
@@ -233,10 +286,10 @@ export default function CreateBlog() {
 										id="title"
 										placeholder="Give your blog a powerful title..."
 										className="mt-1 focus:ring-2 focus:ring-purple-500 dark:bg-slate-900 dark:border-slate-700"
-										{...form.register("title", { required: "Title is required" })}
+										{...register("title", { required: "Title is required" })}
 									/>
-									{form.formState.errors.title && (
-										<p className="text-sm text-red-500">{form.formState.errors.title.message}</p>
+									{errors.title && (
+										<p className="text-sm text-red-500">{errors.title.message}</p>
 									)}
 								</div>
 
@@ -247,10 +300,10 @@ export default function CreateBlog() {
 										id="synopsis"
 										placeholder="A short teaser that hooks your audience..."
 										className="mt-1 focus:ring-2 focus:ring-purple-500 dark:bg-slate-900 dark:border-slate-700"
-										{...form.register("synopsis", { required: "Synopsis is required" })}
+										{...register("synopsis", { required: "Synopsis is required" })}
 									/>
-									{form.formState.errors.synopsis && (
-										<p className="text-sm text-red-500">{form.formState.errors.synopsis.message}</p>
+									{errors.synopsis && (
+										<p className="text-sm text-red-500">{errors.synopsis.message}</p>
 									)}
 								</div>
 
@@ -265,12 +318,11 @@ export default function CreateBlog() {
 											className="cursor-pointer border-dashed border-2 border-purple-400 hover:border-purple-500 dark:bg-slate-900 dark:text-gray-300"
 										/>
 									</div>
-									{/* Display current image URL input (Optional: for direct link entry) */}
 									<Input
 										type="text"
 										placeholder="Or enter image URL here (optional)"
 										className="mt-2 focus:ring-2 focus:ring-purple-500 dark:bg-slate-900 dark:border-slate-700"
-										{...form.register("featuredImageUrl")}
+										{...register("featuredImageUrl")}
 									/>
 									{featuredImageUrl && (
 										<img
@@ -279,27 +331,47 @@ export default function CreateBlog() {
 											className="w-full h-40 object-cover rounded-md mt-4 shadow"
 										/>
 									)}
-									{form.formState.errors.featuredImageUrl && (
+									{errors.featuredImageUrl && (
 										<p className="text-sm text-red-500 mt-2">
-											{form.formState.errors.featuredImageUrl.message}
+											{errors.featuredImageUrl.message}
 										</p>
 									)}
 								</div>
 								
-								{/* CONTENT TEXTAREA */}
+								{/* 💡 AI SUGGESTION BUTTON */}
+								<div className="mt-6">
+									<Button
+										type="button"
+										onClick={handleGenerateAISuggestion}
+										disabled={isGenerating || isSubmitting}
+										className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium flex items-center justify-center rounded-lg shadow-md"
+									>
+										{isGenerating ? (
+											<>
+												<Loader2 className="w-5 h-5 mr-2 animate-spin" /> Generating Suggestions...
+											</>
+										) : (
+											<>
+												<Wand2 className="w-5 h-5 mr-2" /> AI Writing Assistant
+											</>
+										)}
+									</Button>
+									<p className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center">
+										<Bot className="w-3 h-3 mr-1" /> The AI will suggest content improvements and append them below.
+									</p>
+								</div>
+								
+								{/* CONTENT TEXTAREA (Rich Text Editor Mock) */}
 								<div>
 									<Label htmlFor="content" className="font-medium dark:text-gray-300">
-										Content (Markdown supported)
+										Content (Rich Text Editor)
 									</Label>
-									<Textarea
-										id="content"
-										placeholder="Let your words dance here... Use Markdown for formatting."
-										{...form.register("content", { required: "Content is required" })}
-										className="h-64 mt-1 focus:ring-2 focus:ring-purple-500 dark:bg-slate-900 dark:border-slate-700"
-									/>
-									{form.formState.errors.content && (
-										<p className="text-sm text-red-500">{form.formState.errors.content.message}</p>
-									)}
+                                    <RichTextEditor 
+                                        value={content}
+                                        onChange={(newValue) => setValue("content", newValue, { shouldValidate: true })}
+                                        placeholder="Let your words dance here... Use the rich text toolbar for formatting."
+                                        error={errors.content?.message}
+                                    />
 								</div>
 							</CardContent>
 						</Card>
@@ -308,7 +380,7 @@ export default function CreateBlog() {
 						<Button
 							disabled={isSubmitting || uploading}
 							className="w-full py-3 text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold hover:opacity-90 transition-all rounded-xl flex justify-center items-center shadow-lg"
-							onClick={form.handleSubmit((values) => mutation.mutate(values))}
+							onClick={handleSubmit((values) => mutation.mutate(values))}
 						>
 							{isSubmitting ? (
 								<>
@@ -329,14 +401,14 @@ export default function CreateBlog() {
 									<Eye className="w-5 h-5 mr-2" /> Live Preview
 								</CardTitle>
 								<p className="text-sm text-gray-500 dark:text-gray-400">
-									See your final layout and markdown formatting in real-time.
+									See your final layout and formatting in real-time.
 								</p>
 							</CardHeader>
 							<CardContent className="pt-4 h-[calc(100%-120px)] overflow-y-auto blog-preview-content">
 								
 								{/* Display Title */}
 								<h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-									{form.watch("title") || "Untitled Draft"}
+									{watch("title") || "Untitled Draft"}
 								</h2>
 
 								{/* Display Featured Image */}
@@ -351,7 +423,7 @@ export default function CreateBlog() {
 								{/* Display Content Preview */}
 								<div className="prose dark:prose-invert max-w-none">
 									<ReactMarkdown rehypePlugins={[rehypeRaw]}>
-										{content || "Start typing your content in the editor to see the live markdown rendering here..."}
+										{content || "Start typing your content in the editor to see the live rendering here..."}
 									</ReactMarkdown>
 								</div>
 							</CardContent>
