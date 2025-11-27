@@ -116,14 +116,14 @@ export default function Dashboard() {
 
                   <div className="flex gap-3">
                     <Link to={`/blogs/edit/${blog.id}`} className="w-full">
-                      <Button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-xl">
+                      <Button className="text-md bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-xl">
                         Edit
                       </Button>
                     </Link>
 
                     <Button
                       onClick={() => handleDelete(blog.id)}
-                      className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl shadow"
+                      className="px-6 py-2 text-md bg-red-600 hover:bg-red-700 text-white rounded-xl shadow"
                     >
                       Delete
                     </Button>
