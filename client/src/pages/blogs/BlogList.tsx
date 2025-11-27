@@ -1,15 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { Link } from "react-router-dom";
+import { useState } from "react"; // 💡 Import useState for the interactive fact
 import {
   Card,
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PenTool, Search } from "lucide-react"; // 💡 Added icons for better context
+import { PenTool, Search, PlusCircle, CornerUpLeft, Lightbulb } from "lucide-react"; // 💡 Added icons
+
+// 💡 Simple list of fun facts (for the empty state)
+const facts = [
+  "Did you know: Bloggers often read other blogs for inspiration before writing!",
+  "The average attention span of an internet user reading a blog post is only 6 seconds.",
+  "SEO (Search Engine Optimization) is key to getting your blog seen by the world.",
+  "Consistency is the most important trait of a successful blogger.",
+];
+// Function to get a random fact
+const getRandomFact = () => facts[Math.floor(Math.random() * facts.length)];
 
 export default function BlogList() {
+  const [currentFact, setCurrentFact] = useState(getRandomFact()); // 💡 State for the interactive fact
+
   const { data, isLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: async () => {
@@ -31,8 +44,8 @@ export default function BlogList() {
   return (
     <div className="max-w-6xl mx-auto mt-6 px-4 sm:px-6 lg:px-8">
       {data.length === 0 ? (
-        // 🔹 EMPTY STATE UI/UX IMPROVEMENT
-        <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-xl shadow-xl border-t-4 border-purple-600">
+        // 🔹 ENHANCED EMPTY STATE UI/UX
+        <div className="max-w-xl mx-auto py-16 px-8 bg-white dark:bg-slate-800 rounded-xl shadow-2xl text-center border-t-4 border-purple-600">
           <PenTool className="w-12 h-12 mx-auto text-purple-600 mb-4" />
           <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
             Your Canvas Awaits
@@ -40,24 +53,62 @@ export default function BlogList() {
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             There are no blogs to display. Start sharing your voice!
           </p>
-          <Link to="/blogs/create" rel="noopener">
+
+          {/* Action Buttons */}
+          <div className="space-y-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+            {/* Create Blog Button (Primary Gradient) */}
             <Button
-              className="px-6 py-3 text-lg font-semibold bg-gradient-to-r from-green-500 to-teal-400 text-white shadow-lg shadow-green-500/50 hover:opacity-90 transition-all duration-200"
+              asChild
+              className="w-full bg-gradient-to-r from-green-500 to-teal-400 text-white font-semibold hover:opacity-90 transition-all shadow-md shadow-green-500/30"
             >
-              Create Your First Blog ✨
+              <Link to="/blogs/create">
+                <PlusCircle className="w-5 h-5 mr-2" /> Start a New Blog
+              </Link>
             </Button>
-          </Link>
+            
+            {/* Go to Dashboard Button (Outline) */}
+            <Button
+              asChild
+              variant="outline"
+              className="w-full text-gray-700 dark:text-gray-300 border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700"
+            >
+              <Link to="/dashboard">
+                <CornerUpLeft className="w-5 h-5 mr-2" /> Go to Dashboard
+              </Link>
+            </Button>
+
+            {/* Inspiration Button (Ghost/Subtle) */}
+            <Button
+              asChild
+              variant="ghost"
+              className="w-full text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700"
+            >
+              <Link to="/inspiration">
+                <Lightbulb className="w-5 h-5 mr-2" /> Find Inspiration
+              </Link>
+            </Button>
+          </div>
+
+          {/* Interactive Fact */}
+          <div 
+            className="mt-6 p-4 bg-purple-50 dark:bg-slate-700 border border-purple-200 dark:border-purple-800 rounded-lg cursor-pointer transition hover:bg-purple-100 dark:hover:bg-slate-600"
+            onClick={() => setCurrentFact(getRandomFact())} // Change fact on click
+            title="Click to see another fact"
+          >
+            <p className="font-semibold text-purple-800 dark:text-purple-300">
+              {currentFact}
+            </p>
+          </div>
         </div>
       ) : (
+        // 🔹 BLOG LIST VIEW (Same as previous update)
         <ScrollArea className="h-[88vh] pr-4">
           <h1 className="text-3xl font-extrabold mb-8 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
             <Search className="inline w-7 h-7 mr-2" /> Explore Stories
           </h1>
 
-          {/* Pinterest-style grid */}
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
             {data.map((blog: any) => (
-              // 🔹 CARD UI/UX IMPROVEMENT
               <Card
                 key={blog.id}
                 className="rounded-2xl overflow-hidden shadow-xl border border-gray-100 dark:border-slate-700 dark:bg-slate-900 
@@ -81,7 +132,6 @@ export default function BlogList() {
                     {blog.synopsis}
                   </p>
                   
-                  {/* Metadata */}
                   <small className="block text-xs text-gray-500 dark:text-gray-500">
                     By **{blog.user.firstName} {blog.user.lastName}** •{" "}
                     {new Date(blog.createdAt).toLocaleDateString()}
@@ -89,7 +139,6 @@ export default function BlogList() {
                 </div>
 
                 <CardFooter className="flex justify-between p-4 border-t border-gray-100 dark:border-slate-700">
-                  {/* Edit Button - Outline with gradient text */}
                   <Link to={`/blogs/edit/${blog.id}`} rel="noopener">
                     <Button
                       variant="outline"
@@ -99,7 +148,6 @@ export default function BlogList() {
                     </Button>
                   </Link>
 
-                  {/* View Button - Primary Gradient */}
                   <Link to={`/blogs/view/${blog.id}`} rel="noopener">
                     <Button 
                       className="text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-md shadow-purple-500/50 hover:opacity-90"
