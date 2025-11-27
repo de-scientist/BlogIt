@@ -75,7 +75,7 @@ export default function BlogFooter() {
                   className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
                   rel="noopener noreferrer"
                 >
-                  GitHub / de-scientist
+                  GitHub / Explore my projects
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -84,7 +84,7 @@ export default function BlogFooter() {
                   href="mailto:gitaumark502@gmail.com"
                   className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
                 >
-                  Email / gitaumark502@gmail.com
+                  Email 
                 </a>
               </li>
               <li className="flex items-center gap-3">
