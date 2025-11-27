@@ -33,7 +33,7 @@ model Blog {
   title            String   @map("Blog_Title")
   synopsis         String   @map("Blog_Synopsis")
   featuredImageUrl String   @default("null") @map("Featured_Image_Url")
-  content          String   @map("Blog_Content")
+  content          String   @map("Blog_Content") @db.Text
   isDeleted        Boolean  @default(false) @map("Is_Deleted")
   createdAt        DateTime @default(now()) @map("Created_At")
   lastUpdated      DateTime @updatedAt @map("Last_Updated")
