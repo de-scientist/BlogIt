@@ -80,7 +80,7 @@ export default function Navbar() {
               onClick={() => navigate("/auth/login")}
               className="px-5 py-1.5 rounded-xl bg-blue-600 text-white font-medium bg-gradient-to-r from-purple-600 to-pink-500 transition shadow-sm"
             >
-              Get Start
+              Get Started
             </button>
           )}
         </nav>
