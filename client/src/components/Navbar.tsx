@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 // 1. 💡 IMPORT THE LOGO IMAGE
 // Adjust the path below to exactly match the location of your logo.png file
-import TechBlogLogo from "@/assets/logo.png"; 
+//import TechBlogLogo from "@/assets/logo.png"; 
 
 // Define the User type for useQuery generics
 type UserType = {
@@ -67,9 +67,9 @@ export default function Navbar() {
     >
       {/* 2. 💡 SRC REPLACED WITH IMPORTED VARIABLE */}
       <img
-        src={TechBlogLogo} 
+        //src={TechBlogLogo} 
         alt="TechBlog Logo"
-        className={`h-6 w-6 rounded-full ${!imageLoaded ? 'hidden' : ''}`}
+        className={`h-36 w-36 rounded-full ${!imageLoaded ? 'hidden' : ''}`}
         onLoad={() => setImageLoaded(true)}
         onError={() => setImageLoaded(false)}
       />
