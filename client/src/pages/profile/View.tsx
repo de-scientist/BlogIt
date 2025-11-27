@@ -30,7 +30,7 @@ const generateBio = (username: string): string => {
 
     const key = Object.keys(specialties).find(key => username.toLowerCase().includes(key)) || 'user';
     
-    return `Account holder @${username}, a ${specialties[key]}`;
+    return `Account holder @${username}, specializing in ${specialties[key]}`;
 };
 
 
@@ -60,14 +60,25 @@ export default function ViewProfilePage() {
         </p>
       </div>
     );
+  
+  // ✨ FIX: Explicit check to satisfy TypeScript that data is definitely defined
+  // This addresses the TS18048 error after the loading state is resolved.
+  if (!data) {
+    return (
+        <div className="pt-16 pl-64 flex justify-center items-center min-h-screen">
+            <p className="text-red-500 text-lg">Error: Could not load profile data.</p>
+        </div>
+    );
+  }
 
-  // 💡 Data is guaranteed to exist here due to the `if (isLoading)` block above.
-  // Generate initials using guaranteed data properties (fallback added in useQuery)
+  // --- Start using data safely from here ---
+
+  // Generate initials
   const initials = `${data.firstName?.[0] || ""}${data.lastName?.[0] || ""}`
     .toUpperCase()
     .trim();
   
-  // 💡 Generate the bio using the new function
+  // Generate the bio using the new function
   const displayBio = data.bio || generateBio(data.userName);
   
   return (
@@ -77,7 +88,6 @@ export default function ViewProfilePage() {
       {/* HEADER AND CLEAR MESSAGE */}
       {/* ---------------------------------- */}
       <header className="max-w-4xl mx-auto py-8 px-4 sm:px-0">
-          {/* 💡 Safe access to data properties */}
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 flex items-center">
               <User className="w-8 h-8 mr-3 text-purple-600" /> Your Profile Overview
           </h1>
@@ -113,7 +123,7 @@ export default function ViewProfilePage() {
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 flex items-center mb-2">
                     <Info className="w-5 h-5 mr-2 text-purple-600" /> Quick Bio
                 </h3>
-                {/* 💡 Display the generated/mocked bio */}
+                {/* Display the generated/mocked bio */}
                 <p className="text-gray-600 dark:text-gray-400 italic">
                     {displayBio}
                 </p>
