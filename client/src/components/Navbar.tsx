@@ -4,7 +4,17 @@ import { useAuth } from "@/store/authStore";
 import { api } from "@/lib/axios";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import { useQuery } from "@tanstack/react-query";
-import { User, LogOut, Loader2 } from "lucide-react"; // 💡 Added Lucide icons
+import { User, LogOut, Loader2 } from "lucide-react";
+
+// 💡 Define a type for the user data to fix 'Parameter 'data' implicitly has an 'any' type.'
+// Adjust these fields based on what your /profile endpoint actually returns.
+type UserType = {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  emailAddress: string;
+  // Add other properties your API returns
+};
 
 export default function Navbar() {
   const { user, setUser, logout } = useAuth();
@@ -12,18 +22,29 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // --- Fetch Current User Status ---
-  const { isLoading } = useQuery({
+  // 💡 FIX 1: Explicitly define the generic types for useQuery: <Data, Error, SelectData, QueryKey>
+  // We specify <UserType, Error, UserType, string[]>
+  const { isLoading } = useQuery<UserType, Error, UserType, string[]>({
     queryKey: ["currentUser"],
     queryFn: async () => {
-      const res = await api.get("/profile", { withCredentials: true });
+      const res = await api.get<UserType>("/profile", { withCredentials: true }); // 💡 Use UserType generic on axios
       return res.data;
     },
-    onSuccess: (data) => setUser(data),
+    
+    // 💡 FIX 2: Use the 'select' function (the modern equivalent) to handle data transformation/side effects.
+    // The 'onSuccess' functionality is integrated here, ensuring the data passed to setUser is correctly typed.
+    select: (data) => {
+      setUser(data);
+      return data;
+    },
+
+    // 💡 Fallback for the error case
     onError: () => setUser(null),
     refetchOnWindowFocus: false,
+    // initialData: {} as UserType, // Only needed if you want initial data structure
   });
 
-  // --- Handle Logout ---
+  // --- Handle Logout (Unchanged) ---
   const handleLogout = async () => {
     try {
       await api.post("/auth/logout", {}, { withCredentials: true });
@@ -34,12 +55,13 @@ export default function Navbar() {
     }
   };
 
-  // --- Utility for Initials (Kept original logic) ---
+  // --- Utility for Initials (Unchanged) ---
   const getInitials = () =>
     user
       ? `${user.firstName?.charAt(0) ?? ""}${user.lastName?.charAt(0) ?? ""}`.toUpperCase()
       : "";
 
+  // --- JSX (UI/UX) - Unchanged from previous response ---
   return (
     <header className="bg-white dark:bg-slate-900/95 backdrop-blur-md shadow-lg fixed w-full z-50 border-b border-gray-200/50 dark:border-slate-800/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
