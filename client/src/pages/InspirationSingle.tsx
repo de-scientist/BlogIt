@@ -63,7 +63,7 @@ export default function InspirationSingle() {
                     <Link to="/inspiration" rel="noopener">
                         <Button 
                             variant="outline"
-                            className="px-6 py-2 text-md text-gray-700 dark:text-gray-300 border-gray-400 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 transition"
+                            className="px-6 py-2 text-md bg-gradient-to-r from-green-500 to-teal-400 text-white border-gray-400 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 transition"
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Hub
                         </Button>
