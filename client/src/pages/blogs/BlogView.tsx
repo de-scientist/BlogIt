@@ -63,7 +63,7 @@ export default function BlogView() {
 
         <CardFooter className="flex justify-between px-6 pb-6 sm:px-10 sm:pb-8 border-t dark:border-slate-700">
           {/* Back Button - Styled as Outline (light style) */}
-          <Link to="/blogs" rel="noopener">
+          <Link to="/dashboard" rel="noopener">
             <Button 
               variant="outline"
               className="px-6 py-2 text-md border-gray-400 dark:border-gray-500 bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition"
