@@ -53,7 +53,7 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pb-20 pt-16 pl-64">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pb-20 pt-16 pl-5">
       {/* 💡 pt-16 for Navbar, pl-64 for Sidebar */}
       
       {/* HERO / HEADER SECTION */}
