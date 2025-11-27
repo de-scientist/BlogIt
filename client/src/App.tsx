@@ -6,7 +6,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 //import { api } from "./lib/axios";
 //import { useAuth } from "./store/authStore";
-import Layout from "./components/Layout";
+// import Layout from "./components/Layout";
 import AppRoutes from "./routes/AppRoutes";
 
 export default function App() {
@@ -23,9 +23,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Layout>
+       
           <AppRoutes />
-        </Layout>
+        
       </BrowserRouter>
     </QueryClientProvider>
   );
