@@ -23,7 +23,8 @@ export default function BlogView() {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4">
-      <Card className="shadow-lg border rounded-xl overflow-hidden">
+      <Card className="shadow-2xl border border-gray-100 rounded-xl overflow-hidden dark:bg-slate-800 dark:border-slate-700">
+        {/* Featured Image */}
         {blog.featuredImageUrl && (
           <img
             src={blog.featuredImageUrl}
@@ -32,33 +33,52 @@ export default function BlogView() {
           />
         )}
 
-        <CardContent className="py-6">
-          <h1 className="text-4xl font-bold">{blog.title}</h1>
+        <CardContent className="py-8 px-6 sm:px-10">
+          {/* Title with Gradient */}
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-2 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
+            {blog.title}
+          </h1>
 
-          <p className="text-gray-600 italic mt-2">{blog.synopsis}</p>
+          {/* Synopsis */}
+          <p className="text-lg text-gray-700 italic mt-3 dark:text-gray-400">
+            {blog.synopsis}
+          </p>
 
-          <small className="block mt-3 text-gray-500">
-            By {blog.user.firstName} {blog.user.lastName} •{" "}
+          {/* Metadata */}
+          <small className="block mt-4 text-gray-500">
+            By **{blog.user.firstName} {blog.user.lastName}** •{" "}
             {new Date(blog.createdAt).toLocaleDateString()}
           </small>
 
-          <hr className="my-6 border-gray-300" />
+          <hr className="my-8 border-gray-200 dark:border-gray-700" />
 
           {/* Markdown content */}
-          <article className="prose prose-lg max-w-none">
+          {/* Added dark mode support to the prose class for better readability */}
+          <article className="prose prose-lg max-w-none dark:prose-invert">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {blog.content}
             </ReactMarkdown>
           </article>
         </CardContent>
 
-        <CardFooter className="flex justify-between px-6 pb-6">
+        <CardFooter className="flex justify-between px-6 pb-6 sm:px-10 sm:pb-8 border-t dark:border-slate-700">
+          {/* Back Button - Styled as Outline (light style) */}
           <Link to="/blogs" rel="noopener">
-            <Button variant="outline">Back to blogs</Button>
+            <Button 
+              variant="outline"
+              className="px-6 py-2 text-md border-gray-400 dark:border-gray-500 bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-90 transition"
+            >
+              ← Back to blogs
+            </Button>
           </Link>
 
+          {/* Edit Button - Primary Gradient Style */}
           <Link to={`/blogs/edit/${blog.id}`} rel="noopener">
-            <Button>Edit Blog</Button>
+            <Button
+              className="px-6 py-2 text-md font-semibold bg-gradient-to-r from-green-500 to-teal-400 text-white shadow-lg shadow-green-500/50 hover:opacity-90 transition-all duration-200"
+            >
+              Edit Blog ✍️
+            </Button>
           </Link>
         </CardFooter>
       </Card>
