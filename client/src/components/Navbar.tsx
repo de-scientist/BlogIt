@@ -49,12 +49,7 @@ export default function Navbar() {
 
         {/* Desktop */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link
-            to="/blogs/list"
-            className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition"
-          >
-            Blogs
-          </Link>
+        
 
           {/* Authentication Logic */}
           {!isLoading && user ? (
@@ -85,7 +80,7 @@ export default function Navbar() {
               onClick={() => navigate("/auth/login")}
               className="px-5 py-1.5 rounded-xl bg-blue-600 text-white font-medium bg-gradient-to-r from-purple-600 to-pink-500 transition shadow-sm"
             >
-              Login
+              Get Start
             </button>
           )}
         </nav>
