@@ -52,8 +52,7 @@ export default function Home() {
         </h1>
 
         <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-          Welcome to a platform designed for creators — clean, modern,
-          distraction-free. Focus on your ideas. Let the world hear your voice.
+        	Unlock your potential as a creator. This is more than a blogging platform; it's where you build your audience, share your world, and turn your written word into something impactful. Start your free blog today.
         </p>
 
 <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
