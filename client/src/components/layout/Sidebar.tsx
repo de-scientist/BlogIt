@@ -69,7 +69,7 @@ export default function Sidebar() {
       title: "Blog Management",
       items: [
         { name: "Create Blog", path: "/blogs/create" },
-        { name: "My Blogs", path: "/blogs/view" },
+        { name: "My Blogs", path: "/dashboard/blogs" },
         { name: "Blog Trash", path: "/blogs/trash" },
       ],
     },
