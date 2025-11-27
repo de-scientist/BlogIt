@@ -140,16 +140,16 @@ export default function Trash() {
               <Button
                 className="bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 shadow-md shadow-green-500/30"
                 onClick={() => recoverMutation.mutate(blog.id)}
-                disabled={recoverMutation.isLoading}
+                disabled={recoverMutation.isPending}
               >
-                {recoverMutation.isLoading ? "Recovering..." : "Recover"}
+                {recoverMutation.isPending ? "Recovering..." : "Recover"}
               </Button>
               <Button
                 className="bg-red-600 text-white hover:bg-red-700 shadow-md shadow-red-500/30"
                 onClick={() => deleteMutation.mutate(blog.id)}
-                disabled={deleteMutation.isLoading}
+                disabled={deleteMutation.isPending}
               >
-                {deleteMutation.isLoading ? "Deleting..." : "Delete Permanently"}
+                {deleteMutation.isPending ? "Deleting..." : "Delete Permanently"}
               </Button>
             </CardFooter>
           </Card>
