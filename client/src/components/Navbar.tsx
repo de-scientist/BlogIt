@@ -5,21 +5,45 @@ import { api } from "@/lib/axios";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import { useQuery } from "@tanstack/react-query";
 
+// Define the User type for useQuery generics
+type UserType = {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  emailAddress: string;
+  // Add other properties your API returns
+};
+
 export default function Navbar() {
   const { user, setUser, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const { isLoading } = useQuery({
+  // --- FIX APPLIED HERE ---
+  // 1. Explicitly defined the generic types for useQuery: <UserType, Error, UserType, (string)[]>
+  // 2. Defined the 'data' parameter type in onSuccess and 'error' in onError.
+  const { isLoading } = useQuery<UserType, Error, UserType, string[]>({
     queryKey: ["currentUser"],
     queryFn: async () => {
-      const res = await api.get("/profile", { withCredentials: true });
+      // Ensure the API call returns UserType
+      const res = await api.get<UserType>("/profile", { withCredentials: true });
       return res.data;
     },
-    onSuccess: (data) => setUser(data),
-    onError: () => setUser(null),
+    // Now TypeScript correctly infers 'data' as UserType or undefined
+    onSuccess: (data) => {
+        // Check if data is present before setting the user
+        if (data) {
+            setUser(data);
+        }
+    },
+    onError: (error) => {
+        // The query failed, so clear the user state
+        setUser(null);
+        console.error("User session check failed:", error); 
+    },
     refetchOnWindowFocus: false,
   });
+// ----------------------------
 
   const handleLogout = async () => {
     try {
@@ -42,16 +66,13 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          // Added 'flex items-center space-x-2' to align image and text
           className="flex items-center space-x-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
         >
-          {/* 💡 Image Source Added */}
           <img
-            src="/path/to/your/logo.png" // **Update this path to your actual logo**
+            src="/image/logo.png"
             alt="TechBlog Logo"
-            className="h-6 w-6 rounded-full" // Adjust size as needed
+            className="h-6 w-6 rounded-full"
             onError={(e) => {
-              // Optional: Fallback to hide broken image icon
               const target = e.target as HTMLImageElement;
               target.style.display = 'none';
             }}
@@ -97,7 +118,6 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => navigate("/auth/login")}
-              // Retained gradient styling for consistency
               className="px-5 py-1.5 rounded-xl bg-blue-600 text-white font-medium bg-gradient-to-r from-purple-600 to-pink-500 transition shadow-sm"
             >
               Get Started
