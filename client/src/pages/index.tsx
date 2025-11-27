@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Zap } from "lucide-react"; // Added Zap icon for the fact
+// 💡 Added icons for the new features section
+import { ChevronLeft, ChevronRight, Zap, Globe, PenTool, TrendingUp, DollarSign } from "lucide-react"; 
 
 // --- Interactive Fact Data ---
 const facts = [
@@ -13,7 +14,6 @@ const facts = [
   "Google Analytics is a key tool for discovering where your readers come from and what content they love.",
 ];
 const getRandomFact = () => facts[Math.floor(Math.random() * facts.length)];
-
 
 // --- Enhanced Slides Data (Incorporating Blogging Insights) ---
 const slides = [
@@ -28,13 +28,13 @@ const slides = [
     title: "Inspire Others",
     subtitle: "Write, share, and impact lives with your ideas and experiences.",
   },
-  // 💡 New Slide: Monetization Insight
+  // New Slide: Monetization Insight
   {
     image: "/images/slide4.jpeg", // Placeholder image path
     title: "Turn Your Passion into Profit",
     subtitle: "Integrate ads, affiliate links, and monetization tools easily.",
   },
-  // 💡 New Slide: Customization Insight
+  // New Slide: Customization Insight
   {
     image: "/images/slide5.jpeg", // Placeholder image path
     title: "Make It Uniquely Yours",
@@ -46,6 +46,34 @@ const slides = [
     title: "Join a Community",
     subtitle: "Connect with writers and thinkers from around the world.",
   },
+];
+
+// 💡 Data for the new Feature/Value Prop Section
+const keyFeatures = [
+    {
+        icon: PenTool,
+        title: "Intuitive Editor",
+        description: "Focus on writing, not formatting. Supports rich text and Markdown.",
+        color: "text-purple-600",
+    },
+    {
+        icon: Globe,
+        title: "Global Reach",
+        description: "Publish instantly to connect with an audience across the world.",
+        color: "text-indigo-600",
+    },
+    {
+        icon: TrendingUp,
+        title: "Audience Growth",
+        description: "Built-in SEO tools and analytics to help your stories go viral.",
+        color: "text-green-600",
+    },
+    {
+        icon: DollarSign,
+        title: "Monetize Content",
+        description: "Tools to easily earn income from your posts through ads or subscriptions.",
+        color: "text-pink-600",
+    },
 ];
 
 export default function Home() {
@@ -116,7 +144,28 @@ export default function Home() {
       </section>
       
       {/* ---------------------------------- */}
-      {/* SECTION 2: Interactive Fact */}
+      {/* SECTION 2: KEY FEATURES / VALUE PROPOSITION */}
+      {/* ---------------------------------- */}
+      <section className="w-full max-w-6xl mx-auto px-6 py-16">
+        <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-800 dark:text-gray-200">
+            Why Choose Our Platform?
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {keyFeatures.map((feature, index) => (
+                <div 
+                    key={index} 
+                    className="flex flex-col items-center text-center p-6 bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border-t-4 border-purple-500"
+                >
+                    <feature.icon className={`w-12 h-12 mb-4 ${feature.color}`} />
+                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.description}</p>
+                </div>
+            ))}
+        </div>
+      </section>
+
+      {/* ---------------------------------- */}
+      {/* SECTION 3: Interactive Fact (Moved Down) */}
       {/* ---------------------------------- */}
       <section className="w-full max-w-6xl mx-auto px-6 mt-10">
           <div 
@@ -132,7 +181,7 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------- */}
-      {/* SECTION 3: SLIDES / HERO CAROUSEL */}
+      {/* SECTION 4: SLIDES / HERO CAROUSEL */}
       {/* ---------------------------------- */}
       <div className="relative w-full max-w-6xl mx-auto h-[60vh] max-h-[600px] mt-12 mb-20 px-6">
         {slides.map((slide, index) => (
