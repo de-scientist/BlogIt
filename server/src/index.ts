@@ -62,7 +62,7 @@ app.post(`${api}/auth/logout`, logout);
 app.patch(`${api}/auth/password`, verifyToken, checkPasswordStrength, updatePassword);
 
 // --------- BLOGS ---------
-app.post(`${api}/blogs`, validateBlogDetails, createBlog);
+app.post(`${api}/blogs`, verifyToken, validateBlogDetails, createBlog);
 app.get(`${api}/blogs`, verifyToken, getBlogs);
 app.get(`${api}/blogs/:id`, verifyToken, getBlog);
 app.get(`${api}/blogs/trash`, verifyToken, trash);
