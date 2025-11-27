@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // 💡 IMPORT: Added Card components
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { Trash2, AlertTriangle, XCircle } from "lucide-react"; // 💡 IMPORT: Added icons
+import { Trash2, AlertTriangle, XCircle } from "lucide-react"; 
 
 export default function DeleteProfilePage() {
   const navigate = useNavigate();
@@ -11,18 +11,18 @@ export default function DeleteProfilePage() {
   const handleDelete = async () => {
     try {
       await api.delete("/profile", { withCredentials: true });
-      // 💡 FIX: Set toast position to bottom-left
+      // FIX: Set toast position to bottom-left
       toast.success("Profile successfully moved to trash.", { position: "bottom-left" });
       navigate("/");
     } catch (error) {
-      // 💡 FIX: Set toast position to bottom-left and improve error message
+      // FIX: Set toast position to bottom-left and improve error message
       const errorMessage = (error as any).response?.data?.message || "Could not delete profile due to an unknown error.";
       toast.error(errorMessage, { position: "bottom-left" });
     }
   };
 
   return (
-    // 💡 ADJUSTED: Padding for Navbar (pt-16) and Sidebar (pl-4)
+    // ADJUSTED: Padding for Navbar (pt-16) and Sidebar (pl-4)
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-4 pb-10 flex justify-center">
 
       <div className="max-w-lg w-full px-4 sm:px-0">
@@ -52,7 +52,7 @@ export default function DeleteProfilePage() {
           
           <CardContent className="space-y-6">
             
-            {/* 💡 NEW: Clear Messaging/Warning Banner */}
+            {/* NEW: Clear Messaging/Warning Banner */}
             <div className="flex p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-700 dark:text-red-300 border border-red-200" role="alert">
                 <XCircle className="flex-shrink-0 inline w-5 h-5 mr-3 mt-0.5" />
                 <div>
@@ -64,7 +64,7 @@ export default function DeleteProfilePage() {
               By clicking the button below, your profile information, including user data and preferences, will be securely flagged for deletion and moved into the temporary holding (trash) area. You will be immediately logged out and redirected to the homepage.
             </p>
 
-            {/* Delete Button */}
+            {/* Delete Button (Destructive) */}
             <Button
               variant="destructive"
               onClick={handleDelete}
@@ -74,11 +74,15 @@ export default function DeleteProfilePage() {
               <Trash2 className="w-5 h-5 mr-2" /> Move Profile to Trash
             </Button>
 
-            {/* Alternative Action (Navigate Back) */}
+            {/* 💡 UPDATED: Cancel Button with Gradient */}
             <Button
               variant="outline"
               onClick={() => navigate("/profile/view")}
-              className="mt-2 w-full py-3 text-base font-medium rounded-lg dark:border-gray-700 dark:text-gray-300 dark:hover:bg-slate-700"
+              className="mt-2 w-full py-3 text-base font-medium rounded-lg 
+                         dark:border-gray-700 dark:text-gray-300 
+                         text-gray-700 border-gray-300 hover:text-white
+                         bg-gradient-to-r from-gray-100 to-gray-200 hover:from-purple-500 hover:to-indigo-500 
+                         dark:bg-slate-900 dark:hover:bg-slate-700 transition-all"
             >
               Cancel and Keep Profile
             </Button>
