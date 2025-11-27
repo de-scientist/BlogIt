@@ -90,7 +90,7 @@ export default function ViewProfilePage() {
   const displayBio = data.bio || generateBio(data.userName);
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-64 pb-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-4 pb-10">
 
       {/* ---------------------------------- */}
       {/* HEADER AND CLEAR MESSAGE */}
