@@ -116,8 +116,8 @@ export default function Dashboard() {
 
                   <div className="flex gap-3">
                     <Link to={`/blogs/edit/${blog.id}`} className="w-full">
-                      <Button className="px-6 py-2 text-lg bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-xl">
-                        Edit
+                      <Button className="px-6 py-2 text-md bg-gradient-to-r from-green-500 to-teal-400 text-white rounded-xl">
+                        Edit ✍️
                       </Button>
                     </Link>
 
