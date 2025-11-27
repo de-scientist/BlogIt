@@ -13,6 +13,71 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 // import { Spinner } from "@/components/ui/spinner"; // Not used in provided snippet
 
+// 💡 Define custom components for ReactMarkdown to apply styling
+const MarkdownComponents = {
+    // Headings
+    h1: ({ node, ...props }: any) => <h1 className="text-4xl font-extrabold mt-8 mb-4 border-b pb-2 border-purple-300 dark:border-purple-600 text-gray-900 dark:text-gray-100" {...props} />,
+    h2: ({ node, ...props }: any) => <h2 className="text-3xl font-bold mt-6 mb-3 pt-3 text-purple-600 dark:text-purple-400" {...props} />,
+    h3: ({ node, ...props }: any) => <h3 className="text-2xl font-semibold mt-5 mb-2 text-gray-800 dark:text-gray-200" {...props} />,
+    h4: ({ node, ...props }: any) => <h4 className="text-xl font-medium mt-4 mb-1 text-gray-700 dark:text-gray-300" {...props} />,
+    
+    // Paragraphs and Text
+    p: ({ node, ...props }: any) => <p className="text-lg leading-relaxed mb-4 text-gray-700 dark:text-gray-300" {...props} />,
+    a: ({ node, ...props }: any) => <a className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 underline font-medium transition-colors" target="_blank" rel="noopener noreferrer" {...props} />,
+    strong: ({ node, ...props }: any) => <strong className="font-extrabold text-gray-900 dark:text-gray-100" {...props} />,
+
+    // Lists
+    ul: ({ node, ...props }: any) => <ul className="list-disc list-inside space-y-2 pl-5 mb-4 text-gray-700 dark:text-gray-300" {...props} />,
+    ol: ({ node, ...props }: any) => <ol className="list-decimal list-inside space-y-2 pl-5 mb-4 text-gray-700 dark:text-gray-300" {...props} />,
+    li: ({ node, ...props }: any) => <li className="pl-2" {...props} />,
+
+    // Blockquotes
+    blockquote: ({ node, ...props }: any) => (
+        <blockquote 
+            className="border-l-4 border-pink-500 pl-4 py-2 my-6 italic text-xl bg-gray-100 dark:bg-slate-700/50 text-gray-800 dark:text-gray-200 rounded-r-lg" 
+            {...props} 
+        />
+    ),
+
+    // Code Blocks and Inline Code
+    code: ({ node, inline, className, children, ...props }: any) => {
+        const match = /language-(\w+)/.exec(className || '');
+        // Inline code
+        if (inline) {
+            return (
+                <code 
+                    className="bg-gray-200 dark:bg-slate-700 text-red-600 dark:text-red-400 font-mono text-sm px-1 py-0.5 rounded"
+                    {...props}
+                >
+                    {children}
+                </code>
+            );
+        }
+        // Code block (preformatted)
+        return (
+            <pre 
+                className="bg-gray-800 dark:bg-slate-900 p-4 rounded-lg overflow-x-auto my-4 text-white font-mono text-sm" 
+                {...props}
+            >
+                {/* We render the children directly as ReactMarkdown handles syntax highlighting */}
+                <code className={`text-sm ${className}`} {...props}>
+                    {children}
+                </code>
+            </pre>
+        );
+    },
+
+    // Horizontal Rule
+    hr: ({ node, ...props }: any) => <hr className="my-8 border-gray-300 dark:border-slate-600" {...props} />,
+    
+    // Image
+    img: ({ node, ...props }: any) => (
+        <div className="my-6 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-lg">
+            <img className="w-full object-cover" {...props} />
+        </div>
+    ),
+};
+
 // --- Type Definitions (Needed for useForm) ---
 type BlogForm = {
     title: string;
@@ -341,45 +406,45 @@ export default function EditBlog() {
                     </div>
 
 
-                    {/* ------------------- COLUMN 2: LIVE PREVIEW ------------------- */}
-                    <div className="lg:col-span-1">
-                        <Card className="shadow-lg dark:bg-slate-800 h-full">
-                            <CardHeader>
-                                <CardTitle className="flex items-center text-xl text-purple-600 dark:text-purple-400">
-                                    <Eye className="w-5 h-5 mr-2" /> Live Preview
-                                </CardTitle>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    See your final layout and formatting in real-time.
-                                </p>
-                            </CardHeader>
-                            <CardContent className="pt-4 h-[calc(100%-120px)] overflow-y-auto blog-preview-content">
-                                
-                                {/* Display Title */}
-                                <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-                                    {watch("title") || "Untitled Draft"}
-                                </h2>
-
-                                {/* Display Featured Image */}
-                                {featuredImageUrl && (
-                                    <img
-                                        src={featuredImageUrl}
-                                        alt="Blog featured image preview"
-                                        className="w-full max-h-64 object-cover rounded-lg mb-6 shadow-md"
-                                    />
-                                )}
-
-                                {/* Display Content Preview - ***THIS IS ALREADY CORRECTLY STYLED*** */}
-                                <div className="prose dark:prose-invert max-w-none">
-                                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                                        {content || "Start typing your content in the editor to see the live rendering here..."}
-                                    </ReactMarkdown>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    );
-}
+                   {/* ------------------- COLUMN 2: LIVE PREVIEW ------------------- */}
+				                                   <div className="lg:col-span-1">
+				                                       <Card className="shadow-lg dark:bg-slate-800 h-full">
+				                                           <CardHeader>
+				                                               <CardTitle className="flex items-center text-xl text-purple-600 dark:text-purple-400">
+				                                                   <Eye className="w-5 h-5 mr-2" /> Live Preview
+				                                               </CardTitle>
+				                                               <p className="text-sm text-gray-500 dark:text-gray-400">
+				                                                   See your final layout and formatting in real-time.
+				                                               </p>
+				                                           </CardHeader>
+				                                           <CardContent className="pt-4 h-[calc(100%-120px)] overflow-y-auto blog-preview-content">
+				                                               
+				                                               {/* Display Title */}
+				                                               <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+				                                                   {watch("title") || "Untitled Draft"}
+				                                               </h2>
+				   
+				                                               {/* Display Featured Image */}
+				                                               {featuredImageUrl && (
+				                                                   <img
+				                                                       src={featuredImageUrl}
+				                                                       alt="Blog featured image preview"
+				                                                       className="w-full max-h-64 object-cover rounded-lg mb-6 shadow-md"
+				                                                   />
+				                                               )}
+				   
+				                                               {/* Display Content Preview - UPDATED LINE */}
+				                                               <div className="prose dark:prose-invert max-w-none">
+				                                                   <ReactMarkdown rehypePlugins={[rehypeRaw]} components={MarkdownComponents}>
+				                                                       {content || "Start typing your content in the editor to see the live rendering here..."}
+				                                                   </ReactMarkdown>
+				                                               </div>
+				                                           </CardContent>
+				                                       </Card>
+				                                   </div>
+				   
+				                                   </div>
+				                               </div>
+				                               </div>
+				       );
+				   }
