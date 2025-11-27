@@ -125,6 +125,7 @@ export default function CreateBlog() {
 		const currentContent = getValues("content");
         const currentTitle = getValues("title");
         
+		// Ensure toast is bottom-left
 		toast.info("AI is analyzing content for suggestions...", { position: "bottom-left" });
 
 		// Simulate API call delay (Replace with actual AI API call)
@@ -137,6 +138,7 @@ export default function CreateBlog() {
             // Append suggestion to content
             setValue("content", currentContent + suggestion, { shouldDirty: true });
             
+			// Ensure toast is bottom-left
 			toast.success("AI suggestions generated and appended to content!", { position: "bottom-left" });
 		}, 2000); 
 	};
@@ -148,6 +150,7 @@ export default function CreateBlog() {
 		if (!file) return;
 
 		setUploading(true);
+		// Ensure toast is bottom-left
 		const toastId = toast.loading("Uploading image...", { position: "bottom-left" }); 
 
 		const data = new FormData();
@@ -164,11 +167,14 @@ export default function CreateBlog() {
 
 			if (result.secure_url) {
 				setValue("featuredImageUrl", result.secure_url, { shouldValidate: true }); 
+				// Ensure toast is bottom-left
 				toast.success("Image uploaded!", { position: "bottom-left" }); 
 			} else {
+				// Ensure toast is bottom-left
 				toast.error("Failed to upload image", { position: "bottom-left" }); 
 			}
 		} catch {
+			// Ensure toast is bottom-left
 			toast.error("Upload error", { position: "bottom-left" }); 
 		} finally {
 			setUploading(false);
@@ -182,6 +188,7 @@ export default function CreateBlog() {
 		onSuccess: () => {
 			localStorage.removeItem(LOCAL_STORAGE_KEY); 
 			
+			// Ensure toast is bottom-left
 			toast.success("Blog created successfully", { position: "bottom-left" }); 
 			queryClient.invalidateQueries({ queryKey: ["blogs"] });
 			navigate("/blogs");
@@ -192,6 +199,7 @@ export default function CreateBlog() {
 
 			// Error handling logic (keeping toasts set to bottom-left)
 			if (statusCode === 401) {
+				// Ensure toast is bottom-left
 				toast.error(errorMessage || "Session expired. Please log in.", { position: "bottom-left" });
 				navigate("/auth/login"); 
 				return;
@@ -213,12 +221,15 @@ export default function CreateBlog() {
 							type: "server",
 							message: errorMessage,
 						});
+						// Ensure toast is bottom-left
 						toast.error(`Validation failed: ${errorMessage}`, { position: "bottom-left" });
 				} else {
+						// Ensure toast is bottom-left
 						toast.error(errorMessage, { position: "bottom-left" });
 				}
 			} 
 			else {
+				// Ensure toast is bottom-left
 				toast.error(errorMessage || "Failed to create blog", { position: "bottom-left" });
 			}
 		},
