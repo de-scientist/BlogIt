@@ -107,7 +107,7 @@ export default function Home() {
             type="button"
             size="lg"
             variant="outline"
-            className="border-2 border-indigo-400 text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 transition-all font-semibold rounded-full px-12 py-7 text-lg dark:border-indigo-600 dark:text-indigo-400 dark:hover:bg-indigo-900/50"
+            className="border-2 border-indigo-400 bg-gradient-to-r from-green-500 to-teal-400 text-white transition-all font-semibold rounded-full px-12 py-7 text-lg dark:border-indigo-600 dark:text-indigo-400 dark:hover:bg-indigo-900/50"
             onClick={() => navigate("/inspiration")}
           >
             View Inspiration
