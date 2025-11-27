@@ -2,13 +2,13 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/axios";
-import { useNavigate } from "react-router-dom"; // 💡 IMPORT useNavigate
+import { useNavigate } from "react-router-dom"; 
+import { Lock, Loader2, ShieldCheck, AlertTriangle } from "lucide-react"; // 💡 Imported icons
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
 
 // --- Form Type ---
 interface PasswordForm {
@@ -26,8 +26,7 @@ const serverErrorMap = new Map<string, keyof PasswordForm>([
 
 export default function UpdatePasswordPage() {
     
-    // Initialize useNavigate
-    const navigate = useNavigate(); // 💡 INITIALIZE useNavigate
+    const navigate = useNavigate();
 
     // 1. Setup Form with Manual Validation
     const form = useForm<PasswordForm>({
@@ -52,9 +51,9 @@ export default function UpdatePasswordPage() {
             });
         },
         onSuccess: () => {
-            toast.success("Password updated successfully.");
+            // 💡 Set toast position to bottom-left
+            toast.success("Password updated successfully.", { position: "bottom-left" });
             form.reset();
-            // 💡 ADD NAVIGATION TO PROFILE PAGE
             // Assuming your profile page route is '/profile'
             navigate("/profile"); 
         },
@@ -76,12 +75,15 @@ export default function UpdatePasswordPage() {
                         type: "server",
                         message: errorMessage,
                     });
-                    toast.error(`Update failed: ${errorMessage}`);
+                    // 💡 Set toast position to bottom-left
+                    toast.error(`Update failed: ${errorMessage}`, { position: "bottom-left" });
                 } else {
-                    toast.error(errorMessage || "Password update failed. Kindly try again.");
+                    // 💡 Set toast position to bottom-left
+                    toast.error(errorMessage || "Password update failed. Kindly try again.", { position: "bottom-left" });
                 }
             } else {
-                toast.error("An unknown error occurred during update.");
+                // 💡 Set toast position to bottom-left
+                toast.error("An unknown error occurred during update.", { position: "bottom-left" });
             }
         },
     });
@@ -93,97 +95,127 @@ export default function UpdatePasswordPage() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-50">
-            <Card className="w-full max-w-lg shadow-xl border-gray-200 rounded-2xl bg-white p-4">
-                <CardHeader className="text-center space-y-2">
-                    <CardTitle className="text-3xl font-bold text-gray-800">
-                        Change Your Password
-                    </CardTitle>
-                </CardHeader>
+        // 💡 Adjusted main container padding for Navbar (pt-16) and Sidebar (pl-4)
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-4 pb-10">
+            
+            <div className="max-w-xl mx-auto">
                 
-                <CardContent className="mt-6">
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        
-                        {/* Current Password Field */}
-                        <div className="space-y-2">
-                            <Label htmlFor="currentPassword" className="font-medium">Current Password</Label>
-                            <Input
-                                id="currentPassword"
-                                type="password"
-                                placeholder="Enter your current password"
-                                className="rounded-xl"
-                                {...form.register("currentPassword", {
-                                    required: "Current password is required.",
-                                })}
-                            />
-                            {form.formState.errors.currentPassword && (
-                                <p className="text-sm text-red-500">{form.formState.errors.currentPassword.message}</p>
-                            )}
-                        </div>
+                {/* ---------------------------------- */}
+                {/* HEADER AND CLEAR MESSAGE */}
+                {/* ---------------------------------- */}
+                <header className="py-8">
+                    <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 flex items-center">
+                        <Lock className="w-8 h-8 mr-3 text-red-600" /> Account Security
+                    </h1>
+                    <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+                        Protect your account by regularly updating your password.
+                    </p>
+                    <hr className="mt-4 border-gray-200 dark:border-gray-700" />
+                </header>
 
-                        {/* New Password Field */}
-                        <div className="space-y-2">
-                            <Label htmlFor="newPassword" className="font-medium">New Password</Label>
-                            <Input
-                                id="newPassword"
-                                type="password"
-                                placeholder="Enter new password (min 8 chars)"
-                                className="rounded-xl"
-                                {...form.register("newPassword", {
-                                    required: "New password is required.",
-                                    minLength: {
-                                        value: 8,
-                                        message: "New password must be at least 8 characters.",
-                                    },
-                                })}
-                            />
-                            {form.formState.errors.newPassword && (
-                                <p className="text-sm text-red-500">{form.formState.errors.newPassword.message}</p>
-                            )}
-                        </div>
+                {/* 💡 NEW: Professional Security Banner */}
+                <div className="mb-8 flex p-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-300 border border-blue-200" role="alert">
+                    <ShieldCheck className="flex-shrink-0 inline w-5 h-5 mr-3 mt-0.5" />
+                    <span className="sr-only">Security</span>
+                    <div>
+                        <span className="font-medium">Security Tip:</span> For maximum security, use a **unique** password that is at least 12 characters long, including letters, numbers, and symbols.
+                    </div>
+                </div>
 
-                        {/* Confirm New Password Field */}
-                        <div className="space-y-2">
-                            <Label htmlFor="confirmPassword" className="font-medium">Confirm New Password</Label>
-                            <Input
-                                id="confirmPassword"
-                                type="password"
-                                placeholder="Confirm your new password"
-                                className="rounded-xl"
-                                {...form.register("confirmPassword", {
-                                    required: "Confirm password is required.",
-                                    validate: (value) => 
-                                        value === getValues("newPassword") || "Passwords must match.",
-                                })}
-                            />
-                            {form.formState.errors.confirmPassword && (
-                                <p className="text-sm text-red-500">{form.formState.errors.confirmPassword.message}</p>
-                            )}
-                        </div>
+                {/* ---------------------------------- */}
+                {/* MAIN FORM CARD */}
+                {/* ---------------------------------- */}
+                <Card className="shadow-2xl border-t-4 border-red-600 dark:bg-slate-800 rounded-xl w-full">
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-semibold flex items-center text-gray-800 dark:text-gray-200">
+                            <AlertTriangle className="w-6 h-6 mr-2 text-red-600" /> Update Credentials
+                        </CardTitle>
+                    </CardHeader>
+                    
+                    <CardContent className="mt-4">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            
+                            {/* Current Password Field */}
+                            <div className="space-y-2">
+                                <Label htmlFor="currentPassword" className="font-medium dark:text-gray-300">Current Password</Label>
+                                <Input
+                                    id="currentPassword"
+                                    type="password"
+                                    placeholder="Enter your current password"
+                                    className="rounded-lg dark:bg-slate-900 dark:border-slate-700"
+                                    {...form.register("currentPassword", {
+                                        required: "Current password is required.",
+                                    })}
+                                />
+                                {form.formState.errors.currentPassword && (
+                                    <p className="text-sm text-red-500">{form.formState.errors.currentPassword.message}</p>
+                                )}
+                            </div>
 
-                        {/* Submit Button with Spinner Logic */}
-                        <Button
-                            type="submit"
-                            disabled={isPending}
-                            className="w-full py-3 text-lg font-semibold rounded-xl 
-                                         bg-gradient-to-r from-green-500 to-teal-400 text-white 
-                                         hover:opacity-90 transition-all shadow-lg mt-6"
-                        >
-                            {isPending ? (
-                                // Display spinner when pending
-                                <>
-                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                    Updating...
-                                </>
-                            ) : (
-                                // Display regular text when not pending
-                                "Update Password"
-                            )}
-                        </Button>
-                        
-                    </form>
-                </CardContent>
-            </Card>
+                            {/* New Password Field */}
+                            <div className="space-y-2">
+                                <Label htmlFor="newPassword" className="font-medium dark:text-gray-300">New Password</Label>
+                                <Input
+                                    id="newPassword"
+                                    type="password"
+                                    placeholder="Enter new password (min 8 chars)"
+                                    className="rounded-lg dark:bg-slate-900 dark:border-slate-700"
+                                    {...form.register("newPassword", {
+                                        required: "New password is required.",
+                                        minLength: {
+                                            value: 8,
+                                            message: "New password must be at least 8 characters.",
+                                        },
+                                    })}
+                                />
+                                {form.formState.errors.newPassword && (
+                                    <p className="text-sm text-red-500">{form.formState.errors.newPassword.message}</p>
+                                )}
+                            </div>
+
+                            {/* Confirm New Password Field */}
+                            <div className="space-y-2">
+                                <Label htmlFor="confirmPassword" className="font-medium dark:text-gray-300">Confirm New Password</Label>
+                                <Input
+                                    id="confirmPassword"
+                                    type="password"
+                                    placeholder="Confirm your new password"
+                                    className="rounded-lg dark:bg-slate-900 dark:border-slate-700"
+                                    {...form.register("confirmPassword", {
+                                        required: "Confirm password is required.",
+                                        validate: (value) => 
+                                            value === getValues("newPassword") || "Passwords must match.",
+                                    })}
+                                />
+                                {form.formState.errors.confirmPassword && (
+                                    <p className="text-sm text-red-500">{form.formState.errors.confirmPassword.message}</p>
+                                )}
+                            </div>
+
+                            {/* Submit Button with Spinner Logic */}
+                            <div className="pt-4">
+                                <Button
+                                    type="submit"
+                                    disabled={isPending}
+                                    className="w-full py-3 text-lg font-semibold rounded-lg 
+                                                bg-gradient-to-r from-red-600 to-pink-500 text-white 
+                                                hover:opacity-90 transition-all shadow-lg"
+                                >
+                                    {isPending ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                            Updating...
+                                        </>
+                                    ) : (
+                                        "Update Password"
+                                    )}
+                                </Button>
+                            </div>
+                            
+                        </form>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 }
