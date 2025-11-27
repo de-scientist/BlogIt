@@ -9,8 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useNavigate, Link } from "react-router-dom"; // 💡 Import Link and useNavigate
-import { Wrench, PlusCircle, Lightbulb, CornerUpLeft } from "lucide-react"; // 💡 Import Icons
+// 💡 FIX: ADD useState HERE
+import { useNavigate, Link } from "react-router-dom";
+import { Wrench, PlusCircle, Lightbulb, CornerUpLeft } from "lucide-react"; 
+import { useState } from "react"; 
+
+// 💡 Simple list of fun facts
+// ... (rest of the file follows)
 
 // 💡 Simple list of fun facts
 const facts = [
