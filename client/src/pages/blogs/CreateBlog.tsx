@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 💡 Import useEffect
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Spinner } from "@/components/ui/spinner";
@@ -20,14 +20,36 @@ type BlogForm = {
   content: string;
 };
 
+// 💡 Define Local Storage Key
+const LOCAL_STORAGE_KEY = "draftBlogForm";
+
 // --- Error Mapping Dictionary (Refined) ---
-// Maps key phrases in server error messages to the corresponding form field key.
 const serverErrorMap = new Map<string, keyof BlogForm>([
     ["title", "title"],
     ["synopsis", "synopsis"],
     ["featured image", "featuredImageUrl"],
     ["content", "content"],
 ]);
+
+// 💡 Function to get initial values from storage
+const getInitialValues = (): BlogForm => {
+    try {
+        const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedData) {
+            return JSON.parse(storedData) as BlogForm;
+        }
+    } catch (error) {
+        console.error("Error parsing stored data:", error);
+        localStorage.removeItem(LOCAL_STORAGE_KEY); // Clear bad data
+    }
+    // Default empty state if nothing is stored or storage fails
+    return {
+        title: "",
+        synopsis: "",
+        featuredImageUrl: "",
+        content: "",
+    };
+};
 
 
 export default function CreateBlog() {
@@ -36,14 +58,27 @@ export default function CreateBlog() {
   const [uploading, setUploading] = useState(false);
 
   const form = useForm<BlogForm>({
-    defaultValues: {
-      title: "",
-      synopsis: "",
-      featuredImageUrl: "",
-      content: "",
-    },
+    // 💡 Use the function to load stored data as default values
+    defaultValues: getInitialValues(),
   });
 
+  // 💡 PERSISTENCE: Save form data to local storage on change
+  useEffect(() => {
+    // Subscribe to all form value changes
+    const subscription = form.watch((value, { name, type }) => {
+      // Exclude form internal events like focus/blur from triggering unnecessary saves
+      if (type !== 'change' || (name && name.startsWith('_'))) return;
+      
+      // Save the current form values (draft)
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
+    });
+
+    // Unsubscribe when the component unmounts
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+
+  // 💡 IMAGE UPLOAD (No functional changes, just cleanup)
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -64,7 +99,7 @@ export default function CreateBlog() {
       const result = await res.json();
 
       if (result.secure_url) {
-        form.setValue("featuredImageUrl", result.secure_url);
+        form.setValue("featuredImageUrl", result.secure_url, { shouldValidate: true }); // set value and trigger save
         toast.success("Image uploaded!");
       } else {
         toast.error("Failed to upload image");
@@ -81,6 +116,9 @@ export default function CreateBlog() {
     mutationFn: (newBlog: BlogForm) =>
       api.post("/blogs", newBlog, { withCredentials: true }),
     onSuccess: () => {
+      // 💡 SUCCESS: Clear the local storage draft
+      localStorage.removeItem(LOCAL_STORAGE_KEY); 
+      
       toast.success("Blog created successfully");
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
       navigate("/blogs");
@@ -90,7 +128,6 @@ export default function CreateBlog() {
       const statusCode = err.response?.status;
 
       if (statusCode === 401) {
-        // Handle Unauthorized/Session Expired
         toast.error(errorMessage || "Session expired. Please log in.");
         navigate("/auth/login"); 
         return;
@@ -100,7 +137,6 @@ export default function CreateBlog() {
         const msgLower = errorMessage.toLowerCase();
         let fieldToTarget: keyof BlogForm | undefined = undefined;
 
-        // 💡 Refined Error Mapping Logic
         for (const [keyPhrase, fieldName] of serverErrorMap.entries()) {
             if (msgLower.includes(keyPhrase)) {
                 fieldToTarget = fieldName;
@@ -113,14 +149,11 @@ export default function CreateBlog() {
                 type: "server",
                 message: errorMessage,
             });
-            // Show a general toast for context
             toast.error(`Validation failed: ${errorMessage}`);
         } else {
-            // If 400 but message doesn't map to a specific field
             toast.error(errorMessage);
         }
       } 
-      // Handle 500 or other unhandled errors
       else {
         toast.error(errorMessage || "Failed to create blog");
       }
@@ -128,6 +161,7 @@ export default function CreateBlog() {
   });
 
   return (
+    // ... (The entire return block remains the same, using form.register and form.watch)
     <Card className="max-w-3xl mx-auto mt-10 shadow-lg border rounded-xl">
       <CardHeader className="pb-2">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
@@ -193,7 +227,14 @@ export default function CreateBlog() {
               {uploading ? <Spinner className="w-5 h-5" /> : "Upload"}
             </Button>
           </div>
-          {/* Use the form.watch value to display server/validation error */}
+          {/* Display stored image URL if available */}
+          {form.watch("featuredImageUrl") && (
+              <img
+                src={form.watch("featuredImageUrl")}
+                alt="Featured image preview"
+                className="w-full h-52 object-cover rounded-md mt-4 shadow"
+              />
+          )}
           {form.formState.errors.featuredImageUrl && (
             <p className="text-sm text-red-500 mt-2">
               {form.formState.errors.featuredImageUrl.message}
