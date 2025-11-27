@@ -215,7 +215,7 @@ export default function RegisterPage() {
                     </div>
                 </Field>
 
-                {/* 🔑 NEW FIELD: CONFIRM PASSWORD */}
+                {/* 🔑 NEW FIELD: CONFIRM PASSWORD (Validation Added) */}
                 <Field label="Confirm Password" error={form.formState.errors.confirmPassword}>
                     <div className="relative">
                         <Input
