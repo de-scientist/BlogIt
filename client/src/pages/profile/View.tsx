@@ -15,20 +15,29 @@ interface ProfileData {
   bio?: string; // Bio is now optional/may come from the mock
 }
 
+// 💡 Define the specialties object outside the function for clean typing
+const specialties = {
+    'dev': 'software development and modern web architecture.',
+    'admin': 'account management and operational excellence.',
+    'manager': 'team leadership and strategic project planning.',
+    'user': 'dedicated professional and valued member of the platform community.',
+};
+
+// 💡 Define a type alias for the literal keys of the specialties object
+type SpecialtyKey = keyof typeof specialties;
+
+
 // 💡 New function to generate a dynamic, professional bio based on username
 const generateBio = (username: string): string => {
     if (!username) {
         return "Dedicated professional focusing on continuous improvement and excellence.";
     }
-    // Simple logic to create a descriptive bio
-    const specialties = {
-        'dev': 'software development and modern web architecture.',
-        'admin': 'account management and operational excellence.',
-        'manager': 'team leadership and strategic project planning.',
-        'user': 'dedicated professional and valued member of the platform community.',
-    };
+    
+    // Find the key, ensuring the result is one of the literal keys (SpecialtyKey)
+    const foundKey = Object.keys(specialties).find(k => username.toLowerCase().includes(k)) || 'user';
 
-    const key = Object.keys(specialties).find(key => username.toLowerCase().includes(key)) || 'user';
+    // ✨ FIX: Assert the type of 'key' to be SpecialtyKey
+    const key = foundKey as SpecialtyKey;
     
     return `Account holder @${username}, specializing in ${specialties[key]}`;
 };
@@ -61,8 +70,7 @@ export default function ViewProfilePage() {
       </div>
     );
   
-  // ✨ FIX: Explicit check to satisfy TypeScript that data is definitely defined
-  // This addresses the TS18048 error after the loading state is resolved.
+  // FIX: Explicit check to satisfy TypeScript that data is definitely defined
   if (!data) {
     return (
         <div className="pt-16 pl-64 flex justify-center items-center min-h-screen">
