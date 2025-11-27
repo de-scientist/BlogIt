@@ -5,45 +5,44 @@ import { api } from "@/lib/axios";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import { useQuery } from "@tanstack/react-query";
 
+// 1. 💡 IMPORT THE LOGO IMAGE
+// Adjust the path below to exactly match the location of your logo.png file
+import TechBlogLogo from "@/assets/logo.png"; 
+
 // Define the User type for useQuery generics
 type UserType = {
-  firstName: string;
-  lastName: string;
-  userName: string;
-  emailAddress: string;
-  // Add other properties your API returns
+  firstName: string;
+  lastName: string;
+  userName: string;
+  emailAddress: string;
+  // Add other properties your API returns
 };
 
 export default function Navbar() {
   const { user, setUser, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  // State to track logo image loading (still necessary for fallback logic)
+  const [imageLoaded, setImageLoaded] = useState(false); 
 
-  // --- FIX APPLIED HERE ---
-  // 1. Explicitly defined the generic types for useQuery: <UserType, Error, UserType, (string)[]>
-  // 2. Defined the 'data' parameter type in onSuccess and 'error' in onError.
+  // --- useQuery Fix ---
   const { isLoading } = useQuery<UserType, Error, UserType, string[]>({
     queryKey: ["currentUser"],
     queryFn: async () => {
-      // Ensure the API call returns UserType
       const res = await api.get<UserType>("/profile", { withCredentials: true });
       return res.data;
     },
-    // Now TypeScript correctly infers 'data' as UserType or undefined
     onSuccess: (data) => {
-        // Check if data is present before setting the user
-        if (data) {
-            setUser(data);
-        }
+      if (data) {
+        setUser(data);
+      }
     },
     onError: (error) => {
-        // The query failed, so clear the user state
-        setUser(null);
-        console.error("User session check failed:", error); 
+      setUser(null);
+      console.error("User session check failed:", error); 
     },
     refetchOnWindowFocus: false,
   });
-// ----------------------------
 
   const handleLogout = async () => {
     try {
@@ -60,25 +59,33 @@ export default function Navbar() {
       ? `${user.firstName?.charAt(0) ?? ""}${user.lastName?.charAt(0) ?? ""}`.toUpperCase()
       : "";
 
+  // --- Component for Logo rendering ---
+  const Logo = () => (
+    <Link
+      to="/"
+      className="flex items-center space-x-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
+    >
+      {/* 2. 💡 SRC REPLACED WITH IMPORTED VARIABLE */}
+      <img
+        src={TechBlogLogo} 
+        alt="TechBlog Logo"
+        className={`h-6 w-6 rounded-full ${!imageLoaded ? 'hidden' : ''}`}
+        onLoad={() => setImageLoaded(true)}
+        onError={() => setImageLoaded(false)}
+      />
+
+      {/* Text shown if image fails (fallback/companion) */}
+      <span className={`${imageLoaded ? 'text-gray-900 dark:text-white' : 'bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text'}`}>
+        TechBlog
+      </span>
+    </Link>
+  );
+  // ------------------------------------
+
   return (
     <header className="bg-white dark:bg-slate-900/95 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-200/50 dark:border-slate-700/50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center space-x-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
-        >
-          <img
-            src="/image/logo.png"
-            alt="TechBlog Logo"
-            className="h-6 w-6 rounded-full"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-            }}
-          />
-          <span>TechBlog</span>
-        </Link>
+        {<Logo />}
 
         {/* Desktop */}
         <nav className="hidden md:flex items-center gap-6">
