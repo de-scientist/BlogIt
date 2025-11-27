@@ -92,7 +92,7 @@ export default function EditBlog() {
   // 🔹 UPDATE BLOG MUTATION (Remains the same)
   const mutation = useMutation({
     mutationFn: (updatedBlog: BlogForm) =>
-      api.put(`/blogs/${id}`, updatedBlog, { withCredentials: true }),
+      api.patch(`/blogs/${id}`, updatedBlog, { withCredentials: true }),
     onSuccess: () => {
       toast.success("Blog updated successfully.");
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
