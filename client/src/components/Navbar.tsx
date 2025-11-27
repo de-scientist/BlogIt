@@ -92,7 +92,7 @@ export default function Navbar() {
         
           {/* Blogs Link (Example) */}
           <Link
-            to="/blogs/list"
+            to="/dashboard/blogs"
             className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition"
           >
             Blogs
