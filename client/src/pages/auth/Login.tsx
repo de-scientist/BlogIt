@@ -44,7 +44,7 @@ export default function LoginPage() {
         withCredentials: true,
       });
       toast.success("Logged in successfully");
-      setTimeout(() => navigate("/profile"), 600);
+      setTimeout(() => navigate("/dashboard"), 600);
     } catch (err: any) {
       const message = err.response?.data?.message;
       if (!message) return toast.error("Login failed");
