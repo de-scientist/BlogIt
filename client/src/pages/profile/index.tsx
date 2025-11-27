@@ -78,6 +78,9 @@ export default function ProfilePage() {
       // 💡 Updated toast message and position
       toast.success("Profile updated successfully.", { position: "bottom-right" }); 
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+      
+      // ✨ IMPLEMENTATION: Navigate to /profile/view after successful update
+      navigate('/profile/view'); 
     },
     onError: (err: any) => {
       // 💡 Updated toast position
@@ -94,7 +97,7 @@ export default function ProfilePage() {
   const initials = getInitials(data?.firstName, data?.lastName);
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-64 pb-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16 pl-4 pb-10">
       
       {/* ---------------------------------- */}
       {/* HEADER AND CLEAR MESSAGE */}
@@ -227,7 +230,6 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
       </div>
-      {/* 💡 Ensure Sonner component is present for toasts to display */}
       <Toaster position="bottom-right" /> 
     </div>
   );
