@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./layout/Sidebar";
 import BlogFooter from "./Footer";
 
-// ❌ Removed { children }: { children: React.ReactNode } from the props
+
 export default function Layout() { 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
