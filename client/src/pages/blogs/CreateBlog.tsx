@@ -469,44 +469,44 @@ export default function CreateBlog() {
 
 
 					{/* ------------------- COLUMN 2: LIVE PREVIEW ------------------- */}
-					<div className="lg:col-span-1">
-						<Card className="shadow-lg dark:bg-slate-800 h-full">
-							<CardHeader>
-								<CardTitle className="flex items-center text-xl text-purple-600 dark:text-purple-400">
-									<Eye className="w-5 h-5 mr-2" /> Live Preview
-								</CardTitle>
-								<p className="text-sm text-gray-500 dark:text-gray-400">
-									See your final layout and formatting in real-time.
-								</p>
-							</CardHeader>
-							<CardContent className="pt-4 h-[calc(100%-120px)] overflow-y-auto blog-preview-content">
-								
-								{/* Display Title */}
-								<h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-									{watch("title") || "Untitled Draft"}
-								</h2>
+                                <div className="lg:col-span-1">
+                                    <Card className="shadow-lg dark:bg-slate-800 h-full">
+                                        <CardHeader>
+                                            <CardTitle className="flex items-center text-xl text-purple-600 dark:text-purple-400">
+                                                <Eye className="w-5 h-5 mr-2" /> Live Preview
+                                            </CardTitle>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                See your final layout and formatting in real-time.
+                                            </p>
+                                        </CardHeader>
+                                        <CardContent className="pt-4 h-[calc(100%-120px)] overflow-y-auto blog-preview-content">
+                                            
+                                            {/* Display Title */}
+                                            <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+                                                {watch("title") || "Untitled Draft"}
+                                            </h2>
 
-								{/* Display Featured Image */}
-								{featuredImageUrl && (
-									<img
-										src={featuredImageUrl}
-										alt="Blog featured image preview"
-										className="w-full max-h-64 object-cover rounded-lg mb-6 shadow-md"
-									/>
-								)}
+                                            {/* Display Featured Image */}
+                                            {featuredImageUrl && (
+                                                <img
+                                                    src={featuredImageUrl}
+                                                    alt="Blog featured image preview"
+                                                    className="w-full max-h-64 object-cover rounded-lg mb-6 shadow-md"
+                                                />
+                                            )}
 
-								{/* Display Content Preview */}
-								<div className="prose dark:prose-invert max-w-none">
-									<ReactMarkdown rehypePlugins={[rehypeRaw]}>
-										{content || "Start typing your content in the editor to see the live rendering here..."}
-									</ReactMarkdown>
-								</div>
-							</CardContent>
-						</Card>
-					</div>
+                                            {/* Display Content Preview - UPDATED LINE */}
+                                            <div className="prose dark:prose-invert max-w-none">
+                                                <ReactMarkdown rehypePlugins={[rehypeRaw]} components={MarkdownComponents}>
+                                                    {content || "Start typing your content in the editor to see the live rendering here..."}
+                                                </ReactMarkdown>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
 
-				</div>
-			</div>
-		</div>
-	);
+                                </div>
+                            </div>
+                            </div>
+    );
 }
