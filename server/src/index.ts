@@ -39,10 +39,15 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Enable CORS for frontend
-app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true,              
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 
 
 app.get("/", (_req: Request, res: Response) => {
