@@ -586,6 +586,45 @@ Walk through it.
   `,
 },
 
+{
+  id: 14,
+  title: "Where Ideas Go to Breathe",
+  synopsis: "Creativity grows in the spaces you refuse to ignore.",
+  description:
+    "Every mind has a story waiting to be born.",
+  image: "/images/creativity1.jpeg",
+  content: `
+## Introduction  
+Creativity isn’t magic—it’s awareness.  
+Ideas hide in conversations, mistakes, silence, and chaos.
+
+---
+
+## Why Creativity Matters  
+It keeps the mind alive and the spirit awake.
+
+> "The world is built by people who refuse to stop imagining."
+
+---
+
+## How to Unlock Creativity  
+- Observe everything  
+- Capture random thoughts  
+- Experiment without fear  
+- Collaborate with the curious  
+
+---
+
+## Challenge  
+Make one creative output today—however small.
+
+---
+
+## Closing  
+Let your ideas breathe.  
+Then let them run wild.
+  `,
+},
 
 
 ];
