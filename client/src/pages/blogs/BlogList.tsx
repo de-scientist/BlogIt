@@ -39,10 +39,6 @@ export default function BlogList() {
     },
   });
 
-  // 🔑 FIX: Normalize the data access. Assuming the API response is structured as { blogs: [...] }
-  // We already try to return only the array in queryFn, but if 'data' is undefined/null initially,
-  // or if the server returns an object even when successful, this helps.
-  // We extract the array only once here.
   const blogs = Array.isArray(data) ? data : data?.blogs || [];
 
 
