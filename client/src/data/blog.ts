@@ -425,6 +425,46 @@ Live with direction.
   `,
 },
 
+{
+  id: 10,
+  title: "The Body Remembers Everything",
+  synopsis: "Healing starts when you stop ignoring your limits.",
+  description:
+    "Your health is either your greatest ally or your most silent enemy.",
+  image: "/images/health1.jpeg",
+  content: `
+## Introduction: The Unspoken Truth  
+Your body has been absorbing your decisions for years—your stress, your sleep, your habits, your excuses.
+
+---
+
+## Why Listening to Your Body Matters  
+Pain is communication. Fatigue is communication.  
+Your body is not failing; it's signaling.
+
+> "If you don’t pick a day to rest, your body will pick it for you."
+
+---
+
+## Essentials for Sustainable Health  
+- Sleep like your survival depends on it  
+- Move your body daily  
+- Drink water before your body begs  
+- Cut toxic routines  
+
+---
+
+## Challenge  
+Give your body 10 days of discipline.  
+See what shifts.
+
+---
+
+## Closing  
+Respect the vessel.  
+It’s the only one you get.
+  `,
+},
 
 
 ];
