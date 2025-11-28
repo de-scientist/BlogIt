@@ -467,6 +467,7 @@ It’s the only one you get.
 },
 
 
+
 ];
 
 export default blogs;
