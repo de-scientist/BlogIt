@@ -114,7 +114,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## 📧 Contact
 
-Project Link: [https://github.com/YOUR_GITHUB_USERNAME/Bloggit](https://github.com/de-scientist/BlogIt)
+Project Link: [https://github.com/de-scientist/BlogIt](https://github.com/de-scientist/BlogIt)
 
 * **Developer:** [Mark Kinyanjui]
 * **Email:** [gitaumark502@gmail.com]
