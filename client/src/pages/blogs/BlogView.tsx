@@ -175,9 +175,9 @@ export default function BlogView() {
                     <CardFooter className="flex justify-between px-6 pb-6 sm:px-10 sm:pb-8 border-t dark:border-slate-700">
                         
                         {/* Back Button - Now using a secondary gradient for distinction */}
-                        <Link to="/dashboard" rel="noopener">
+                        <Link to="/dashboard/blogs" rel="noopener">
                             <Button 
-                                className="px-6 py-2 text-md border-gray-400 dark:border-gray-500 bg-gradient-to-r from-gray-400 to-gray-500 text-white hover:opacity-90 transition-all duration-200 shadow-md"
+                                className="px-6 py-2 text-md border-gray-400 dark:border-gray-500 bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 text-white hover:opacity-90 transition-all duration-200 shadow-md"
                             >
                                 <ArrowLeft className="w-4 h-4 mr-2" /> Back to Blogs
                             </Button>
