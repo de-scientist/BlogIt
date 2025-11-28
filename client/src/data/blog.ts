@@ -626,6 +626,46 @@ Then let them run wild.
   `,
 },
 
+{
+  id: 15,
+  title: "Win Your Hours, Win Your Life",
+  synopsis: "Time doesn’t slip away—you give it away.",
+  description:
+    "Master your hours and you master your trajectory.",
+  image: "/images/productivity1.jpeg",
+  content: `
+## Introduction  
+Every chaotic day is a reflection of an unplanned mind.
+
+---
+
+## Why Productivity Matters  
+Not because you need to do more—  
+but because you need to do what matters.
+
+> "Focus is a superpower."
+
+---
+
+## Practical Systems  
+- Time blocking  
+- Priority mapping  
+- Habit tracking  
+- Weekly reviews  
+
+---
+
+## Challenge  
+Reclaim one wasted hour today.
+
+---
+
+## Closing  
+Your hours are votes.  
+Spend them wisely.
+  `,
+},
+
 
 ];
 
