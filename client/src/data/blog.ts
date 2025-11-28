@@ -545,6 +545,46 @@ Give them something to be proud of.
   `,
 },
 
+{
+  id: 13,
+  title: "The Discipline Blueprint",
+  synopsis: "Motivation fades. Discipline endures.",
+  description:
+    "A strong mind outperforms talent in the long run.",
+  image: "/images/mindset1.jpeg",
+  content: `
+## Introduction  
+Everyone wants success; few want the grind attached to it.
+
+---
+
+## Why Discipline Wins  
+Motivation sparks action.  
+Discipline sustains it.
+
+> "If you control your habits, you control your destiny."
+
+---
+
+## Building an Unbreakable Mind  
+- Remove distractions  
+- Build routines  
+- Set boundaries  
+- Commit publicly  
+
+---
+
+## Reflection  
+Where do you sabotage yourself the most?  
+Fix that.
+
+---
+
+## Closing  
+Discipline is the door.  
+Walk through it.
+  `,
+},
 
 
 
