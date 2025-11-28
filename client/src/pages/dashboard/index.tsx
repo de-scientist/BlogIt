@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // 💡 Added CardTitle, CardHeader
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle } from "lucide-react"; // 💡 Added icons
+import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle } from "lucide-react"; 
 
-// --- Interactive Fact Data ---
+
 const facts = [
   "Blogging Fact: Content with images gets 94% more views than content without.",
   "Blogging Fact: The optimal blog post length for SEO is often cited as 1,500–2,000 words.",
@@ -15,7 +15,7 @@ const facts = [
 ];
 const getRandomFact = () => facts[Math.floor(Math.random() * facts.length)];
 
-// --- Helper function to mock quick stats (since we only fetch blogs) ---
+
 const mockQuickStats = (blogs: any[]) => ({
     totalBlogs: blogs.length,
     drafts: blogs.filter((b: any) => b.status === 'draft').length, // Assuming a 'status' field
@@ -41,7 +41,7 @@ export default function Dashboard() {
   // DELETE BLOG MUTATION (No functional change)
   const deleteBlogMutation = useMutation({
     mutationFn: async (id: number) =>
-      (await api.patch(`/profile/trash/${id}`)).data,
+      (await api.patch(`/blog/trash/${id}`)).data,
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] }); // Updated query syntax
