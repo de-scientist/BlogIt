@@ -50,7 +50,7 @@ Ensure you have the following installed on your machine:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR_GITHUB_USERNAME/Bloggit.git](https://github.com/YOUR_GITHUB_USERNAME/Bloggit.git)
+    git clone [https://github.com/de-scientist/BlogIt.git](https://github.com/YOUR_GITHUB_USERNAME/Bloggit.git)
     cd Bloggit
     ```
 
