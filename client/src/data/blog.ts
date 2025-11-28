@@ -505,6 +505,48 @@ Honor those who carry more than we see.
   `,
 },
 
+{
+  id: 12,
+  title: "Study Like Your Future Is Watching",
+  synopsis: "Academic success doesn’t come from intelligence—it comes from intention.",
+  description:
+    "Your study habits shape the opportunities that shape your destiny.",
+  image: "/images/academics1.jpeg",
+  content: `
+## Introduction  
+Grades aren’t everything, but discipline is.  
+Studying is not punishment—it’s investment.
+
+---
+
+## Why Students Struggle  
+Not because the work is hard, but because the habits are weak.
+
+> "The mind thrives on repetition."
+
+---
+
+## High-Impact Study Strategies  
+- Pomodoro technique  
+- Spaced repetition  
+- Active recall  
+- Teaching others  
+
+---
+
+## Challenge  
+Pick one technique and use it for 7 days.
+
+---
+
+## Closing  
+Your future self is watching.  
+Give them something to be proud of.
+  `,
+},
+
+
+
 
 ];
 
