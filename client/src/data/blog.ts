@@ -385,6 +385,45 @@ But it is programmable.
   `,
 },
 
+{
+  id: 9,
+  title: "Eat for the Life You Want",
+  synopsis: "Food is not fuel—it's strategy.",
+  description:
+    "Your body reflects the choices you make when no one is watching.",
+  image: "/images/nutrition1.jpeg",
+  content: `
+## Introduction: Your Plate Is a Silent Coach
+Nutrition isn’t a punishment or a diet—it’s self-respect served warm.
+
+---
+
+## Why Eating Well Matters  
+Your energy, focus, mood, immunity—all rooted in what you feed your cells.
+
+> "Your body is always listening."
+
+---
+
+## Smart Choices for Busy People  
+- Swap sugar for fruit  
+- Swap fried for grilled  
+- Drink water like it’s medicine  
+- Build colorful plates  
+
+---
+
+## Reflection  
+What is one food habit you will drop this week?  
+Which one will you adopt?
+
+---
+
+## Closing  
+Eat with intention.  
+Live with direction.
+  `,
+},
 
 
 
