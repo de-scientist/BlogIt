@@ -666,6 +666,47 @@ Spend them wisely.
   `,
 },
 
+{
+  id: 16,
+  title: "The Mind is a Battlefield",
+  synopsis: "Your greatest fights happen in silence.",
+  description:
+    "Understanding yourself is the first step toward mastering your life.",
+  image: "/images/psychology1.jpeg",
+  content: `
+## Introduction  
+The mind is a liar, a healer, a protector, and a destroyer—depending on how you train it.
+
+---
+
+## Why Self-Awareness Matters  
+Your thoughts shape your emotions.  
+Your emotions shape your actions.  
+Your actions shape your life.
+
+> "Master the mind and the world bends with it."
+
+---
+
+## Tools for Mental Strength  
+- Journaling  
+- Therapy  
+- Meditation  
+- Pattern awareness  
+
+---
+
+## Reflection  
+What belief is holding you hostage?  
+Challenge it.
+
+---
+
+## Closing  
+The mind obeys the one who listens.
+  `,
+}
+
 
 ];
 
