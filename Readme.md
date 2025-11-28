@@ -26,8 +26,8 @@ Bloggit is built using a robust and modern technology stack.
 | Aspect | Technology/Tool |
 | :--- | :--- |
 | **Frontend** | React, TypeScript, Tailwind CSS |
-| **Backend** | Node.js (Express) or Python (Django/Flask) - *Choose one* |
-| **Database** | PostgreSQL or MongoDB - *Choose one* |
+| **Backend** | Node.js (Express) or Python (Django/Flask)  |
+| **Database** | SQL server |
 | **Deployment** | Docker, Heroku/Vercel/AWS |
 
 * ***Note:*** *Update the above table to reflect the specific technologies used in your project.*
