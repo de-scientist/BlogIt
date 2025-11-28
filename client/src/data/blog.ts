@@ -466,6 +466,44 @@ It’s the only one you get.
   `,
 },
 
+{
+  id: 11,
+  title: "The Heart of a Soldier",
+  synopsis: "Strength is not muscle. It's mindset.",
+  description:
+    "A soldier’s courage is forged long before they touch the battlefield.",
+  image: "/images/kdf1.jpeg",
+  content: `
+## Introduction: Courage in Silence  
+True bravery is rarely loud. It lives in sacrifice, discipline, and impossible endurance.
+
+---
+
+## What Makes a Soldier Different  
+It’s not just the uniform.  
+It’s the unwavering commitment to duty—even when fear whispers louder.
+
+> "Where others step back, a soldier steps forward."
+
+---
+
+## Lessons From the Military  
+- Discipline beats motivation  
+- Teamwork saves lives  
+- Training reveals character  
+- Sacrifice builds nations  
+
+---
+
+## Reflection  
+Where in your life do you need soldier-like discipline?
+
+---
+
+## Closing  
+Honor those who carry more than we see.
+  `,
+},
 
 
 ];
