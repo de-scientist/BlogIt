@@ -440,12 +440,12 @@ export default function CreateBlog() {
 								{/* CONTENT TEXTAREA (Rich Text Editor Mock) */}
 								<div>
 									<Label htmlFor="content" className="font-medium dark:text-gray-300">
-										Content (Rich Text Editor)
+										Content (Markdown Supported)
 									</Label>
                                     <RichTextEditor 
                                         value={content}
                                         onChange={(newValue) => setValue("content", newValue, { shouldValidate: true })}
-                                        placeholder="Let your words dance here... Use the rich text toolbar for formatting."
+                                        placeholder="Let your words dance here... You can do this."
                                         error={errors.content?.message}
                                     />
 								</div>
