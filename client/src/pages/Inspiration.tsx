@@ -87,6 +87,412 @@ const blogs = [
       Rule your mind with intentionality—and your life becomes a masterpiece.
     `,
   },
+
+ {
+  id: 7,
+  title: "Ink That Refuses to Die",
+  synopsis: "When words burn, they leave ashes that whisper truth.",
+  description:
+    "Poetry becomes the refuge where broken pieces learn to breathe again.",
+  image: "/images/poetry1.jpeg",
+  content: `
+## Introduction: Where Emotion Meets the Page
+Some poems aren’t written—they escape. They leak from the cracks of a tired soul trying to stay whole. Poetry is survival, stitched in metaphors.
+
+> "The pen bleeds so the heart can heal."
+
+---
+
+## Why Poetry Still Matters  
+In a world loud with noise, poetry remains the final sanctuary—where thoughts slow, emotions sharpen, and silence becomes a teacher.
+
+---
+
+## The Poet’s Burden  
+Every poet carries:
+- A wound they refuse to let rot  
+- A truth they refuse to dilute  
+- A rhythm they cannot silence  
+
+Poetry is rebellion disguised as softness.
+
+---
+
+## Reflection  
+Write a four-line truth today.  
+Not for the world.  
+For yourself.
+
+---
+
+## Closing  
+Your words won’t save the world.  
+But they might save **you**, and that is enough.
+  `,
+}, 
+
+{
+  id: 8,
+  title: "The Future Belongs to the Builders",
+  synopsis: "In the digital age, creation is the highest currency.",
+  description:
+    "Technology rewards those bold enough to explore, experiment, and break boundaries.",
+  image: "/images/tech1.jpeg",
+  content: `
+## Introduction: The Wild Terrain of Innovation
+The world doesn’t wait for permission. It shifts. It breaks. It rebirths. And only the builders keep up.
+
+---
+
+## Why Tech Favors the Brave  
+Innovation is messy. The best ideas come from trial, error, and ruthless curiosity.  
+The brave don’t fear complexity—they study it, bend it, and sculpt it.
+
+> "Curiosity is the engine. Execution is the vehicle."
+
+---
+
+## Trends Reshaping the World  
+- AI as the new electricity  
+- Blockchain redefining ownership  
+- Cloud turning ideas into global products  
+- Robotics automating the impossible  
+
+---
+
+## Challenge  
+Learn one tool deeply this month. Mastery compounds.
+
+---
+
+## Closing  
+The future isn’t promised.  
+But it is programmable.
+  `,
+},
+
+{
+  id: 9,
+  title: "Eat for the Life You Want",
+  synopsis: "Food is not fuel—it's strategy.",
+  description:
+    "Your body reflects the choices you make when no one is watching.",
+  image: "/images/nutrition1.jpeg",
+  content: `
+## Introduction: Your Plate Is a Silent Coach
+Nutrition isn’t a punishment or a diet—it’s self-respect served warm.
+
+---
+
+## Why Eating Well Matters  
+Your energy, focus, mood, immunity—all rooted in what you feed your cells.
+
+> "Your body is always listening."
+
+---
+
+## Smart Choices for Busy People  
+- Swap sugar for fruit  
+- Swap fried for grilled  
+- Drink water like it’s medicine  
+- Build colorful plates  
+
+---
+
+## Reflection  
+What is one food habit you will drop this week?  
+Which one will you adopt?
+
+---
+
+## Closing  
+Eat with intention.  
+Live with direction.
+  `,
+},
+
+{
+  id: 10,
+  title: "The Body Remembers Everything",
+  synopsis: "Healing starts when you stop ignoring your limits.",
+  description:
+    "Your health is either your greatest ally or your most silent enemy.",
+  image: "/images/health1.jpeg",
+  content: `
+## Introduction: The Unspoken Truth  
+Your body has been absorbing your decisions for years—your stress, your sleep, your habits, your excuses.
+
+---
+
+## Why Listening to Your Body Matters  
+Pain is communication. Fatigue is communication.  
+Your body is not failing; it's signaling.
+
+> "If you don’t pick a day to rest, your body will pick it for you."
+
+---
+
+## Essentials for Sustainable Health  
+- Sleep like your survival depends on it  
+- Move your body daily  
+- Drink water before your body begs  
+- Cut toxic routines  
+
+---
+
+## Challenge  
+Give your body 10 days of discipline.  
+See what shifts.
+
+---
+
+## Closing  
+Respect the vessel.  
+It’s the only one you get.
+  `,
+},
+
+{
+  id: 11,
+  title: "The Heart of a Soldier",
+  synopsis: "Strength is not muscle. It's mindset.",
+  description:
+    "A soldier’s courage is forged long before they touch the battlefield.",
+  image: "/images/kdf1.jpeg",
+  content: `
+## Introduction: Courage in Silence  
+True bravery is rarely loud. It lives in sacrifice, discipline, and impossible endurance.
+
+---
+
+## What Makes a Soldier Different  
+It’s not just the uniform.  
+It’s the unwavering commitment to duty—even when fear whispers louder.
+
+> "Where others step back, a soldier steps forward."
+
+---
+
+## Lessons From the Military  
+- Discipline beats motivation  
+- Teamwork saves lives  
+- Training reveals character  
+- Sacrifice builds nations  
+
+---
+
+## Reflection  
+Where in your life do you need soldier-like discipline?
+
+---
+
+## Closing  
+Honor those who carry more than we see.
+  `,
+},
+
+{
+  id: 12,
+  title: "Study Like Your Future Is Watching",
+  synopsis: "Academic success doesn’t come from intelligence—it comes from intention.",
+  description:
+    "Your study habits shape the opportunities that shape your destiny.",
+  image: "/images/academics1.jpeg",
+  content: `
+## Introduction  
+Grades aren’t everything, but discipline is.  
+Studying is not punishment—it’s investment.
+
+---
+
+## Why Students Struggle  
+Not because the work is hard, but because the habits are weak.
+
+> "The mind thrives on repetition."
+
+---
+
+## High-Impact Study Strategies  
+- Pomodoro technique  
+- Spaced repetition  
+- Active recall  
+- Teaching others  
+
+---
+
+## Challenge  
+Pick one technique and use it for 7 days.
+
+---
+
+## Closing  
+Your future self is watching.  
+Give them something to be proud of.
+  `,
+},
+
+{
+  id: 13,
+  title: "The Discipline Blueprint",
+  synopsis: "Motivation fades. Discipline endures.",
+  description:
+    "A strong mind outperforms talent in the long run.",
+  image: "/images/mindset1.jpeg",
+  content: `
+## Introduction  
+Everyone wants success; few want the grind attached to it.
+
+---
+
+## Why Discipline Wins  
+Motivation sparks action.  
+Discipline sustains it.
+
+> "If you control your habits, you control your destiny."
+
+---
+
+## Building an Unbreakable Mind  
+- Remove distractions  
+- Build routines  
+- Set boundaries  
+- Commit publicly  
+
+---
+
+## Reflection  
+Where do you sabotage yourself the most?  
+Fix that.
+
+---
+
+## Closing  
+Discipline is the door.  
+Walk through it.
+  `,
+},
+
+{
+  id: 14,
+  title: "Where Ideas Go to Breathe",
+  synopsis: "Creativity grows in the spaces you refuse to ignore.",
+  description:
+    "Every mind has a story waiting to be born.",
+  image: "/images/creativity1.jpeg",
+  content: `
+## Introduction  
+Creativity isn’t magic—it’s awareness.  
+Ideas hide in conversations, mistakes, silence, and chaos.
+
+---
+
+## Why Creativity Matters  
+It keeps the mind alive and the spirit awake.
+
+> "The world is built by people who refuse to stop imagining."
+
+---
+
+## How to Unlock Creativity  
+- Observe everything  
+- Capture random thoughts  
+- Experiment without fear  
+- Collaborate with the curious  
+
+---
+
+## Challenge  
+Make one creative output today—however small.
+
+---
+
+## Closing  
+Let your ideas breathe.  
+Then let them run wild.
+  `,
+},
+
+{
+  id: 15,
+  title: "Win Your Hours, Win Your Life",
+  synopsis: "Time doesn’t slip away—you give it away.",
+  description:
+    "Master your hours and you master your trajectory.",
+  image: "/images/productivity1.jpeg",
+  content: `
+## Introduction  
+Every chaotic day is a reflection of an unplanned mind.
+
+---
+
+## Why Productivity Matters  
+Not because you need to do more—  
+but because you need to do what matters.
+
+> "Focus is a superpower."
+
+---
+
+## Practical Systems  
+- Time blocking  
+- Priority mapping  
+- Habit tracking  
+- Weekly reviews  
+
+---
+
+## Challenge  
+Reclaim one wasted hour today.
+
+---
+
+## Closing  
+Your hours are votes.  
+Spend them wisely.
+  `,
+},
+
+{
+  id: 16,
+  title: "The Mind is a Battlefield",
+  synopsis: "Your greatest fights happen in silence.",
+  description:
+    "Understanding yourself is the first step toward mastering your life.",
+  image: "/images/psychology1.jpeg",
+  content: `
+## Introduction  
+The mind is a liar, a healer, a protector, and a destroyer—depending on how you train it.
+
+---
+
+## Why Self-Awareness Matters  
+Your thoughts shape your emotions.  
+Your emotions shape your actions.  
+Your actions shape your life.
+
+> "Master the mind and the world bends with it."
+
+---
+
+## Tools for Mental Strength  
+- Journaling  
+- Therapy  
+- Meditation  
+- Pattern awareness  
+
+---
+
+## Reflection  
+What belief is holding you hostage?  
+Challenge it.
+
+---
+
+## Closing  
+The mind obeys the one who listens.
+  `,
+}
+
 ];
 
 export default function Inspiration() {
