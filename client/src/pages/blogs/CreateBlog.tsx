@@ -252,10 +252,11 @@ export default function CreateBlog() {
 		onSuccess: () => {
 			localStorage.removeItem(LOCAL_STORAGE_KEY); 
 			
+			
+			queryClient.invalidateQueries({ queryKey: ["blogs"] });
+			navigate("/dashboard");
 			// Ensure toast is bottom-left
 			toast.success("Blog created successfully", { position: "bottom-left" }); 
-			queryClient.invalidateQueries({ queryKey: ["blogs"] });
-			navigate("/blogs");
 		},
 		onError: (err: any) => {
 			const errorMessage = err.response?.data?.message;
