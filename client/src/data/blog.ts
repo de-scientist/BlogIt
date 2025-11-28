@@ -301,6 +301,50 @@ Your thoughts shape your world. Guard them carefully.
 Your mind is a kingdom. Rule it with intention. Protect it fiercely. Cultivate clarity, creativity, and courage. What you nurture internally manifests externally.
     `,
   },
+
+  {
+  id: 7,
+  title: "Ink That Refuses to Die",
+  synopsis: "When words burn, they leave ashes that whisper truth.",
+  description:
+    "Poetry becomes the refuge where broken pieces learn to breathe again.",
+  image: "/images/poetry1.jpeg",
+  content: `
+## Introduction: Where Emotion Meets the Page
+Some poems aren’t written—they escape. They leak from the cracks of a tired soul trying to stay whole. Poetry is survival, stitched in metaphors.
+
+> "The pen bleeds so the heart can heal."
+
+---
+
+## Why Poetry Still Matters  
+In a world loud with noise, poetry remains the final sanctuary—where thoughts slow, emotions sharpen, and silence becomes a teacher.
+
+---
+
+## The Poet’s Burden  
+Every poet carries:
+- A wound they refuse to let rot  
+- A truth they refuse to dilute  
+- A rhythm they cannot silence  
+
+Poetry is rebellion disguised as softness.
+
+---
+
+## Reflection  
+Write a four-line truth today.  
+Not for the world.  
+For yourself.
+
+---
+
+## Closing  
+Your words won’t save the world.  
+But they might save **you**, and that is enough.
+  `,
+}, 
+
 ];
 
 export default blogs;
