@@ -1,7 +1,7 @@
 # ✍️ Bloggit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Stars](https://img.shields.io/github/stars/YOUR_GITHUB_USERNAME/Bloggit?style=social)](https://github.com/de-scientist/BlogIt)
+[![GitHub Stars](https://img.shields.io/github/stars/de-scientist/Bloggit?style=social)](https://github.com/de-scientist/BlogIt)
 
 **Bloggit** is a modern, full-featured blogging platform designed for simplicity, speed, and excellent content delivery. It provides an intuitive interface for writers and a fast, responsive experience for readers.
 
