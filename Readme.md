@@ -30,8 +30,6 @@ Bloggit is built using a robust and modern technology stack.
 | **Database** | SQL server |
 | **Deployment** | Docker, Heroku/Vercel/AWS |
 
-* ***Note:*** *Update the above table to reflect the specific technologies used in your project.*
-
 ---
 
 ## 🚀 Getting Started
@@ -50,7 +48,7 @@ Ensure you have the following installed on your machine:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/de-scientist/BlogIt.git](https://github.com/YOUR_GITHUB_USERNAME/Bloggit.git)
+    git clone [https://github.com/de-scientist/BlogIt.git]
     cd Bloggit
     ```
 
