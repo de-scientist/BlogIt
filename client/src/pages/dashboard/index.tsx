@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle } from "lucide-react"; 
-
+import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle, Search } from "lucide-react"; 
+import { Input } from "@/components/ui/input"; // 💡 Import Input component for the search bar
 
 const facts = [
   "Blogging Fact: Content with images gets 94% more views than content without.",
@@ -23,10 +23,73 @@ const mockQuickStats = (blogs: any[]) => ({
     totalViews: blogs.reduce((acc: number, b: any) => acc + (b.views || 0), 0), // Assuming a 'views' field
 });
 
+// 💡 New component for Category Filtering UI (for reuse)
+const FilterComponent = ({ filter, setFilter, blogs }) => {
+    const categories = ['Poetry', 'Health', 'Academics'];
+    
+    // 💡 Determine if the current filter is active (to highlight the 'Clear' button)
+    const isFilterActive = filter.trim() !== '';
+
+    return (
+        <div className="mb-8 space-y-4">
+            <div className="relative">
+                <Input
+                    type="text"
+                    placeholder="Search by category (e.g., 'Poetry', 'Health')"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 dark:border-slate-600 rounded-full dark:bg-slate-700 focus:border-purple-500 transition-colors"
+                />
+                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+
+            <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 mr-2">Quick Filters:</span>
+                {categories.map(cat => (
+                    <Button
+                        key={cat}
+                        size="sm"
+                        onClick={() => setFilter(filter.toLowerCase() === cat.toLowerCase() ? '' : cat)}
+                        className={`rounded-full px-4 py-1 text-sm transition-all ${
+                            filter.toLowerCase() === cat.toLowerCase()
+                                ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                                : 'bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-300'
+                        }`}
+                        variant="ghost" // Use ghost variant to ensure styling
+                    >
+                        {cat}
+                    </Button>
+                ))}
+                
+                {/* Clear Filter Button */}
+                {isFilterActive && (
+                    <Button
+                        size="sm"
+                        onClick={() => setFilter('')}
+                        className="rounded-full px-4 py-1 text-sm bg-red-500 hover:bg-red-600 text-white"
+                    >
+                        Clear Filter
+                    </Button>
+                )}
+            </div>
+            
+            {/* Filter Status Message */}
+            {isFilterActive && (
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Showing {blogs.length} blogs matching **'{filter}'**
+                </p>
+            )}
+        </div>
+    );
+};
+
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [currentFact, setCurrentFact] = useState(getRandomFact()); // 💡 State for interactive fact
+  const [currentFact, setCurrentFact] = useState(getRandomFact()); 
+  // 💡 NEW STATE: Filter for category/name
+  const [categoryFilter, setCategoryFilter] = useState(''); 
 
   const { data, isLoading } = useQuery({
     queryKey: ["blogs"],
@@ -35,8 +98,20 @@ export default function Dashboard() {
 
   // Normalize data and apply mock stats
   const blogs = Array.isArray(data) ? data : data?.blogs || [];
-  const stats = mockQuickStats(blogs);
+  
+  // 💡 NEW LOGIC: Filter the blogs based on the categoryFilter
+  const filteredBlogs = blogs.filter((blog: any) => {
+      if (!categoryFilter) return true;
+      const lowerCaseFilter = categoryFilter.toLowerCase();
+      
+      // Assuming 'category' is a field on the blog object, defaulting to checking the title if category is missing
+      const categoryMatch = blog.category?.toLowerCase().includes(lowerCaseFilter) || false;
+      const titleMatch = blog.title?.toLowerCase().includes(lowerCaseFilter) || false;
+      
+      return categoryMatch || titleMatch;
+  });
 
+  const stats = mockQuickStats(blogs);
 
   // DELETE BLOG MUTATION (No functional change)
   const deleteBlogMutation = useMutation({
@@ -146,53 +221,66 @@ export default function Dashboard() {
         <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100">
           Your Recent Creations
         </h2>
+        
+        {/* 💡 CATEGORY FILTER ADDED HERE */}
+        <FilterComponent 
+            filter={categoryFilter}
+            setFilter={setCategoryFilter}
+            blogs={filteredBlogs}
+        />
+        {/* ------------------------------- */}
 
         {isLoading && <p className="text-gray-500">Loading your blogs…</p>}
 
         {/* ---------------------------------- */}
         {/* EMPTY STATE (Improved) */}
         {/* ---------------------------------- */}
-        {!isLoading && blogs.length === 0 && (
+        {!isLoading && filteredBlogs.length === 0 && (
           <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-xl shadow-xl border-t-4 border-purple-600">
             <Pencil className="w-12 h-12 mx-auto text-purple-600 mb-4" />
             <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-gray-200">
-              No Blogs Found
+              {categoryFilter ? "No Blogs Match Your Filter" : "No Blogs Found"}
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-              Your dashboard is empty! Click the button below to start sharing your voice and ideas with the world.
+              {categoryFilter 
+                ? "Try clearing the filter or searching for a different category/keyword." 
+                : "Your dashboard is empty! Click the button below to start sharing your voice and ideas with the world."
+              }
             </p>
-            <Button
-              size="lg"
-              onClick={() => navigate("/blogs/create")}
-              className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-full shadow-lg hover:opacity-90 transition-all"
-            >
-              <PlusCircle className="w-5 h-5 mr-2" /> Write Your First Story
-            </Button>
+            {!categoryFilter && (
+              <Button
+                size="lg"
+                onClick={() => navigate("/blogs/create")}
+                className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-4 rounded-full shadow-lg hover:opacity-90 transition-all"
+              >
+                <PlusCircle className="w-5 h-5 mr-2" /> Write Your First Story
+              </Button>
+            )}
           </div>
         )}
 
         {/* ---------------------------------- */}
-        {/* BLOG GRID (Improved Card Design) */}
+        {/* BLOG GRID (Now maps over filteredBlogs) */}
         {/* ---------------------------------- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-          {blogs.map((blog: any) => (
+          {filteredBlogs.map((blog: any) => ( // 💡 MAPPING filteredBlogs
             <Card
               key={blog.id}
               className="bg-white dark:bg-slate-800 border-2 border-gray-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-purple-300 transition-all duration-300 rounded-2xl overflow-hidden"
             >
-                {/* 💡 FEATURED IMAGE ADDED HERE */}
-                {blog.featuredImageUrl && (
-                    <img 
-                        src={blog.featuredImageUrl} 
-                        alt={`Featured image for ${blog.title}`}
-                        className="w-full h-40 object-cover" 
-                        onError={(e) => { 
-                            // Fallback for broken images (e.g., if the URL is invalid)
-                            e.currentTarget.style.display = 'none';
-                        }}
-                    />
-                )}
-                {/* --------------------------- */}
+                {/* 💡 FEATURED IMAGE ADDED HERE */}
+                {blog.featuredImageUrl && (
+                    <img 
+                        src={blog.featuredImageUrl} 
+                        alt={`Featured image for ${blog.title}`}
+                        className="w-full h-40 object-cover" 
+                        onError={(e) => { 
+                            // Fallback for broken images (e.g., if the URL is invalid)
+                            e.currentTarget.style.display = 'none';
+                        }}
+                    />
+                )}
+                {/* --------------------------- */}
               <CardContent className="p-6 space-y-4">
                 {/* Title and Date */}
                 <div className="flex justify-between items-start">
