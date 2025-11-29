@@ -19,6 +19,12 @@ import {
     Loader2, 
 } from "lucide-react"; 
 
+interface FilterProps {
+    filter: string;
+    setFilter: (filter: string) => void;
+    blogs: Blog[];
+}
+
 // 💡 Simple list of fun facts (for the empty state)
 const facts = [
   "💡 Did you know: Bloggers often read other blogs for inspiration before writing!",
