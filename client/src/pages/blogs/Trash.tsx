@@ -38,7 +38,7 @@ export default function Trash() {
   const { data = [], isLoading } = useQuery({
     queryKey: ["trash"],
     queryFn: async () => {
-      const res = await api.get("/blogs/trash", { withCredentials: true });
+      const res = await api.get("/profile/trash", { withCredentials: true });
       return res.data.blogs || []; // FIX: Use '|| []' to ensure an array is always returned on success, preventing potential issues if 'blogs' is null/undefined.
     },
   });
