@@ -19,6 +19,18 @@ import {
     Loader2, 
 } from "lucide-react"; 
 
+interface Blog {
+    id: number | string;
+    title: string;
+    category?: string;
+    status: 'draft' | 'published';
+    views?: number;
+    createdAt: string;
+    synopsis?: string;
+    content: string;
+    featuredImageUrl?: string;
+}
+
 interface FilterProps {
     filter: string;
     setFilter: (filter: string) => void;
