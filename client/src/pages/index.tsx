@@ -43,7 +43,8 @@ const slides = [
   // Original slide 3, moved down
   {
     image: "/images/slide3.jpeg", // Placeholder image path
-    title: "Join a Community",
+    // 💡 UX/UI Update: Changed title to be more action/result-oriented
+    title: "Connect and Collaborate",
     subtitle: "Connect with writers and thinkers from around the world.",
   },
 ];
@@ -76,7 +77,7 @@ const keyFeatures = [
     },
 ];
 
-// 💡 Data for the Stats Section (Updated for whole numbers in 'Posts Published')
+// 💡 Data for the Stats Section
 const platformStats = [
   {
     icon: Users,
@@ -87,10 +88,8 @@ const platformStats = [
   },
   {
     icon: BookOpen,
-    // 💡 FIX: Set target to the whole number of millions (3) to avoid decimals
     target: 3, 
     label: "Posts Published",
-    // 💡 FIX: Update formatted string to reflect the whole number approach
     formatted: "3M+", 
     color: "from-indigo-500 to-blue-600",
   },
@@ -103,7 +102,7 @@ const platformStats = [
   },
 ];
 
-// 💡 NEW COMPONENT: Animated Stat Counter
+// 💡 Animated Stat Counter (Functionality untouched)
 interface AnimatedStatProps {
     target: number;
     duration?: number;
@@ -126,12 +125,10 @@ const AnimatedStat = ({ target, duration = 2000, formatter }: AnimatedStatProps)
                 const ratio = progress / duration;
                 const easedRatio = 1 - Math.pow(1 - ratio, 3); 
                 
-                // Use Math.floor to ensure whole numbers during animation
                 currentValue = Math.floor(easedRatio * target);
                 setCount(currentValue);
                 frameRef.current = requestAnimationFrame(step);
             } else {
-                // Ensure the final value is exactly the target
                 setCount(target);
                 if (frameRef.current !== null) {
                   cancelAnimationFrame(frameRef.current);
@@ -156,11 +153,10 @@ export default function Home() {
   const user = useAuth((s) => s.user);
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentFact, setCurrentFact] = useState(getRandomFact()); // State for interactive fact
+  const [currentFact, setCurrentFact] = useState(getRandomFact()); 
 
-  // Auto-slide functionality
+  // Auto-slide functionality (Untouched)
   useEffect(() => {
-    // The interval automatically handles the new slide length
     const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000); 
@@ -177,37 +173,32 @@ export default function Home() {
 
   const goToSlide = (index: number) => setCurrentSlide(index);
 
-  // 💡 Custom formatter for "Active Users" to display K+ only at the end
+  // Custom formatters (Untouched logic)
   const activeUsersFormatter = (value: number) => {
     return value >= platformStats[0].target 
       ? platformStats[0].formatted 
       : value.toLocaleString();
   };
 
-  // 💡 FIX: Custom formatter for "Posts Published" to handle the whole-number target (3)
   const postsPublishedFormatter = (value: number) => {
     const target = platformStats[1].target;
     
-    // When the animation hits the target (3), show the final 3M+
     if (value === target) {
       return platformStats[1].formatted;
     }
     
-    // During the animation (0, 1, 2), show the value followed by M
     return value + "M"; 
   };
 
-  // 💡 Custom formatter for "Serving Creators" (Years)
   const servingCreatorsFormatter = (value: number) => {
     return value >= platformStats[2].target 
       ? platformStats[2].formatted 
       : value.toLocaleString();
   };
 
-  // Map of formatters corresponding to the stat order
   const formatters = [
     activeUsersFormatter,
-    postsPublishedFormatter, // <-- Now based on the whole-number M target
+    postsPublishedFormatter,
     servingCreatorsFormatter
   ];
 
@@ -217,17 +208,17 @@ export default function Home() {
       {/* pt-16 accounts for the space occupied by the top navbar */}
 
       {/* ---------------------------------- */}
-      {/* SECTION 1: HERO / INTRO */}
+      {/* SECTION 1: HERO / INTRO - Updated Copy */}
       {/* ---------------------------------- */}
       <section className="w-full max-w-6xl mx-auto py-16 px-6 text-center space-y-8">
-        {/* Enhanced Hero Title with Gradient */}
+        {/* 💡 UX/UI Update: More action-oriented and benefit-driven headline */}
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-lg">
-          Publish Your Thoughts. Build Your Legacy.
+          Start Creating. Build Your Brand.
         </h1>
 
-        {/* Clearer Message */}
+        {/* 💡 UX/UI Update: Clearer, more concise subtitle, focusing on the pain point (coding) */}
         <p className="text-gray-600 dark:text-gray-400 text-xl max-w-4xl mx-auto leading-relaxed">
-          Unlock your potential as a creator. This is where you connect with a global audience, share your unique perspective, and turn your written word into something impactful. **Start your free blog today.**
+          From passion to profession, our platform provides the tools, community, and reach you need to make an impact. **No coding required.**
         </p>
 
         {/* Action Buttons (Improved Styling) */}
@@ -241,7 +232,7 @@ export default function Home() {
             {user ? "Go to Dashboard" : "Start Blogging Now"}
           </Button>
 
-          {/* CTA: View Inspiration */}
+          {/* 💡 UX/UI Update: Changed "View Inspiration" to "Explore Success Stories" (Results-driven) */}
           <Button
             type="button"
             size="lg"
@@ -249,17 +240,47 @@ export default function Home() {
             className="border-2 border-indigo-400 bg-gradient-to-r from-green-500 to-teal-400 text-white transition-all font-semibold rounded-full px-12 py-7 text-lg dark:border-indigo-600 dark:text-indigo-400 dark:hover:bg-indigo-900/50"
             onClick={() => navigate("/inspiration")}
           >
-            View Inspiration
+            Explore Success Stories
           </Button>
         </div>
       </section>
       
       {/* ---------------------------------- */}
-      {/* SECTION 2: KEY FEATURES / VALUE PROPOSITION */}
+      {/* SECTION 2: PLATFORM STATS (MOVED UP FOR SOCIAL PROOF) */}
+      {/* ---------------------------------- */}
+      <section className="w-full max-w-6xl mx-auto px-6 py-8">
+        {/* 💡 UX/UI Update: Headline focuses on growth and joining a large community */}
+        <h2 className="text-3xl font-extrabold text-center mb-10 text-gray-800 dark:text-gray-200">
+            Join a Community of Growth
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {platformStats.map((stat, index) => (
+            <div 
+              key={index} 
+              className={`p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-center bg-gradient-to-br ${stat.color} transition-all duration-500 transform hover:scale-[1.02] relative group overflow-hidden`}
+            >
+              {/* Subtle overlay for contrast */}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all rounded-2xl"></div>
+              
+              <stat.icon className="w-12 h-12 mx-auto mb-3 text-white/90 relative z-10" />
+              
+              <AnimatedStat 
+                target={stat.target}
+                formatter={formatters[index]}
+              />
+              <p className="text-lg font-medium text-white/80 mt-1 relative z-10">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------------------------- */}
+      {/* SECTION 3: KEY FEATURES / VALUE PROPOSITION (MOVED DOWN) */}
       {/* ---------------------------------- */}
       <section className="w-full max-w-6xl mx-auto px-6 py-16">
+        {/* 💡 UX/UI Update: Headline focuses on comprehensiveness of tools */}
         <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-800 dark:text-gray-200">
-            Why Choose Our Platform?
+            Everything You Need to Thrive Online
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {keyFeatures.map((feature, index) => (
@@ -275,37 +296,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------- */}
-      {/* SECTION 3: PLATFORM STATS (FIXED AND IMPROVED UI/UX) */}
-      {/* ---------------------------------- */}
-      <section className="w-full max-w-6xl mx-auto px-6 py-8">
-        <h2 className="text-3xl font-extrabold text-center mb-10 text-gray-800 dark:text-gray-200">
-            Our Impact: By The Numbers
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {platformStats.map((stat, index) => (
-            <div 
-              key={index} 
-              className={`p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-center bg-gradient-to-br ${stat.color} transition-all duration-500 transform hover:scale-[1.02] relative group overflow-hidden`}
-            >
-              {/* Subtle overlay for contrast */}
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all rounded-2xl"></div>
-              
-              <stat.icon className="w-12 h-12 mx-auto mb-3 text-white/90 relative z-10" />
-              
-              <AnimatedStat 
-                target={stat.target}
-                // 💡 Using the specialized formatter for each stat
-                formatter={formatters[index]}
-              />
-              <p className="text-lg font-medium text-white/80 mt-1 relative z-10">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ---------------------------------- */}
-      {/* SECTION 4: Interactive Fact (Original Section 3, moved down) */}
+      {/* SECTION 4: Interactive Fact (Position remains effective) */}
       {/* ---------------------------------- */}
       <section className="w-full max-w-6xl mx-auto px-6 mt-10">
           <div 
@@ -321,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------- */}
-      {/* SECTION 5: SLIDES / HERO CAROUSEL (Original Section 4, moved down) */}
+      {/* SECTION 5: SLIDES / HERO CAROUSEL (Final visual summary) */}
       {/* ---------------------------------- */}
       <div className="relative w-full max-w-6xl mx-auto h-[60vh] max-h-[600px] mt-12 mb-20 px-6">
         {slides.map((slide, index) => (
