@@ -110,7 +110,7 @@ const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
 export default function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { toast } = useToast(); // 💡 TOAST FIX: Initialize toast hook
+  const { toast } = Toaster(); // 💡 TOAST FIX: Initialize toast hook
   const [currentFact, setCurrentFact] = useState(getRandomFact()); 
   const [categoryFilter, setCategoryFilter] = useState(''); 
 
