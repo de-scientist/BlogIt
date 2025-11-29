@@ -56,9 +56,10 @@ export default function LoginPage() {
       await api.post("/auth/login", data, {
         withCredentials: true,
       });
-      // 🚨 TOAST: Position bottom-left
-      toast.success("Logged in successfully. Redirecting to dashboard...", { position: "bottom-left" }); 
+      
       setTimeout(() => navigate("/dashboard"), 800);
+// 🚨 TOAST: Position bottom-left
+      toast.success("Logged in successfully. Redirecting to dashboard...", { position: "bottom-left" }); 
     } catch (err: any) {
       const message = err.response?.data?.message || "An unexpected error occurred.";
       
