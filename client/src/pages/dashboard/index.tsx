@@ -116,7 +116,7 @@ export default function Dashboard() {
   // DELETE BLOG MUTATION (No functional change)
   const deleteBlogMutation = useMutation({
     mutationFn: async (id: number) =>
-      (await api.patch(`/blog/trash/${id}`)).data,
+      (await api.patch(`/blogs/trash/${id}`)).data,
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] }); // Updated query syntax
