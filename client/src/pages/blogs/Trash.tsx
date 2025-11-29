@@ -168,9 +168,10 @@ export default function Trash() {
                 <ScrollArea className="h-[75vh] pr-4"> 
                     {/* Grid Layout matching Dashboard style */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-                        {blogsInTrash.map((blog: Blog) => (
+                        {/* KEY CHANGE 1: Destructure index and use it as a fallback key if blog.id is falsy */}
+                        {blogsInTrash.map((blog: Blog, index: number) => (
                             <Card
-                                key={String(blog.id)}
+                                key={blog.id ? String(blog.id) : `fallback-${index}`}
                                 className="bg-white dark:bg-slate-800 border-2 border-gray-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-red-500 transition-all duration-300 rounded-xl overflow-hidden"
                             >
                                 {/* Featured Image (from Dashboard style) */}
@@ -201,12 +202,12 @@ export default function Trash() {
                                         {blog.synopsis || blog.content}
                                     </p>
                                     
-                                    {/* Deletion Date/Time Info (UPDATED HERE) */}
+                                    {/* Deletion Date/Time Info (KEY CHANGE 2: Added toLocaleTimeString) */}
                                     <div className="pt-2">
                                         <small className="text-gray-500 dark:text-gray-400 flex items-center text-xs font-medium">
                                             <Clock className="w-3 h-3 mr-1 text-red-500" /> 
                                             Deleted on: 
-                                            {/* 💡 NEW FORMAT: Date and Time */}
+                                            {/* 💡 NOW INCLUDES TIME */}
                                             {new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()} at {new Date(blog.lastUpdated || blog.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </small>
                                     </div>
