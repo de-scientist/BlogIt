@@ -35,8 +35,7 @@ const facts = [
 // Function to get a random fact
 const getRandomFact = () => facts[Math.floor(Math.random() * facts.length)];
 
-// 💡 NEW FilterComponent (Reused and adapted from Dashboard.jsx)
-const FilterComponent = ({ filter, setFilter, blogs }) => {
+const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
     const categories = ['Poetry', 'Health', 'Academics'];
     
     const isFilterActive = filter.trim() !== '';
