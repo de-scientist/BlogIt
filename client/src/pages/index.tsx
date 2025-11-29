@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Added useRef for animation
 // 💡 Added icons for the new features section
 import { ChevronLeft, ChevronRight, Zap, Globe, PenTool, TrendingUp, DollarSign, Users, BookOpen, Clock } from "lucide-react"; 
 
@@ -76,27 +76,76 @@ const keyFeatures = [
     },
 ];
 
-// 💡 Data for the New Stats Section
+// 💡 Data for the Stats Section (Updated for animation)
 const platformStats = [
   {
     icon: Users,
-    value: "150K+",
+    target: 150000,
     label: "Active Users",
+    formatted: "150K+",
     color: "from-pink-500 to-purple-600",
   },
   {
     icon: BookOpen,
-    value: "2.5M+",
+    target: 2500000,
     label: "Posts Published",
+    formatted: "2.5M+",
     color: "from-indigo-500 to-blue-600",
   },
   {
     icon: Clock,
-    value: "10 Years",
+    target: 10, // Target is the base number of years
     label: "Serving Creators",
+    formatted: "10 Years", // The final displayed string
     color: "from-green-500 to-teal-600",
   },
 ];
+
+// 💡 NEW COMPONENT: Animated Stat Counter
+interface AnimatedStatProps {
+    target: number;
+    duration?: number;
+    formatter: (value: number) => string;
+}
+
+const AnimatedStat = ({ target, duration = 2000, formatter }: AnimatedStatProps) => {
+    const [count, setCount] = useState(0);
+    const frameRef = useRef<number>();
+    const startTimeRef = useRef<number>();
+
+    useEffect(() => {
+        startTimeRef.current = performance.now();
+        const step = (timestamp: number) => {
+            if (!startTimeRef.current) return;
+            const progress = timestamp - startTimeRef.current;
+            
+            // Calculate current value based on progress (ease-out effect)
+            let currentValue = 0;
+            if (progress < duration) {
+                const ratio = progress / duration;
+                // Using a cubic ease-out function for smoother transition
+                const easedRatio = 1 - Math.pow(1 - ratio, 3); 
+                currentValue = Math.floor(easedRatio * target);
+                setCount(currentValue);
+                frameRef.current = requestAnimationFrame(step);
+            } else {
+                // Ensure the final value is exactly the target
+                setCount(target);
+                cancelAnimationFrame(frameRef.current!);
+            }
+        };
+
+        frameRef.current = requestAnimationFrame(step);
+
+        return () => {
+            if (frameRef.current) {
+                cancelAnimationFrame(frameRef.current);
+            }
+        };
+    }, [target, duration]);
+
+    return <p className="text-5xl font-extrabold text-white drop-shadow-md">{formatter(count)}</p>;
+};
 
 
 export default function Home() {
@@ -188,7 +237,7 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------- */}
-      {/* 💡 SECTION 3: PLATFORM STATS (NEWLY ADDED) */}
+      {/* SECTION 3: PLATFORM STATS (NOW ANIMATED) */}
       {/* ---------------------------------- */}
       <section className="w-full max-w-6xl mx-auto px-6 py-8">
         <h2 className="text-3xl font-extrabold text-center mb-10 text-gray-800 dark:text-gray-200">
@@ -201,7 +250,11 @@ export default function Home() {
               className={`p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-center bg-gradient-to-br ${stat.color} transition-all duration-500 transform hover:scale-[1.02]`}
             >
               <stat.icon className="w-10 h-10 mx-auto mb-3 text-white/90" />
-              <p className="text-5xl font-extrabold text-white drop-shadow-md">{stat.value}</p>
+              {/* 💡 Replaced static <p> tag with the new AnimatedStat component */}
+              <AnimatedStat 
+                target={stat.target}
+                formatter={(value) => stat.formatted.replace(/\d+/g, value.toLocaleString())}
+              />
               <p className="text-lg font-medium text-white/80 mt-1">{stat.label}</p>
             </div>
           ))}
