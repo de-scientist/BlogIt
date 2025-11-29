@@ -6,10 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle, Search } from "lucide-react"; 
 import { Input } from "@/components/ui/input"; 
-import { toast } from "sonner"; 
+import { toast } from "sonner"; // 1. SONNER IMPORT
 
 
-// 💡 TYPE DEFINITION for Blog (Kept for TypeScript)
+// 💡 TYPE DEFINITION for Blog
 interface Blog {
     id: number | string;
     title: string;
@@ -22,7 +22,7 @@ interface Blog {
     featuredImageUrl?: string;
 }
 
-// 💡 TYPE DEFINITION for FilterComponent Props (Kept for TypeScript)
+// 💡 TYPE DEFINITION for FilterComponent Props
 interface FilterProps {
     filter: string;
     setFilter: (filter: string) => void;
@@ -128,18 +128,20 @@ export default function Dashboard() {
 
   const stats = mockQuickStats(blogs);
 
-  // 1. 💡 NEW MUTATION: Increment views on the server
+  // 2. VIEW INCREMENT MUTATION
   const incrementViewMutation = useMutation({
-    // Assuming your backend has an endpoint like /blogs/view/{id} that increments the count
+    // Assumes backend endpoint /blogs/view/{id} increments the view count
     mutationFn: async (id: number | string) =>
         (await api.patch(`/blogs/view/${id}`)).data,
     
-    // When the view is incremented successfully, invalidate the 'blogs' query
-    // This forces React Query to refetch the data, updating the stats and card views.
+    // Invalidate the 'blogs' query to refresh stats and view counts after increment
     onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["blogs"] });
     },
-    // We intentionally skip showing a toast on success here as the user is navigating away
+    onError: (error) => {
+        // You might want to log this but avoid a visible toast on successful navigation
+        console.error("Failed to increment view count:", error);
+    }
   });
 
   // DELETE BLOG MUTATION 
@@ -164,11 +166,11 @@ export default function Dashboard() {
     deleteBlogMutation.mutate(id);
   };
   
-  // 2. 💡 NEW HANDLER: Combined function to increment views AND navigate
+  // 3. COMBINED HANDLER for View Button
   const handleView = (id: number | string) => {
-    // 1. Trigger the mutation (fires an async request to increment views)
+    // 1. Trigger the view increment mutation
     incrementViewMutation.mutate(id);
-    // 2. Navigate immediately to the view page (allows views to update in the background)
+    // 2. Navigate immediately to the view page
     navigate(`/blogs/view/${id}`);
   };
 
@@ -313,8 +315,9 @@ export default function Dashboard() {
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 line-clamp-2">
                       {blog.title}
                     </h3>
+                    {/* 4. TIME ADDED: Showing both Date and Time of creation */}
                     <small className="text-gray-500 text-xs text-right whitespace-nowrap">
-                        {new Date(blog.createdAt).toLocaleDateString()}
+                        {new Date(blog.createdAt).toLocaleDateString()} at {new Date(blog.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </small>
                 </div>
 
@@ -323,8 +326,8 @@ export default function Dashboard() {
                 </p>
 
                 <div className="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100 dark:border-slate-700">
-                    {/* 3. 💡 VIEW BUTTON FIX: Changed Link to Button and added onClick handler */}
                     <Button 
+                        // 5. ATTACHED HANDLER: Triggers view increment and navigation
                         onClick={() => handleView(blog.id)}
                         variant="outline"
                         className="col-span-1 w-full text-indigo-600 border-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-full text-xs sm:text-sm"
