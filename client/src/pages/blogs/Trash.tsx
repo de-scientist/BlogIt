@@ -14,6 +14,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { 
     CornerUpLeft, 
     Trash2, 
+    PlusCircle,
     Loader2,
     Clock, // New icon for deletion time
     RotateCcw, // New icon for recovery action
