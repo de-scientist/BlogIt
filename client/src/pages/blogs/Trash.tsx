@@ -201,11 +201,13 @@ export default function Trash() {
                                         {blog.synopsis || blog.content}
                                     </p>
                                     
-                                    {/* Deletion Date Info */}
+                                    {/* Deletion Date/Time Info (UPDATED HERE) */}
                                     <div className="pt-2">
                                         <small className="text-gray-500 dark:text-gray-400 flex items-center text-xs font-medium">
                                             <Clock className="w-3 h-3 mr-1 text-red-500" /> 
-                                            Deleted on: {new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()}
+                                            Deleted on: 
+                                            {/* 💡 NEW FORMAT: Date and Time */}
+                                            {new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()} at {new Date(blog.lastUpdated || blog.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </small>
                                     </div>
 
