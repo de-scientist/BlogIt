@@ -170,7 +170,7 @@ export default function Trash() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
                         {blogsInTrash.map((blog: Blog) => (
                             <Card
-                                key={blog.id}
+                                key={String(blog.id)}
                                 className="bg-white dark:bg-slate-800 border-2 border-gray-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-red-500 transition-all duration-300 rounded-xl overflow-hidden"
                             >
                                 {/* Featured Image (from Dashboard style) */}
