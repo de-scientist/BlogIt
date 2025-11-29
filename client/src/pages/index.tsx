@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react"; // Added useRef for animation
+import { useState, useEffect, useRef } from "react"; 
 // 💡 Added icons for the new features section
 import { ChevronLeft, ChevronRight, Zap, Globe, PenTool, TrendingUp, DollarSign, Users, BookOpen, Clock } from "lucide-react"; 
 
@@ -76,7 +76,7 @@ const keyFeatures = [
     },
 ];
 
-// 💡 Data for the Stats Section (Updated for animation)
+// 💡 Data for the Stats Section (Updated for whole numbers in 'Posts Published')
 const platformStats = [
   {
     icon: Users,
@@ -87,9 +87,11 @@ const platformStats = [
   },
   {
     icon: BookOpen,
-    target: 2500000,
+    // 💡 FIX: Set target to the whole number of millions (3) to avoid decimals
+    target: 3, 
     label: "Posts Published",
-    formatted: "2.5M+",
+    // 💡 FIX: Update formatted string to reflect the whole number approach
+    formatted: "3M+", 
     color: "from-indigo-500 to-blue-600",
   },
   {
@@ -103,48 +105,50 @@ const platformStats = [
 
 // 💡 NEW COMPONENT: Animated Stat Counter
 interface AnimatedStatProps {
-    target: number;
-    duration?: number;
-    formatter: (value: number) => string;
+    target: number;
+    duration?: number;
+    formatter: (value: number) => string;
 }
 
 const AnimatedStat = ({ target, duration = 2000, formatter }: AnimatedStatProps) => {
-    const [count, setCount] = useState(0);
-    const frameRef = useRef<number>();
-    const startTimeRef = useRef<number>();
+    const [count, setCount] = useState(0);
+    const frameRef = useRef<number | null>(null);
+    const startTimeRef = useRef<number | null>(null);
 
-    useEffect(() => {
-        startTimeRef.current = performance.now();
-        const step = (timestamp: number) => {
-            if (!startTimeRef.current) return;
-            const progress = timestamp - startTimeRef.current;
-            
-            // Calculate current value based on progress (ease-out effect)
-            let currentValue = 0;
-            if (progress < duration) {
-                const ratio = progress / duration;
-                // Using a cubic ease-out function for smoother transition
-                const easedRatio = 1 - Math.pow(1 - ratio, 3); 
-                currentValue = Math.floor(easedRatio * target);
-                setCount(currentValue);
-                frameRef.current = requestAnimationFrame(step);
-            } else {
-                // Ensure the final value is exactly the target
-                setCount(target);
-                cancelAnimationFrame(frameRef.current!);
-            }
-        };
+    useEffect(() => {
+        startTimeRef.current = performance.now();
+        const step = (timestamp: number) => {
+            if (!startTimeRef.current) return;
+            const progress = timestamp - startTimeRef.current;
+            
+            let currentValue = 0;
+            if (progress < duration) {
+                const ratio = progress / duration;
+                const easedRatio = 1 - Math.pow(1 - ratio, 3); 
+                
+                // Use Math.floor to ensure whole numbers during animation
+                currentValue = Math.floor(easedRatio * target);
+                setCount(currentValue);
+                frameRef.current = requestAnimationFrame(step);
+            } else {
+                // Ensure the final value is exactly the target
+                setCount(target);
+                if (frameRef.current !== null) {
+                  cancelAnimationFrame(frameRef.current);
+                }
+            }
+        };
 
-        frameRef.current = requestAnimationFrame(step);
+        frameRef.current = requestAnimationFrame(step);
 
-        return () => {
-            if (frameRef.current) {
-                cancelAnimationFrame(frameRef.current);
-            }
-        };
-    }, [target, duration]);
+        return () => {
+            if (frameRef.current !== null) {
+                cancelAnimationFrame(frameRef.current);
+            }
+        };
+    }, [target, duration]);
 
-    return <p className="text-5xl font-extrabold text-white drop-shadow-md">{formatter(count)}</p>;
+    return <p className="text-5xl font-extrabold text-white drop-shadow-md">{formatter(count)}</p>;
 };
 
 
@@ -172,6 +176,41 @@ export default function Home() {
   };
 
   const goToSlide = (index: number) => setCurrentSlide(index);
+
+  // 💡 Custom formatter for "Active Users" to display K+ only at the end
+  const activeUsersFormatter = (value: number) => {
+    return value >= platformStats[0].target 
+      ? platformStats[0].formatted 
+      : value.toLocaleString();
+  };
+
+  // 💡 FIX: Custom formatter for "Posts Published" to handle the whole-number target (3)
+  const postsPublishedFormatter = (value: number) => {
+    const target = platformStats[1].target;
+    
+    // When the animation hits the target (3), show the final 3M+
+    if (value === target) {
+      return platformStats[1].formatted;
+    }
+    
+    // During the animation (0, 1, 2), show the value followed by M
+    return value + "M"; 
+  };
+
+  // 💡 Custom formatter for "Serving Creators" (Years)
+  const servingCreatorsFormatter = (value: number) => {
+    return value >= platformStats[2].target 
+      ? platformStats[2].formatted 
+      : value.toLocaleString();
+  };
+
+  // Map of formatters corresponding to the stat order
+  const formatters = [
+    activeUsersFormatter,
+    postsPublishedFormatter, // <-- Now based on the whole-number M target
+    servingCreatorsFormatter
+  ];
+
 
   return (
     <main className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pt-16"> 
@@ -237,7 +276,7 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------- */}
-      {/* SECTION 3: PLATFORM STATS (NOW ANIMATED) */}
+      {/* SECTION 3: PLATFORM STATS (FIXED AND IMPROVED UI/UX) */}
       {/* ---------------------------------- */}
       <section className="w-full max-w-6xl mx-auto px-6 py-8">
         <h2 className="text-3xl font-extrabold text-center mb-10 text-gray-800 dark:text-gray-200">
@@ -247,15 +286,19 @@ export default function Home() {
           {platformStats.map((stat, index) => (
             <div 
               key={index} 
-              className={`p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-center bg-gradient-to-br ${stat.color} transition-all duration-500 transform hover:scale-[1.02]`}
+              className={`p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-center bg-gradient-to-br ${stat.color} transition-all duration-500 transform hover:scale-[1.02] relative group overflow-hidden`}
             >
-              <stat.icon className="w-10 h-10 mx-auto mb-3 text-white/90" />
-              {/* 💡 Replaced static <p> tag with the new AnimatedStat component */}
+              {/* Subtle overlay for contrast */}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all rounded-2xl"></div>
+              
+              <stat.icon className="w-12 h-12 mx-auto mb-3 text-white/90 relative z-10" />
+              
               <AnimatedStat 
                 target={stat.target}
-                formatter={(value) => stat.formatted.replace(/\d+/g, value.toLocaleString())}
+                // 💡 Using the specialized formatter for each stat
+                formatter={formatters[index]}
               />
-              <p className="text-lg font-medium text-white/80 mt-1">{stat.label}</p>
+              <p className="text-lg font-medium text-white/80 mt-1 relative z-10">{stat.label}</p>
             </div>
           ))}
         </div>
