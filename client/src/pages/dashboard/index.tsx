@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle, Search } from "lucide-react"; 
 import { Input } from "@/components/ui/input"; 
-// 💡 REQUIRED FOR TOAST: Assuming this import for shadcn/ui toast functionality
-import { Toaster } from "@/components/ui/sonner";
+// 💡 SONNER FIX: Use Sonner's toast import instead of the deprecated one
+import { toast } from "sonner"; 
 
 
 // 💡 TYPE DEFINITION for Blog
@@ -46,11 +46,9 @@ const mockQuickStats = (blogs: Blog[]) => ({
     totalViews: blogs.reduce((acc: number, b) => acc + (b.views || 0), 0), 
 });
 
-// 💡 TypeScript FIX: Added FilterProps interface to define types
 const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
     const categories = ['Poetry', 'Health', 'Academics'];
     
-    // 💡 Determine if the current filter is active (to highlight the 'Clear' button)
     const isFilterActive = filter.trim() !== '';
 
     return (
@@ -110,7 +108,9 @@ const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
 export default function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { toast } = Toaster(); // 💡 TOAST FIX: Initialize toast hook
+  // ❌ REMOVED: const { toast } = useToast(); 
+  // Sonner uses a direct import/function call
+
   const [currentFact, setCurrentFact] = useState(getRandomFact()); 
   const [categoryFilter, setCategoryFilter] = useState(''); 
 
@@ -120,10 +120,8 @@ export default function Dashboard() {
   });
 
   // Normalize data and apply mock stats
-  // 💡 TypeScript FIX: Cast data to Blog[] type
   const blogs: Blog[] = Array.isArray(data) ? data : data?.blogs || [];
   
-  // 💡 TypeScript FIX: Apply type to blog parameter
   const filteredBlogs = blogs.filter((blog: Blog) => {
       if (!categoryFilter) return true;
       const lowerCaseFilter = categoryFilter.toLowerCase();
@@ -138,44 +136,39 @@ export default function Dashboard() {
 
   // DELETE BLOG MUTATION 
   const deleteBlogMutation = useMutation({
-    mutationFn: async (id: number | string) => // 💡 TypeScript FIX: Set id type
+    mutationFn: async (id: number | string) =>
       (await api.patch(`/blogs/trash/${id}`)).data,
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] }); 
-      // 💡 TOAST FIX: Show success toast notification
-      toast({
-        title: "🗑️ Blog Moved to Trash",
+      // 💡 SONNER FIX: Use toast.success or toast(title, { description: '...' })
+      toast.success("Blog Moved to Trash", { 
         description: "Your blog post has been successfully moved to the trash.",
-        variant: "default", // Use a default or success variant if available
+        // Sonner uses title/description arguments, not an object with 'title' and 'description' keys.
+        // If you were using the old shadcn toast: toast({ title: '...', description: '...' })
       });
     },
-    onError: () => {
-        // Optional: Show error toast
-        toast({
-            title: "❌ Deletion Failed",
-            description: "There was an error moving the blog to trash.",
-            variant: "destructive",
+    onError: (error) => {
+        // 💡 SONNER FIX: Show error toast
+        toast.error("Deletion Failed", {
+            description: `Error: ${error.message || 'Could not connect to the server.'}`,
         });
     }
   });
 
-  const handleDelete = (id: number | string) => { // 💡 TypeScript FIX: Set id type
+  const handleDelete = (id: number | string) => { 
     deleteBlogMutation.mutate(id);
   };
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pb-20 pt-16 pl-5">
-      {/* ... (Header and Stats sections remain unchanged) ... */}
-      
-      {/* HERO / HEADER SECTION */}
+      {/* ... (Unchanged content) ... */}
       <header className="max-w-4xl mx-auto py-10 px-6 space-y-3">
         <div className="flex justify-between items-center">
             <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text drop-shadow-lg">
               <LayoutDashboard className="inline w-10 h-10 mr-3 align-middle" /> Your Dashboard
             </h1>
 
-            {/* Main CTA */}
             <Button
               size="lg"
               onClick={() => navigate("/blogs/create")}
@@ -189,9 +182,6 @@ export default function Dashboard() {
         </p>
       </header>
       
-      {/* ---------------------------------- */}
-      {/* SECTION 2: QUICK STATS */}
-      {/* ---------------------------------- */}
       <section className="max-w-4xl mx-auto mt-6 px-6">
           <h2 className="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300">Quick Stats</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -238,9 +228,6 @@ export default function Dashboard() {
           </div>
       </section>
 
-      {/* ---------------------------------- */}
-      {/* SECTION 3: INTERACTIVE FACT */}
-      {/* ---------------------------------- */}
       <section className="max-w-4xl mx-auto px-6 mt-8">
           <div 
             className="p-5 bg-gradient-to-r from-yellow-50 to-orange-100 dark:from-slate-700 dark:to-slate-800 rounded-xl shadow-inner border border-yellow-200 dark:border-slate-600 cursor-pointer transition-all hover:shadow-lg"
@@ -259,19 +246,14 @@ export default function Dashboard() {
           Your Recent Creations
         </h2>
         
-        {/* 💡 CATEGORY FILTER ADDED HERE */}
         <FilterComponent 
             filter={categoryFilter}
             setFilter={setCategoryFilter}
             blogs={filteredBlogs}
         />
-        {/* ------------------------------- */}
 
         {isLoading && <p className="text-gray-500">Loading your blogs…</p>}
 
-        {/* ---------------------------------- */}
-        {/* EMPTY STATE (Improved) */}
-        {/* ---------------------------------- */}
         {!isLoading && filteredBlogs.length === 0 && (
           <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-xl shadow-xl border-t-4 border-purple-600">
             <Pencil className="w-12 h-12 mx-auto text-purple-600 mb-4" />
@@ -296,11 +278,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* ---------------------------------- */}
-        {/* BLOG GRID (Now maps over filteredBlogs) */}
-        {/* ---------------------------------- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-          {filteredBlogs.map((blog: Blog) => ( // 💡 TypeScript FIX: Applied Blog type
+          {filteredBlogs.map((blog: Blog) => ( 
             <Card
               key={blog.id}
               className="bg-white dark:bg-slate-800 border-2 border-gray-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-purple-300 transition-all duration-300 rounded-2xl overflow-hidden"
@@ -317,7 +296,6 @@ export default function Dashboard() {
                   />
               )}
               <CardContent className="p-6 space-y-4">
-                {/* Title and Date */}
                 <div className="flex justify-between items-start">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 line-clamp-2">
                       {blog.title}
@@ -327,27 +305,22 @@ export default function Dashboard() {
                     </small>
                 </div>
 
-                {/* Synopsis / Content Preview */}
                 <p className="text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed text-sm">
                   {blog.synopsis || blog.content}
                 </p>
 
-                {/* ACTION BUTTONS */}
-                {/* 💡 UI/UX FIX: Used a fluid grid layout (grid-cols-3) for even button distribution on small screens */}
                 <div className="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100 dark:border-slate-700">
-                    {/* View Button (Full width in its column) */}
                     <Link to={`/blogs/view/${blog.id}`} className="col-span-1"> 
                         <Button 
                             variant="outline"
                             className="w-full text-indigo-600 border-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-full text-xs sm:text-sm"
-                            size="sm" // Added size sm to make buttons fit better
+                            size="sm" 
                         >
                             <Eye className="w-4 h-4 sm:mr-2" /> 
                             <span className="hidden sm:inline">View</span>
                         </Button>
                     </Link>
 
-                    {/* Edit Button (Full width in its column) */}
                     <Link to={`/blogs/edit/${blog.id}`} className="col-span-1">
                         <Button 
                             className="w-full text-xs sm:text-sm bg-gradient-to-r from-green-500 to-teal-400 text-white rounded-full shadow hover:opacity-90"
@@ -358,7 +331,6 @@ export default function Dashboard() {
                         </Button>
                     </Link>
 
-                    {/* Delete Button (Full width in its column) */}
                     <Button
                         onClick={() => handleDelete(blog.id)}
                         className="col-span-1 w-full text-xs sm:text-sm bg-red-600 hover:bg-red-700 text-white rounded-full shadow"
