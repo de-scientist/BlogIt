@@ -6,11 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Pencil, Eye, Trash2, Zap, LayoutDashboard, PlusCircle, Search } from "lucide-react"; 
 import { Input } from "@/components/ui/input"; 
-// 💡 SONNER FIX: Use Sonner's toast import instead of the deprecated one
 import { toast } from "sonner"; 
 
 
-// 💡 TYPE DEFINITION for Blog
+// 💡 TYPE DEFINITION for Blog (Kept for TypeScript)
 interface Blog {
     id: number | string;
     title: string;
@@ -23,7 +22,7 @@ interface Blog {
     featuredImageUrl?: string;
 }
 
-// 💡 TYPE DEFINITION for FilterComponent Props
+// 💡 TYPE DEFINITION for FilterComponent Props (Kept for TypeScript)
 interface FilterProps {
     filter: string;
     setFilter: (filter: string) => void;
@@ -82,7 +81,6 @@ const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
                     </Button>
                 ))}
                 
-                {/* Clear Filter Button */}
                 {isFilterActive && (
                     <Button
                         size="sm"
@@ -94,7 +92,6 @@ const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
                 )}
             </div>
             
-            {/* Filter Status Message */}
             {isFilterActive && (
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                     Showing {blogs.length} blogs matching **'{filter}'**
@@ -108,8 +105,6 @@ const FilterComponent = ({ filter, setFilter, blogs }: FilterProps) => {
 export default function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  // ❌ REMOVED: const { toast } = useToast(); 
-  // Sonner uses a direct import/function call
 
   const [currentFact, setCurrentFact] = useState(getRandomFact()); 
   const [categoryFilter, setCategoryFilter] = useState(''); 
@@ -119,7 +114,6 @@ export default function Dashboard() {
     queryFn: async () => (await api.get("/blogs")).data,
   });
 
-  // Normalize data and apply mock stats
   const blogs: Blog[] = Array.isArray(data) ? data : data?.blogs || [];
   
   const filteredBlogs = blogs.filter((blog: Blog) => {
@@ -134,6 +128,20 @@ export default function Dashboard() {
 
   const stats = mockQuickStats(blogs);
 
+  // 1. 💡 NEW MUTATION: Increment views on the server
+  const incrementViewMutation = useMutation({
+    // Assuming your backend has an endpoint like /blogs/view/{id} that increments the count
+    mutationFn: async (id: number | string) =>
+        (await api.patch(`/blogs/view/${id}`)).data,
+    
+    // When the view is incremented successfully, invalidate the 'blogs' query
+    // This forces React Query to refetch the data, updating the stats and card views.
+    onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["blogs"] });
+    },
+    // We intentionally skip showing a toast on success here as the user is navigating away
+  });
+
   // DELETE BLOG MUTATION 
   const deleteBlogMutation = useMutation({
     mutationFn: async (id: number | string) =>
@@ -141,15 +149,11 @@ export default function Dashboard() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] }); 
-      // 💡 SONNER FIX: Use toast.success or toast(title, { description: '...' })
       toast.success("Blog Moved to Trash", { 
         description: "Your blog post has been successfully moved to the trash.",
-        // Sonner uses title/description arguments, not an object with 'title' and 'description' keys.
-        // If you were using the old shadcn toast: toast({ title: '...', description: '...' })
       });
     },
     onError: (error) => {
-        // 💡 SONNER FIX: Show error toast
         toast.error("Deletion Failed", {
             description: `Error: ${error.message || 'Could not connect to the server.'}`,
         });
@@ -159,10 +163,19 @@ export default function Dashboard() {
   const handleDelete = (id: number | string) => { 
     deleteBlogMutation.mutate(id);
   };
+  
+  // 2. 💡 NEW HANDLER: Combined function to increment views AND navigate
+  const handleView = (id: number | string) => {
+    // 1. Trigger the mutation (fires an async request to increment views)
+    incrementViewMutation.mutate(id);
+    // 2. Navigate immediately to the view page (allows views to update in the background)
+    navigate(`/blogs/view/${id}`);
+  };
+
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 pb-20 pt-16 pl-5">
-      {/* ... (Unchanged content) ... */}
+      {/* ... (Header, Stats, Fact sections remain unchanged) ... */}
       <header className="max-w-4xl mx-auto py-10 px-6 space-y-3">
         <div className="flex justify-between items-center">
             <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text drop-shadow-lg">
@@ -310,16 +323,16 @@ export default function Dashboard() {
                 </p>
 
                 <div className="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100 dark:border-slate-700">
-                    <Link to={`/blogs/view/${blog.id}`} className="col-span-1"> 
-                        <Button 
-                            variant="outline"
-                            className="w-full text-indigo-600 border-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-full text-xs sm:text-sm"
-                            size="sm" 
-                        >
-                            <Eye className="w-4 h-4 sm:mr-2" /> 
-                            <span className="hidden sm:inline">View</span>
-                        </Button>
-                    </Link>
+                    {/* 3. 💡 VIEW BUTTON FIX: Changed Link to Button and added onClick handler */}
+                    <Button 
+                        onClick={() => handleView(blog.id)}
+                        variant="outline"
+                        className="col-span-1 w-full text-indigo-600 border-indigo-600 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-full text-xs sm:text-sm"
+                        size="sm" 
+                    >
+                        <Eye className="w-4 h-4 sm:mr-2" /> 
+                        <span className="hidden sm:inline">View</span>
+                    </Button>
 
                     <Link to={`/blogs/edit/${blog.id}`} className="col-span-1">
                         <Button 
