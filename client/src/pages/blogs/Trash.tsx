@@ -53,7 +53,7 @@ export default function Trash() {
     const { data, isLoading } = useQuery<Blog[]>({ // Explicitly type data as Blog[]
         queryKey: ["trash"],
         queryFn: async () => {
-            const res = await api.get("/profile/trash", { withCredentials: true });
+            const res = await api.get("/blogs/trash", { withCredentials: true });
             return res.data.blogs || []; 
         },
     });
