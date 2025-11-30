@@ -68,17 +68,15 @@ export default function Trash() {
             api.patch(`/blogs/recover/${id}`, {}, { withCredentials: true }),
         onSuccess: () => {
             toast.success("Blog recovered successfully!", { position: "bottom-left" }); 
-            // Invalidate trash list AND dashboard/main blog list
             queryClient.invalidateQueries({ queryKey: ["trash"] });
             queryClient.invalidateQueries({ queryKey: ["blogs"] }); 
-            queryClient.invalidateQueries({ queryKey: ["dashboard"] }); // Added for common Dashboard/List keys
         },
         onError: () => {
             toast.error("Failed to recover blog. Please try again.", { position: "bottom-left" });
         }
     });
 
-    // 2. PERMANENT DELETE MUTATION (Using the base /blogs/${id} delete URL)
+    // 2. PERMANENT DELETE MUTATION
     const deleteMutation = useMutation({
         mutationFn: (id: string) =>
             api.delete(`/blogs/${id}`, { withCredentials: true }),
@@ -170,6 +168,7 @@ export default function Trash() {
                 <ScrollArea className="h-[75vh] pr-4"> 
                     {/* Grid Layout matching Dashboard style */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+                        {/* KEY CHANGE 1: Destructure index and use it as a fallback key if blog.id is falsy */}
                         {blogsInTrash.map((blog: Blog, index: number) => (
                             <Card
                                 key={blog.id ? String(blog.id) : `fallback-${index}`}
@@ -203,11 +202,12 @@ export default function Trash() {
                                         {blog.synopsis || blog.content}
                                     </p>
                                     
-                                    {/* Deletion Date/Time Info (Updated formatting) */}
+                                    {/* Deletion Date/Time Info (KEY CHANGE 2: Added toLocaleTimeString) */}
                                     <div className="pt-2">
                                         <small className="text-gray-500 dark:text-gray-400 flex items-center text-xs font-medium">
                                             <Clock className="w-3 h-3 mr-1 text-red-500" /> 
                                             Deleted on: 
+                                            {/* 💡 NOW INCLUDES TIME */}
                                             {new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()} at {new Date(blog.lastUpdated || blog.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </small>
                                     </div>
@@ -215,37 +215,20 @@ export default function Trash() {
                                 </CardContent>
                                 
                                 {/* Recovery/Delete Actions */}
-                                {/* 💡 UI/UX FIX: Use flex-col to stack buttons on small screens, back to flex-row on sm screens */}
-                                <CardFooter className="flex flex-col sm:flex-row justify-between gap-4 p-6 pt-0 border-t border-gray-100 dark:border-slate-700">
+                                <CardFooter className="flex justify-between gap-4 p-6 pt-0 border-t border-gray-100 dark:border-slate-700">
                                     <Button
-                                        // 💡 FIX: Check for blog.id before calling mutate
-                                        onClick={() => {
-                                            if (blog.id) {
-                                                recoverMutation.mutate(String(blog.id));
-                                            } else {
-                                                toast.error("Cannot recover: Blog ID is missing.", { position: "bottom-left" });
-                                            }
-                                        }}
-                                        disabled={recoverMutation.isPending || deleteMutation.isPending || !blog.id} // Disable if ID is missing
-                                        // 💡 UI/UX FIX: w-full on small screens, w-1/2 on sm+
-                                        className="w-full sm:w-1/2 bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 shadow-lg shadow-green-500/30 rounded-full"
+                                        onClick={() => recoverMutation.mutate(blog.id as string)}
+                                        disabled={recoverMutation.isPending || deleteMutation.isPending}
+                                        className="w-1/2 bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 shadow-lg shadow-green-500/30 rounded-full"
                                     >
                                         <RotateCcw className="w-4 h-4 mr-2" /> 
                                         {recoverMutation.isPending ? "Restoring..." : "Recover"}
                                     </Button>
 
                                     <Button
-                                        // 💡 FIX: Check for blog.id before calling mutate
-                                        onClick={() => {
-                                            if (blog.id) {
-                                                deleteMutation.mutate(String(blog.id));
-                                            } else {
-                                                toast.error("Cannot delete: Blog ID is missing.", { position: "bottom-left" });
-                                            }
-                                        }}
-                                        disabled={deleteMutation.isPending || recoverMutation.isPending || !blog.id} // Disable if ID is missing
-                                        // 💡 UI/UX FIX: w-full on small screens, w-1/2 on sm+
-                                        className="w-full sm:w-1/2 bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/30 rounded-full"
+                                        onClick={() => deleteMutation.mutate(blog.id as string)}
+                                        disabled={deleteMutation.isPending || recoverMutation.isPending}
+                                        className="w-1/2 bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/30 rounded-full"
                                     >
                                         <Trash2 className="w-4 h-4 mr-2" />
                                         {deleteMutation.isPending ? "Erasing..." : "Delete Permanently"}
@@ -258,4 +241,4 @@ export default function Trash() {
             </div>
         </div>
     );
-}
+} 
