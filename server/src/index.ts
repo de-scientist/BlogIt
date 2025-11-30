@@ -19,12 +19,12 @@ import {
   updateBlog,
   deleteBlog,
   permanentDeleteBlog,
-  trash,
+  //trash,
   recoverDeletedBlog,
 } from "./controllers/blogs.ts";
 import {
   deleteProfile,
-  getUserBlogs,
+ // getUserBlogs,
   getUserProfile,
   getUserTrash,
   permanentDeleteUser,
@@ -71,7 +71,7 @@ app.patch(`${api}/auth/password`, verifyToken, checkPasswordStrength, updatePass
 app.post(`${api}/blogs`, verifyToken, validateBlogDetails, createBlog);
 app.get(`${api}/blogs`, verifyToken, getBlogs);
 app.get(`${api}/blogs/:id`, verifyToken, getBlog);
-app.get(`${api}/blogs/trash`, verifyToken, trash);
+//app.get(`${api}/blogs/trash`, verifyToken, trash);
 app.patch(`${api}/blogs/:id`, verifyToken, updateBlog);
 app.patch(`${api}/blogs/trash/:id`, verifyToken, deleteBlog);
 app.patch(`${api}/blogs/recover/:id`, verifyToken, recoverDeletedBlog);
@@ -80,7 +80,7 @@ app.delete(`${api}/blogs/permanent/:id`, verifyToken, permanentDeleteBlog);
 // --------- USER PROFILE ---------
 app.get(`${api}/profile`, verifyToken, getUserProfile);
 app.patch(`${api}/profile`, verifyToken, updateProfile);
-app.get(`${api}/profile/blogs`, verifyToken, getUserBlogs);
+//app.get(`${api}/profile/blogs`, verifyToken, getUserBlogs);
 app.patch(`${api}/users/delete`, verifyToken, deleteProfile);
 app.get(`${api}/profile/trash`, verifyToken, getUserTrash);
 app.delete(`${api}/users/delete/:id`, verifyToken, permanentDeleteUser);
