@@ -76,7 +76,7 @@ export default function Navbar() {
 
       {/* Text shown if image fails (fallback/companion) */}
       <span className={`${imageLoaded ? 'text-gray-900 dark:text-white' : 'bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text'}`}>
-        TechBlog
+        WeBlog
       </span>
     </Link>
   );
