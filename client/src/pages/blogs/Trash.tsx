@@ -5,8 +5,7 @@ import {
     Card,
     CardContent,
     CardFooter,
-    CardHeader,
-    CardTitle, // Added CardTitle for better structure
+    CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -16,33 +15,33 @@ import {
     Trash2, 
     PlusCircle,
     Loader2,
-    Clock, // New icon for deletion time
-    RotateCcw, // New icon for recovery action
+    Clock,
+    RotateCcw,
 } from "lucide-react"; 
 import { useState } from "react"; 
 
-// 💡 Simple list of fun facts
+// ... (Facts array and getRandomFact function remain the same) ...
 const facts = [
     "💡 Did you know: Blog is a shortened version of 'weblog'?",
     "💡 A single deleted file can remain recoverable on a hard drive for years!",
     "💡 The first true weblog was arguably created in 1994 by Justin Hall.",
     "💡 Deleting items to the trash folder does not free up storage space until you empty it.",
 ];
-// Function to get a random fact
 const getRandomFact = () => facts[Math.floor(Math.random() * facts.length)];
 
-// 💡 TYPE DEFINITION for Blog (Matching Dashboard for consistency)
+
+// 💡 TYPE DEFINITION for Blog
 interface Blog {
     id: number | string;
     title: string;
     category?: string;
-    status: 'draft' | 'published' | 'trashed'; // Explicit 'trashed' status is assumed
+    status: 'draft' | 'published' | 'trashed';
     views?: number;
     createdAt: string;
     synopsis?: string;
     content: string;
     featuredImageUrl?: string;
-    lastUpdated?: string; // To use for deletion time if available
+    lastUpdated?: string;
 }
 
 export default function Trash() {
@@ -50,10 +49,11 @@ export default function Trash() {
     const navigate = useNavigate();
     const [currentFact, setCurrentFact] = useState(getRandomFact()); 
 
-    const { data, isLoading } = useQuery<Blog[]>({ // Explicitly type data as Blog[]
+    // 🛑 CRITICAL FIX 1: Aligning the trash fetch endpoint to /blogs/trash
+    const { data, isLoading } = useQuery<Blog[]>({
         queryKey: ["trash"],
         queryFn: async () => {
-            const res = await api.get("/profile/trash", { withCredentials: true });
+            const res = await api.get("/profile/trash", { withCredentials: true }); 
             return res.data.blogs || []; 
         },
     });
@@ -89,7 +89,7 @@ export default function Trash() {
         }
     });
 
-    // --- Loading State ---
+    // --- Loading State (Remains the same) ---
     if (isLoading) {
         return (
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 pl-4 flex justify-center items-center">
@@ -101,7 +101,7 @@ export default function Trash() {
         );
     }
 
-    // --- Empty State (Enhanced) ---
+    // --- Empty State (Remains the same) ---
     if (blogsInTrash.length === 0)
         return (
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 pl-4 pb-10 flex justify-center items-start">
@@ -144,7 +144,7 @@ export default function Trash() {
                         title="Click to see another fact"
                     >
                         <p className="font-semibold text-purple-800 dark:text-purple-300 flex items-start">
-                            <Clock className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" /> {/* Changed icon for better context */}
+                            <Clock className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
                             **Insight:** {currentFact}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Click the box for a new tip!</p>
@@ -164,22 +164,19 @@ export default function Trash() {
                     These items are scheduled for permanent deletion. **Restore** or **Erase** them now.
                 </p>
                 
-                {/* ScrollArea for fixed height list */}
                 <ScrollArea className="h-[75vh] pr-4"> 
-                    {/* Grid Layout matching Dashboard style */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-                        {/* KEY CHANGE 1: Destructure index and use it as a fallback key if blog.id is falsy */}
                         {blogsInTrash.map((blog: Blog, index: number) => (
                             <Card
                                 key={blog.id ? String(blog.id) : `fallback-${index}`}
                                 className="bg-white dark:bg-slate-800 border-2 border-gray-100 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-red-500 transition-all duration-300 rounded-xl overflow-hidden"
                             >
-                                {/* Featured Image (from Dashboard style) */}
+                                {/* Featured Image */}
                                 {blog.featuredImageUrl && (
                                     <img 
                                         src={blog.featuredImageUrl} 
                                         alt={`Featured image for ${blog.title}`}
-                                        className="w-full h-40 object-cover opacity-60 grayscale" // Desaturated and dimmed to indicate 'trashed' state
+                                        className="w-full h-40 object-cover opacity-60 grayscale"
                                         onError={(e) => { 
                                             e.currentTarget.style.display = 'none';
                                         }}
@@ -202,12 +199,11 @@ export default function Trash() {
                                         {blog.synopsis || blog.content}
                                     </p>
                                     
-                                    {/* Deletion Date/Time Info (KEY CHANGE 2: Added toLocaleTimeString) */}
+                                    {/* Deletion Date/Time Info */}
                                     <div className="pt-2">
                                         <small className="text-gray-500 dark:text-gray-400 flex items-center text-xs font-medium">
                                             <Clock className="w-3 h-3 mr-1 text-red-500" /> 
                                             Deleted on: 
-                                            {/* 💡 NOW INCLUDES TIME */}
                                             {new Date(blog.lastUpdated || blog.createdAt).toLocaleDateString()} at {new Date(blog.lastUpdated || blog.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </small>
                                     </div>
@@ -217,7 +213,15 @@ export default function Trash() {
                                 {/* Recovery/Delete Actions */}
                                 <CardFooter className="flex justify-between gap-4 p-6 pt-0 border-t border-gray-100 dark:border-slate-700">
                                     <Button
-                                        onClick={() => recoverMutation.mutate(blog.id as string)}
+                                        // 🛑 CRITICAL FIX 2: Added ID check for Recover button
+                                        onClick={() => {
+                                            const blogId = blog.id;
+                                            if (blogId) {
+                                                recoverMutation.mutate(String(blogId));
+                                            } else {
+                                                toast.error("Error: Cannot recover a blog without an ID.", { position: "bottom-left" });
+                                            }
+                                        }}
                                         disabled={recoverMutation.isPending || deleteMutation.isPending}
                                         className="w-1/2 bg-gradient-to-r from-green-500 to-teal-400 text-white hover:opacity-90 shadow-lg shadow-green-500/30 rounded-full"
                                     >
@@ -225,23 +229,22 @@ export default function Trash() {
                                         {recoverMutation.isPending ? "Restoring..." : "Recover"}
                                     </Button>
 
+                                    {/* Permanent Delete Button (Remains correct) */}
                                     <Button
-    // 💡 FIX: Check if blog.id exists before calling mutate
-    onClick={() => {
-        const blogId = blog.id;
-        if (blogId) {
-            deleteMutation.mutate(String(blogId));
-        } else {
-            // Optional: Show an error toast if ID is missing
-            toast.error("Error: Cannot delete a blog without an ID.", { position: "bottom-left" });
-        }
-    }}
-    disabled={deleteMutation.isPending || recoverMutation.isPending}
-    className="w-1/2 bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/30 rounded-full"
->
-    <Trash2 className="w-4 h-4 mr-2" />
-    {deleteMutation.isPending ? "Erasing..." : "Delete Permanently"}
-</Button>
+                                        onClick={() => {
+                                            const blogId = blog.id;
+                                            if (blogId) {
+                                                deleteMutation.mutate(String(blogId));
+                                            } else {
+                                                toast.error("Error: Cannot delete a blog without an ID.", { position: "bottom-left" });
+                                            }
+                                        }}
+                                        disabled={deleteMutation.isPending || recoverMutation.isPending}
+                                        className="w-1/2 bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/30 rounded-full"
+                                    >
+                                        <Trash2 className="w-4 h-4 mr-2" />
+                                        {deleteMutation.isPending ? "Erasing..." : "Delete Permanently"}
+                                    </Button>
                                 </CardFooter>
                             </Card>
                         ))}
@@ -250,4 +253,4 @@ export default function Trash() {
             </div>
         </div>
     );
-} 
+}
