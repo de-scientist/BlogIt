@@ -19,7 +19,7 @@ import {
   updateBlog,
   deleteBlog,
   permanentDeleteBlog,
-  //trash,
+  trash,
   recoverDeletedBlog,
 } from "./controllers/blogs.ts";
 import {
@@ -71,7 +71,7 @@ app.patch(`${api}/auth/password`, verifyToken, checkPasswordStrength, updatePass
 app.post(`${api}/blogs`, verifyToken, validateBlogDetails, createBlog);
 app.get(`${api}/blogs`, verifyToken, getBlogs);
 app.get(`${api}/blogs/:id`, verifyToken, getBlog);
-//app.get(`${api}/blogs/trash`, verifyToken, trash);
+app.get(`${api}/blogs/trash`, verifyToken, trash);
 app.patch(`${api}/blogs/:id`, verifyToken, updateBlog);
 app.patch(`${api}/blogs/trash/:id`, verifyToken, deleteBlog);
 app.patch(`${api}/blogs/recover/:id`, verifyToken, recoverDeletedBlog);
