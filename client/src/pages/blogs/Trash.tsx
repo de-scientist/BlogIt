@@ -79,7 +79,7 @@ export default function Trash() {
     // 2. PERMANENT DELETE MUTATION
     const deleteMutation = useMutation({
         mutationFn: (id: string) =>
-            api.delete(`/blogs/${id}`, { withCredentials: true }),
+            api.delete(`/blogs/permanent/${id}`, { withCredentials: true }),
         onSuccess: () => {
             toast.success("Blog deleted permanently. Space freed!", { position: "bottom-left" }); 
             queryClient.invalidateQueries({ queryKey: ["trash"] });
