@@ -98,7 +98,7 @@ export default function Sidebar() {
       items: [
         { name: "Create Blog", path: "/blogs/create", icon: HiOutlinePencilSquare },
         { name: "My Blogs", path: "/dashboard/blogs", icon: HiOutlineViewColumns },
-        { name: "Blog Trash", path: "/blogs/trash", icon: HiOutlineTrash },
+        { name: "Blog Trash", path: "/profile/trash", icon: HiOutlineTrash },
       ],
     },
     {
