@@ -91,11 +91,11 @@ export default function Sidebar() {
     // Close the avatar dropdown immediately
     setAvatarOpen(false);
     
-    // Show the success toast using sonner with bottom-left position
-    toast.success("User logged out successfully!", { position: "bottom-left" });
-    
-    // Navigate to the logout route
+       // Navigate to the logout route
     navigate("/auth/logout");
+
+// Show the success toast using sonner with bottom-left position
+    toast.success("User logged out successfully!", { position: "bottom-left" });
   };
 
   // Links with Icons for better UX
