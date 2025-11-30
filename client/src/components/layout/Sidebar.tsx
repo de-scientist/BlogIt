@@ -17,6 +17,7 @@ import {
   HiOutlineHome,
 } from "react-icons/hi2";
 import { LogOut } from "lucide-react"; // Imported LogOut for the dropdown
+import { toast } from "sonner"; // 🔑 ADDED: Import toast from sonner
 
 // Define the UserType (Assuming these fields exist in your API response)
 type UserType = {
@@ -85,7 +86,17 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => navigate("/auth/logout");
+  // 🔑 MODIFIED: Added toast notification for successful logout
+  const handleLogout = () => {
+    // Close the avatar dropdown immediately
+    setAvatarOpen(false);
+    
+    // Show the success toast using sonner with bottom-left position
+    toast.success("User logged out successfully!", { position: "bottom-left" });
+    
+    // Navigate to the logout route
+    navigate("/auth/logout");
+  };
 
   // Links with Icons for better UX
   const groupedLinks = [
@@ -168,6 +179,7 @@ export default function Sidebar() {
             );
           })}
         </div>
+        
       </div>
     </div>
   );
