@@ -75,7 +75,7 @@ app.get(`${api}/blogs/trash`, verifyToken, trash);
 app.patch(`${api}/blogs/:id`, verifyToken, updateBlog);
 app.patch(`${api}/blogs/trash/:id`, verifyToken, deleteBlog);
 app.patch(`${api}/blogs/recover/:id`, verifyToken, recoverDeletedBlog);
-app.delete(`${api}/blogs/:id`, verifyToken, permanentDeleteBlog);
+app.delete(`${api}/blogs/permanent/:id`, verifyToken, permanentDeleteBlog);
 
 // --------- USER PROFILE ---------
 app.get(`${api}/profile`, verifyToken, getUserProfile);
