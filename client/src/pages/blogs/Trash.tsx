@@ -226,13 +226,22 @@ export default function Trash() {
                                     </Button>
 
                                     <Button
-                                        onClick={() => deleteMutation.mutate(blog.id as string)}
-                                        disabled={deleteMutation.isPending || recoverMutation.isPending}
-                                        className="w-1/2 bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/30 rounded-full"
-                                    >
-                                        <Trash2 className="w-4 h-4 mr-2" />
-                                        {deleteMutation.isPending ? "Erasing..." : "Delete Permanently"}
-                                    </Button>
+    // 💡 FIX: Check if blog.id exists before calling mutate
+    onClick={() => {
+        const blogId = blog.id;
+        if (blogId) {
+            deleteMutation.mutate(String(blogId));
+        } else {
+            // Optional: Show an error toast if ID is missing
+            toast.error("Error: Cannot delete a blog without an ID.", { position: "bottom-left" });
+        }
+    }}
+    disabled={deleteMutation.isPending || recoverMutation.isPending}
+    className="w-1/2 bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/30 rounded-full"
+>
+    <Trash2 className="w-4 h-4 mr-2" />
+    {deleteMutation.isPending ? "Erasing..." : "Delete Permanently"}
+</Button>
                                 </CardFooter>
                             </Card>
                         ))}
