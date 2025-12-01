@@ -111,6 +111,7 @@ export const getUserBlogs = async (req: Request, res: Response) => {
         isDeleted: false,
       },
       select: {
+        id: true,
         title: true,
         synopsis: true,
         featuredImageUrl: true,
