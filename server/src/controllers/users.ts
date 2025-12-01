@@ -143,6 +143,7 @@ export const getUserTrash = async (req: Request, res: Response) => {
         isDeleted: true,
       },
       select: {
+        id: true,
         title: true,
         synopsis: true,
         featuredImageUrl: true,
