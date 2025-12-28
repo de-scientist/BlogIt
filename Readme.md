@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Stars](https://img.shields.io/github/stars/de-scientist/Bloggit?style=social)](https://github.com/de-scientist/BlogIt)
 
-**Bloggit** is a modern, full-featured blogging platform designed for simplicity, speed, and excellent content delivery. It provides an intuitive interface for writers and a fast, responsive experience for readers.
+**Bloggit** is a modern, full-featured blogging platform designed for simplicity, speed, and excellent content delivery. It provides an intuitive interface for writers and a fast, responsive experience for readers. It ensures you Learn, Earn, and Return as you are accountable to yourself.
 
 ---
 
